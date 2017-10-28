@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/path_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
@@ -40,12 +40,22 @@
         android:layout_height="wrap_content"
         android:textSize="15dp"
         android:text="@string/path_country_placeholder" />
+        <eu.trails2education.trails.views.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text=" / " />
     <eu.trails2education.trails.views.MyTextView
         android:id="@+id/path_vehicle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
         android:text="@string/path_vehicle_placeholder" />
+        <eu.trails2education.trails.views.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text=" / " />
     <eu.trails2education.trails.views.MyTextView
         android:id="@+id/path_rating"
         android:layout_width="wrap_content"
@@ -66,17 +76,32 @@
             android:textSize="15dp"
             android:text="@string/path_distance_placeholder" />
         <eu.trails2education.trails.views.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text=" / " />
+        <eu.trails2education.trails.views.MyTextView
             android:id="@+id/path_length"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15dp"
             android:text="@string/path_length_placeholder" />
         <eu.trails2education.trails.views.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text=" / " />
+        <eu.trails2education.trails.views.MyTextView
             android:id="@+id/path_calories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15dp"
             android:text="@string/path_calories_placeholder" />
+        <eu.trails2education.trails.views.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text=" / " />
         <eu.trails2education.trails.views.MyTextView
             android:id="@+id/path_area"
             android:layout_width="wrap_content"

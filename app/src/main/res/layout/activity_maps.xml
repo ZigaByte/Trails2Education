@@ -94,14 +94,14 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lisbona" />
+                android:text="Pärnu" />
 
             <eu.trails2education.trails.views.MyTextView
                 style="@style/countryText"
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Portugal" />
+                android:text="Estonia" />
 
             </LinearLayout>
 

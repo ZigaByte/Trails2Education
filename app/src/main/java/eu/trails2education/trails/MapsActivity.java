@@ -79,9 +79,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         PolylineOptions options = new PolylineOptions().clickable(false);
+        int i = 0;
         for(Path.Coordinate coordinate : path.coordinates){
             LatLng latLng = new LatLng(coordinate.lat, coordinate.lon);
             options.add(latLng);
+            if(i++ % 170 == 0)
+                mMap.addMarker(new MarkerOptions().position(latLng).title("Test Marker"));
         }
         Polyline line = mMap.addPolyline(options);
 

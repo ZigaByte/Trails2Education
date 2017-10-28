@@ -14,7 +14,7 @@ import android.support.v7.app.AppCompatActivity;
  * */
 public class LaunchActivity extends FragmentActivity {
 
-    private final int DELAY = 1000; // In milliseconds
+    private final int DELAY = 2000; // In milliseconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
