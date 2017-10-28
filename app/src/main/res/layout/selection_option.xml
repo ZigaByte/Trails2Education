@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/launch_logo5" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <eu.trails2education.trails.views.MyTextViewBold
+            android:id="@+id/path_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="@string/path_name_placeholder" />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <eu.trails2education.trails.views.MyTextView
+        android:id="@+id/path_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:text="@string/path_country_placeholder" />
+    <eu.trails2education.trails.views.MyTextView
+        android:id="@+id/path_vehicle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:text="@string/path_vehicle_placeholder" />
+    <eu.trails2education.trails.views.MyTextView
+        android:id="@+id/path_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:text="@string/path_rating_placeholder" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <eu.trails2education.trails.views.MyTextView
+            android:id="@+id/path_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="@string/path_distance_placeholder" />
+        <eu.trails2education.trails.views.MyTextView
+            android:id="@+id/path_length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="@string/path_length_placeholder" />
+        <eu.trails2education.trails.views.MyTextView
+            android:id="@+id/path_calories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="@string/path_calories_placeholder" />
+        <eu.trails2education.trails.views.MyTextView
+            android:id="@+id/path_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="@string/path_area_placeholder" />
+
+    </LinearLayout>
+
+</LinearLayout>

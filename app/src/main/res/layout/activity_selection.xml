@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="eu.trails2education.trails.SelectionActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="50dp"
+        android:paddingTop="30dp"
+        android:paddingRight="50dp"
+        android:orientation="vertical">
+
+        <eu.trails2education.trails.views.MyTextView
+            android:id="@+id/selection_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="35dp"
+            android:layout_gravity="center"
+            android:text="@string/selection_title" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+
+            android:orientation="horizontal">
+
+            <eu.trails2education.trails.views.MyTextView
+                android:id="@+id/selection_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:layout_gravity="center"
+                android:text="@string/selection_count" />
+            <!-- Implement later - also make the path count right aligned
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="0px"
+                            android:layout_weight="1"
+                            />
+
+
+                        <eu.trails2education.trails.views.MyTextView
+                            android:id="@+id/selection_sort"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="25dp"
+                            android:layout_gravity="left"
+                            android:text="@string/selection_sort" />-->
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/selectionList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
