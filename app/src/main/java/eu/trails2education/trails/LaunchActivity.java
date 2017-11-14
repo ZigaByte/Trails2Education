@@ -17,6 +17,8 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
+import eu.trails2education.trails.network.RequestManager;
+
 /**
  * Activity with launch screen.
  *
@@ -56,6 +58,10 @@ public class LaunchActivity extends FragmentActivity {
         queue.add(jsObjRequest);
         queue.start();
 */
+
+        // Set up the basic RequestQueue
+        //RequestManager.getInstance(this);
+
         // Switch after DELAY
         Handler h = new Handler();
         h.postDelayed(new Runnable() {

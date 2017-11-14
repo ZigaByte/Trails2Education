@@ -7,14 +7,13 @@
     android:paddingBottom="10dp"
     android:orientation="vertical">
 
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/path_thumbnail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
+        android:layout_height="150dp"
+        android:scaleType="fitCenter"
         android:adjustViewBounds="true"
-        android:layout_weight="1"
-        app:srcCompat="@drawable/launch_logo5" />
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"

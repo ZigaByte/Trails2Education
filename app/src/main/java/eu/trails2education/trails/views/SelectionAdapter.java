@@ -9,7 +9,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+
 import eu.trails2education.trails.R;
+import eu.trails2education.trails.network.RequestManager;
 
 /**
  * Created by Žiga on 29. 09. 2017.
@@ -67,15 +72,19 @@ public class SelectionAdapter extends BaseAdapter {
         TextView durationText = (TextView)vi.findViewById(R.id.path_length);// vehicle
         TextView caloriesText = (TextView)vi.findViewById(R.id.path_calories);// vehicle
 
-        ImageView imageView = (ImageView) vi.findViewById(R.id.path_thumbnail);
-
         titleText.setText(paths[position]);
         countryText.setText(country[position]);
         areaText.setText(area[position]);
         vehicleText.setText(vehicle[position]);
 
-        imageView.setImageResource(images[position]);
+        NetworkImageView imageView = (NetworkImageView) vi.findViewById(R.id.path_thumbnail);
+        String url = "http://trails2education.eu/img/pathways/9.jpg";
+        ImageLoader loader = RequestManager.getInstance(activity.getApplicationContext()).getImageLoader();
+        loader.get(url, loader.getImageListener(imageView, R.mipmap.ic_launcher, R.mipmap.ic_launcher_round));
+        imageView.setImageUrl(url, loader);
 
+        //imageView.setImageResource(images[position]);
+        //imageView.setImage
 
         /*TextView artist = (TextView)vi.findViewById(R.id.artist); // artist name
         TextView duration = (TextView)vi.findViewById(R.id.duration); // duration
