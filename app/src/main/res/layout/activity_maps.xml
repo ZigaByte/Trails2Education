@@ -44,7 +44,8 @@
                     android:layout_height="45dp"
                     android:padding="0dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/button_options" />
+                    android:src="@drawable/button_options"
+                    android:visibility="invisible" />
 
             </LinearLayout>
 
@@ -69,11 +70,11 @@
                 android:src="@drawable/clock" />
 
             <eu.trails2education.trails.views.MyTextViewBold
+                android:id="@+id/timeText"
                 style="@style/timeText"
-                android:id="@+id/textView"
-                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="0:00:00" />
 
             </LinearLayout>
@@ -137,7 +138,7 @@
                     android:src="@drawable/distance" />
 
                 <eu.trails2education.trails.views.MyTextViewBold
-                    android:id="@+id/textView5"
+                    android:id="@+id/distanceTextTitle"
                     style="@style/statText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -145,11 +146,20 @@
                     android:text="Distance" />
 
                 <eu.trails2education.trails.views.MyTextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/distanceTextContent"
                     style="@style/statText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="600 meters" />
+                    android:layout_marginRight="0dp"
+                    android:text="000" />
+
+                <eu.trails2education.trails.views.MyTextView
+                    android:id="@+id/distanceTextUnit"
+                    style="@style/statText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=" meters" />
             </LinearLayout>
 
             <LinearLayout
@@ -168,7 +178,7 @@
                     android:src="@drawable/heart_rate" />
 
                 <eu.trails2education.trails.views.MyTextViewBold
-                    android:id="@+id/textView6"
+                    android:id="@+id/heartRateTextTitle"
                     style="@style/statText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -176,11 +186,11 @@
                     android:text="Heart Rate" />
 
                 <eu.trails2education.trails.views.MyTextView
-                    android:id="@+id/textView9"
+                    android:id="@+id/heartRateTextContent"
                     style="@style/statText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="80" />
+                    android:text="00" />
             </LinearLayout>
 
             <LinearLayout
@@ -199,7 +209,7 @@
                     android:src="@drawable/calories" />
 
                 <eu.trails2education.trails.views.MyTextViewBold
-                    android:id="@+id/textView4"
+                    android:id="@+id/caloriesTextTitle"
                     style="@style/statText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -207,11 +217,11 @@
                     android:text="Estimated Calories" />
 
                 <eu.trails2education.trails.views.MyTextView
-                    android:id="@+id/textView8"
+                    android:id="@+id/caloriesTextContent"
                     style="@style/statText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="83" />
+                    android:text="00" />
             </LinearLayout>
 
         </LinearLayout>

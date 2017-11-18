@@ -15,6 +15,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.w3c.dom.Text;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 import eu.trails2education.trails.path.PathUtils;
 import eu.trails2education.trails.path.Path;
 
@@ -24,6 +29,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Path path;
+
+    // Timer
+    public int seconds = 0;
+    public int minutes = 0;
+    public int hours = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         path = PathUtils.deserialize(this.getApplicationContext(), "path2.txt");
-
+        fillViews(path);
 
         findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +53,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 finish();
             }
         });
+
+        // Create the timer
+        Timer t = new Timer();
+        t.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        seconds++;
+                        if(seconds >= 60){
+                            seconds -= 60;
+                            minutes++;
+                            if(minutes >= 60){
+                                minutes-= 60;
+                                hours++;
+                            }
+                        }
+                        ((TextView)findViewById(R.id.timeText)).setText(hours + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
+                    }
+                });
+            }
+        }, 0, 1000);
+
+    }
+
+    private void fillViews(Path path){
+        ((TextView)findViewById(R.id.distanceTextContent)).setText(String.valueOf(path.totalMeters));
+        ((TextView)findViewById(R.id.heartRateTextContent)).setText(String.valueOf(path.averageHeartBeatRate));
+        ((TextView)findViewById(R.id.caloriesTextContent)).setText(String.valueOf(path.estimatedCalories));
     }
 
     /**
