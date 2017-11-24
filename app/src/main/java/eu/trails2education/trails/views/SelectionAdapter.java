@@ -13,8 +13,14 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
+import java.util.ArrayList;
+
 import eu.trails2education.trails.R;
 import eu.trails2education.trails.network.RequestManager;
+import eu.trails2education.trails.path.Path;
+import eu.trails2education.trails.path.PathUtils;
+
+import static android.R.attr.country;
 
 /**
  * Created by Žiga on 29. 09. 2017.
@@ -25,7 +31,7 @@ public class SelectionAdapter extends BaseAdapter {
     private Activity activity;
 
     private static LayoutInflater inflater = null;
-
+/*
     // Temporary data
     private String[] paths = {"Estonian test track", "Italian Test Track", "Portuguese test track", "Martinique test track"};
     private String[] country = {"Estonia", "Italy", "Portugal", "France"};
@@ -37,16 +43,21 @@ public class SelectionAdapter extends BaseAdapter {
     private String[] distance = {"950 m", "750 m", "2000 m", "3500 m"};
     private String[] duration = {"50 min", "75 min", "45 min", "90 min"};
     private String[] calories = {"250 cal", "300  cal", "280  cal", "170  cal"};
-
+*/
+    ArrayList<Path> paths;
 
     public SelectionAdapter(Activity a) {
         activity = a;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        // Get all the paths
+        paths = new ArrayList<Path>();
+        paths = PathUtils.createPathList(a.getApplicationContext(), R.raw.track_list);
     }
 
     public int getCount() {
         //return data.size();
-        return paths.length;
+        return paths.size();
     }
 
     public Object getItem(int position) {
@@ -72,31 +83,23 @@ public class SelectionAdapter extends BaseAdapter {
         TextView durationText = (TextView)vi.findViewById(R.id.path_length);// vehicle
         TextView caloriesText = (TextView)vi.findViewById(R.id.path_calories);// vehicle
 
-        titleText.setText(paths[position]);
-        countryText.setText(country[position]);
-        areaText.setText(area[position]);
-        vehicleText.setText(vehicle[position]);
+        Path p = paths.get(position);
+        titleText.setText(p.name);
+        countryText.setText(p.region); // NOT COUNTRY TODO
+        areaText.setText(p.area);
+        vehicleText.setText(p.vehicle);
+
+        ratingText.setText("5.0");
+        distanceText.setText(p.totalMeters + " m"); // NOT COUNTRY TODO
+        durationText.setText(p.estimatedTime + " min");
+        caloriesText.setText(p.estimatedCalories + " cal");
 
         NetworkImageView imageView = (NetworkImageView) vi.findViewById(R.id.path_thumbnail);
-        String url = "http://trails2education.eu/img/pathways/9.jpg";
+        String url = "http://trails2education.eu/img/pathways/" + p.ID + ".jpg";
         ImageLoader loader = RequestManager.getInstance(activity.getApplicationContext()).getImageLoader();
         loader.get(url, loader.getImageListener(imageView, R.mipmap.ic_launcher, R.mipmap.ic_launcher_round));
         imageView.setImageUrl(url, loader);
 
-        //imageView.setImageResource(images[position]);
-        //imageView.setImage
-
-        /*TextView artist = (TextView)vi.findViewById(R.id.artist); // artist name
-        TextView duration = (TextView)vi.findViewById(R.id.duration); // duration
-        ImageView thumb_image=(ImageView)vi.findViewById(R.id.list_image); // thumb image*/
-
-        /*HashMap&lt;String, String&gt; song = new HashMap&lt;String, String&gt;();
-        song = data.get(position);
-
-        // Setting all values in listview
-        artist.setText(song.get(CustomizedListView.KEY_ARTIST));
-        duration.setText(song.get(CustomizedListView.KEY_DURATION));
-        imageLoader.DisplayImage(song.get(CustomizedListView.KEY_THUMB_URL), thumb_image);*/
         return vi;
     }
 }

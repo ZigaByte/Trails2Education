@@ -1,8 +1,11 @@
 {"posts":
-[
-{"idPathway":"24",
+[{"idPathway":"24",
 "pathwayNameEN":"Trail test with interest points",
-"pathwayNameFR":"","pathwayNamePT":"","pathwayNameSL":"","pathwayNameEE":"","pathwayNameIT":"",
+"pathwayNameFR":"",
+"pathwayNamePT":"",
+"pathwayNameSL":"",
+"pathwayNameEE":"",
+"pathwayNameIT":"",
 "registerDate":"2017-07-21 16:18:17",
 "totalMeters":"0",
 "estimatedCalories":"0",

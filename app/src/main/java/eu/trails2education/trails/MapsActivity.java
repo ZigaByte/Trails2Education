@@ -45,7 +45,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        path = PathUtils.deserialize(this.getApplicationContext(), "trackCoords.json");
+        //path = PathUtils.deserialize(this.getApplicationContext(), R.raw.track_coords);
+        path = PathUtils.createPath(this, R.raw.track_coords);
         fillViews(path);
 
         findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
