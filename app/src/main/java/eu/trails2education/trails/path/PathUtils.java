@@ -26,11 +26,11 @@ import eu.trails2education.trails.R;
 public class PathUtils {
     /**
      * Extracts the Path data from the JSON String
-     * @param json JSON String to extract from
+     * @param jsonObject JSONObject to extract from
+     *
      * */
-    private static Path createPathFromJSON(String json) throws JSONException{
-        JSONObject jsonObject = new JSONObject(json);
-        jsonObject = jsonObject.getJSONArray("posts").getJSONObject(0);
+    private static Path createPathFromJSON(JSONObject jsonObject, int index) throws JSONException{
+        jsonObject = jsonObject.getJSONArray("posts").getJSONObject(index);
 
         Path p = new Path();
 
@@ -82,7 +82,8 @@ public class PathUtils {
         Path p = null;
 
         try{
-            p = createPathFromJSON(json);
+            JSONObject jsonObject = new JSONObject(json);
+            p = createPathFromJSON(jsonObject, 0);
         }catch (Exception e){
             Log.e("JSON", "JSON Conversion failed");
         }
