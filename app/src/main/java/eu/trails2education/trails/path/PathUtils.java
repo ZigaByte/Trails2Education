@@ -8,6 +8,8 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.util.JsonReader;
 import android.util.Log;
 
+import com.android.volley.toolbox.JsonObjectRequest;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +24,6 @@ import eu.trails2education.trails.R;
  */
 
 public class PathUtils {
-
     /**
      * Extracts the Path data from the JSON String
      * @param json JSON String to extract from
@@ -35,20 +36,21 @@ public class PathUtils {
 
         // Get the base data of Path
         p.ID = jsonObject.getInt("idPathway");
-        Log.e("id", ""+p.ID);
+        //Log.e("id", "" + p.ID);
         p.name = jsonObject.getString("pathwayNameEN");
         p.region = jsonObject.getString("region");
         p.date = jsonObject.getString("registerDate");
-        p.totalMeters = jsonObject.getInt("totalMeters");
-        p.estimatedCalories = jsonObject.getInt("estimatedCalories");
-        p.estimatedTime = jsonObject.getInt("estimatedTime");
-        p.estimatedSteps = jsonObject.getInt("estimatedStepsRotat");
-        p.averageHeartBeatRate = jsonObject.getInt("averageHeartBitRate");
+        p.totalMeters = jsonObject.getInt("totalMeters"); // This is an int. It has to be provided or the app might crash
+        p.estimatedCalories = jsonObject.getString("estimatedCalories");
+        p.estimatedTime = jsonObject.getString("estimatedTime");
+        p.estimatedSteps = jsonObject.getString("estimatedStepsRotat");
+        p.averageHeartBeatRate = jsonObject.getString("averageHeartBeatRate");
         p.vehicle = jsonObject.getString("vehicleEN");
         p.area = jsonObject.getString("area");
 
+
         // Read the coordiantes array
-        JSONArray coordinates = jsonObject.getJSONArray("coordenadas");
+        JSONArray coordinates = jsonObject.getJSONArray("coordenates");
         for(int i = 0; i < coordinates.length(); i++){
             JSONObject currentCoordinate = coordinates.getJSONObject(i);
             double lat = currentCoordinate.getDouble("lat");
@@ -68,7 +70,7 @@ public class PathUtils {
      * @param fileName Location of file in storage
      * */
     public static Path deserialize(Context context, String fileName){
-        InputStream input = context.getResources().openRawResource(R.raw.path1);
+        InputStream input = context.getResources().openRawResource(R.raw.track_coords);
 
         StringBuilder stringBuilder = new StringBuilder();
         Scanner scanner  = new Scanner(input);

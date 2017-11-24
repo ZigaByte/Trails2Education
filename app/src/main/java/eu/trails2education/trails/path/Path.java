@@ -20,10 +20,10 @@ public class Path {
     public String date;
 
     public int totalMeters; // Length of path
-    public int estimatedCalories;
-    public int estimatedTime; // In seconds
-    public int estimatedSteps;
-    public int averageHeartBeatRate; // BPM
+    public String estimatedCalories;
+    public String estimatedTime; // In seconds
+    public String estimatedSteps;
+    public String averageHeartBeatRate; // BPM
     public String vehicle; // e.g. OnFoot
     public String area; // e.g. Urban
 

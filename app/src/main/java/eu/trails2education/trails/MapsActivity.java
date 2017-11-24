@@ -3,6 +3,7 @@ package eu.trails2education.trails;
 import android.graphics.Typeface;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -44,7 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        path = PathUtils.deserialize(this.getApplicationContext(), "path2.txt");
+        path = PathUtils.deserialize(this.getApplicationContext(), "trackCoords.json");
         fillViews(path);
 
         findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
@@ -80,6 +81,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void fillViews(Path path){
+        Log.e("Path" , path + " ");
+        Log.e("Path" ,  path.toString());
         ((TextView)findViewById(R.id.distanceTextContent)).setText(String.valueOf(path.totalMeters));
         ((TextView)findViewById(R.id.heartRateTextContent)).setText(String.valueOf(path.averageHeartBeatRate));
         ((TextView)findViewById(R.id.caloriesTextContent)).setText(String.valueOf(path.estimatedCalories));

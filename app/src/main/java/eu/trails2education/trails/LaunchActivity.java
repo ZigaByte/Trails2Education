@@ -27,7 +27,7 @@ import eu.trails2education.trails.network.RequestManager;
  * */
 public class LaunchActivity extends FragmentActivity {
 
-    private final int DELAY = 2000; // In milliseconds
+    private final int DELAY = 10; // In milliseconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
