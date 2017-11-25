@@ -31,6 +31,7 @@ import eu.trails2education.trails.path.Coordinate;
 import eu.trails2education.trails.path.InterestPoint;
 import eu.trails2education.trails.path.PathUtils;
 import eu.trails2education.trails.path.Path;
+import eu.trails2education.trails.views.MyMarker;
 
 import static android.R.attr.width;
 import static eu.trails2education.trails.R.id.map;
@@ -114,12 +115,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Disable mapp things we don't need.
         mMap.getUiSettings().setMapToolbarEnabled(false);
 
+        boolean first = true;
         // Move to the first point of the path
         if(path.coordinates.size() == 0)
             return;
         else{
             LatLng latLng = new LatLng(path.coordinates.get(0).lat, path.coordinates.get(0).lon);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
         }
+
+
 
         // Create the path line
         PolylineOptions options = new PolylineOptions().clickable(false);
@@ -129,15 +134,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         Polyline line = mMap.addPolyline(options);
 
-        // Add the interestPoints
+        // Add the
         for(InterestPoint interestPoint : path.interestPoints){
-            LatLng latLng = new LatLng(interestPoint.coordinate.lat, interestPoint.coordinate.lon);
-
-            BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.interest_point_castle);
-            Bitmap b=bitmapdraw.getBitmap();
-            Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);
-            MarkerOptions marker = new MarkerOptions().position(latLng).title("Test Marker").icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
-            mMap.addMarker(marker);
+            MyMarker marker = new MyMarker(this, interestPoint);
+            mMap.addMarker(marker.marker);
         }
 
     }
