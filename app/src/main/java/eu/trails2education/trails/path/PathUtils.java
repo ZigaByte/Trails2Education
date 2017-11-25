@@ -8,7 +8,12 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.util.JsonReader;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +34,7 @@ public class PathUtils {
      * Extracts the Path data from the JSON String
      * @param jsonObject JSONObject to extract from
      * */
-    private static ArrayList<Path> createPathListFromJSON(JSONObject jsonObject) throws JSONException{
+    public static ArrayList<Path> createPathListFromJSON(JSONObject jsonObject) throws JSONException{
         ArrayList<Path> pathList = new ArrayList<Path>();
         for(int i = 0; i < jsonObject.getJSONArray("posts").length(); i++){
             Path p = createPathFromJSON(jsonObject, i);
@@ -43,7 +48,7 @@ public class PathUtils {
      * @param jsonObject JSONObject to extract from
      * @param index Index of the path to read
      * */
-    private static Path createPathFromJSON(JSONObject jsonObject, int index) throws JSONException{
+    public static Path createPathFromJSON(JSONObject jsonObject, int index) throws JSONException{
         jsonObject = jsonObject.getJSONArray("posts").getJSONObject(index);
         Path p = new Path(); // New path to populate
 
@@ -122,6 +127,42 @@ public class PathUtils {
         }
 
         return jsonObject;
+    }
+
+    /**
+     * Read the JSON object of the Path list from the network
+     * @param context Context of the application. The activity
+     * @param listener The listener that will handle the returned JSONObject
+     * */
+     public static void readPathListFromNetwork(Context context, Response.Listener<JSONObject> listener){
+        String url = "https://www.trails2education.eu/trackListJson.php";
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, listener, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(jsObjRequest);
+        queue.start();
+    }
+
+    /**
+     * Read the JSON object of the Path list from the network
+     * @param context Context of the application. The activity
+     * @param listener The listener that will handle the returned JSONObject
+     * */
+    public static void readPathFromNetwork(Context context, Response.Listener<JSONObject> listener, int pathID){
+        String url = "https://www.trails2education.eu/trackCoordsJson.php?idPathway=" + pathID;
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, listener, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(jsObjRequest);
+        queue.start();
     }
 
     // Temporary method that generates the path from the file. This will be replaced by network stream

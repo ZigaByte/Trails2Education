@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.volley.Response;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.Timer;
@@ -56,8 +58,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         //path = PathUtils.deserialize(this.getApplicationContext(), R.raw.track_coords);
-        path = PathUtils.createPath(this, R.raw.track_coords);
-        fillViews(path);
+        //path = PathUtils.createPath(this, R.raw.track_coords);
+
+        // Read the path from the network
+        PathUtils.readPathFromNetwork(this, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    path = PathUtils.createPathFromJSON(response,0);
+                }catch(Exception e){
+                    Log.e("PATH LOADING ERROR", "Failed loading the path");
+                }
+
+                fillViews(path);
+                pathReady = true;
+                if(mapReady)
+                    populateMap();
+            }
+        }, 27);
+
 
         findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,10 +119,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     /**
-     * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -112,9 +128,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Disable mapp things we don't need.
+        // Disable map things we don't need.
         mMap.getUiSettings().setMapToolbarEnabled(false);
 
+        mapReady = true;
+
+        if(pathReady)
+            populateMap();
+    }
+
+    // Make sure both are ready before populating to avoid Null Pointers
+    boolean pathReady = false;
+    boolean mapReady = false;
+
+    /**
+     * Populate the map with the loaded path
+     */
+    public void populateMap(){
         boolean first = true;
         // Move to the first point of the path
         if(path.coordinates.size() == 0)
@@ -123,8 +153,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng latLng = new LatLng(path.coordinates.get(0).lat, path.coordinates.get(0).lon);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
         }
-
-
 
         // Create the path line
         PolylineOptions options = new PolylineOptions().clickable(false);
@@ -139,6 +167,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             MyMarker marker = new MyMarker(this, interestPoint);
             mMap.addMarker(marker.marker);
         }
-
     }
 }

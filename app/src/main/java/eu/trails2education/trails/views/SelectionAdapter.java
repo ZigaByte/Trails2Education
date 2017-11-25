@@ -2,6 +2,7 @@ package eu.trails2education.trails.views;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -21,6 +25,7 @@ import eu.trails2education.trails.path.Path;
 import eu.trails2education.trails.path.PathUtils;
 
 import static android.R.attr.country;
+import static android.R.attr.path;
 
 /**
  * Created by Žiga on 29. 09. 2017.
@@ -39,8 +44,21 @@ public class SelectionAdapter extends BaseAdapter {
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Get all the paths
+        //paths = PathUtils.createPathList(a.getApplicationContext(), R.raw.track_list);
+
+        // Read data from network and notify the list when done
         paths = new ArrayList<Path>();
-        paths = PathUtils.createPathList(a.getApplicationContext(), R.raw.track_list);
+        PathUtils.readPathListFromNetwork(a, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    paths = PathUtils.createPathListFromJSON(response);
+                }catch(Exception e){
+                    Log.e("PATH LIST ERROR","Loading the paths list failed");
+                }
+                notifyDataSetChanged();
+            }
+        });
     }
 
     public int getCount() {

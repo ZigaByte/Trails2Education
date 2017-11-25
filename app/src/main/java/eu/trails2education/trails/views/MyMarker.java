@@ -30,6 +30,10 @@ public class MyMarker {
         Bitmap b=bitmapdraw.getBitmap();
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);
         marker = new MarkerOptions().position(latLng).title("Test Marker").icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+
+        // Load more data about this interest point
+
+
     }
 
 }
