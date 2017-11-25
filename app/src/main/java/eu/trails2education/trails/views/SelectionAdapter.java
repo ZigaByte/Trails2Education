@@ -31,19 +31,7 @@ public class SelectionAdapter extends BaseAdapter {
     private Activity activity;
 
     private static LayoutInflater inflater = null;
-/*
-    // Temporary data
-    private String[] paths = {"Estonian test track", "Italian Test Track", "Portuguese test track", "Martinique test track"};
-    private String[] country = {"Estonia", "Italy", "Portugal", "France"};
-    private String[] area = {"Urban", "Urban", "Trail", "Trail"};
-    private String[] vehicle = {"On Foot", "On Foot", "Bycicle", "Bycicle"};
-    private int[] images = {R.drawable.estonia, R.drawable.italy, R.drawable.portugal, R.drawable.france};
 
-    private String[] rating = {"4.7", "4.0", "3.14", "3.9"};
-    private String[] distance = {"950 m", "750 m", "2000 m", "3500 m"};
-    private String[] duration = {"50 min", "75 min", "45 min", "90 min"};
-    private String[] calories = {"250 cal", "300  cal", "280  cal", "170  cal"};
-*/
     ArrayList<Path> paths;
 
     public SelectionAdapter(Activity a) {
@@ -68,6 +56,9 @@ public class SelectionAdapter extends BaseAdapter {
         return position;
     }
 
+    /*
+    * Sets the individual list item values
+    * */
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
         if(convertView==null)
@@ -90,10 +81,11 @@ public class SelectionAdapter extends BaseAdapter {
         vehicleText.setText(p.vehicle);
 
         ratingText.setText("5.0");
-        distanceText.setText(p.totalMeters + " m"); // NOT COUNTRY TODO
+        distanceText.setText(p.totalMeters + " m");
         durationText.setText(p.estimatedTime + " min");
         caloriesText.setText(p.estimatedCalories + " cal");
 
+        // Get the image from the network
         NetworkImageView imageView = (NetworkImageView) vi.findViewById(R.id.path_thumbnail);
         String url = "http://trails2education.eu/img/pathways/" + p.ID + ".jpg";
         ImageLoader loader = RequestManager.getInstance(activity.getApplicationContext()).getImageLoader();

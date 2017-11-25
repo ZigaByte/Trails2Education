@@ -45,49 +45,28 @@ public class PathUtils {
      * */
     private static Path createPathFromJSON(JSONObject jsonObject, int index) throws JSONException{
         jsonObject = jsonObject.getJSONArray("posts").getJSONObject(index);
-
-        Log.e("Going strong", " zeshh");
-        Path p = new Path();
+        Path p = new Path(); // New path to populate
 
         // Get the base data of Path
         p.ID = jsonObject.getInt("idPathway");
-        //Log.e("id", "" + p.ID);
         p.name = jsonObject.getString("pathwayNameEN");
-        Log.e("Going strong", " zeshh1");
-
         p.region = jsonObject.getString("region");
-        Log.e("Going strong", " zeshh2");
-
         p.date = jsonObject.getString("registerDate");
-        Log.e("Going strong", " zeshh3");
-
         p.totalMeters = jsonObject.getInt("totalMeters"); // This is an int. It has to be provided or the app might crash
-        Log.e("Going strong", " zeshh4");
-
         p.estimatedCalories = jsonObject.getString("estimatedCalories");
-        Log.e("Going strong", " zeshh5");
-
         p.estimatedTime = jsonObject.getString("estimatedTime");
-        Log.e("Going strong", " zeshh6");
-
         //p.estimatedSteps = jsonObject.getString("estimatedStepsRotat");
         p.averageHeartBeatRate = jsonObject.getString("averageHeartBeatRate");
-        Log.e("Going strong", " zeshh7");
-
         // NAMING SHOULD BE THE SAME FOR VEHICLE AND VEHICLE EN
         p.vehicle = "Please fix";
         //p.vehicle = jsonObject.getString("vehicleEN");
-        Log.e("Going strong", " zeshh8");
-
         p.area = jsonObject.getString("area");
-        Log.e("Going strong", " zeshh9");
 
-
-        // Read the coordiantes array
-        Log.e("Let's read coords", "heas2222");
 
         // Return if the coordinates array is not present
         if(!jsonObject.has("coordenates")) return p;
+
+        // Read all the coordinates
         JSONArray coordinates = jsonObject.getJSONArray("coordenates");
         for(int i = 0; i < coordinates.length(); i++){
             JSONObject currentCoordinate = coordinates.getJSONObject(i);
@@ -95,8 +74,26 @@ public class PathUtils {
             double lon = currentCoordinate.getDouble("lon");
             int id = currentCoordinate.getInt("sort");
 
-            Path.Coordinate newCoordinate = p.new Coordinate(lat, lon, id);
+            Coordinate newCoordinate = new Coordinate(lat, lon, id);
             p.coordinates.add(newCoordinate);
+        }
+
+        // Return if the interestPoints array is not present
+        if(!jsonObject.has("interestPoints")) return p;
+
+        // Read all the interestPoints
+        JSONArray interestPoints = jsonObject.getJSONArray("interestPoints");
+        for(int i = 0; i < interestPoints.length(); i++){
+            JSONObject currentInterestPoint = interestPoints.getJSONObject(i);
+            double lat = currentInterestPoint.getDouble("lat");
+            double lon = currentInterestPoint.getDouble("lon");
+            double alt = currentInterestPoint.getDouble("alt");
+            int id = currentInterestPoint.getInt("idInterestPoint");
+            int type = currentInterestPoint.getInt("idPointType");
+
+            Coordinate interestPointCoordinate = new Coordinate(lat, lon, id);
+            InterestPoint interestPoint = new InterestPoint(interestPointCoordinate, id, type);
+            p.interestPoints.add(interestPoint);
         }
 
         return p;

@@ -1,6 +1,9 @@
 package eu.trails2education.trails;
 
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Icon;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +14,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -21,9 +27,12 @@ import org.w3c.dom.Text;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import eu.trails2education.trails.path.Coordinate;
+import eu.trails2education.trails.path.InterestPoint;
 import eu.trails2education.trails.path.PathUtils;
 import eu.trails2education.trails.path.Path;
 
+import static android.R.attr.width;
 import static eu.trails2education.trails.R.id.map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -105,32 +114,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Disable mapp things we don't need.
         mMap.getUiSettings().setMapToolbarEnabled(false);
 
-        // Add a marker in Sydney and move the camera
-        // LatLng sydney = new LatLng(-34, 151);
-        // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        // mMap.addMarker(new MarkerOptions().position(new LatLng(10, 10)).title("Hello world"));
-        // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 10));
-
-        boolean first = true;
-        // Read the Path data and create map markers
-        for(Path.Coordinate coordinate : path.coordinates){
-            LatLng latLng = new LatLng(coordinate.lat, coordinate.lon);
-            if(first){
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
-                first = false;
-            }
+        // Move to the first point of the path
+        if(path.coordinates.size() == 0)
+            return;
+        else{
+            LatLng latLng = new LatLng(path.coordinates.get(0).lat, path.coordinates.get(0).lon);
         }
 
-
+        // Create the path line
         PolylineOptions options = new PolylineOptions().clickable(false);
-        int i = 0;
-        for(Path.Coordinate coordinate : path.coordinates){
+        for(Coordinate coordinate : path.coordinates){
             LatLng latLng = new LatLng(coordinate.lat, coordinate.lon);
             options.add(latLng);
-            if(i++ % 170 == 0)
-                mMap.addMarker(new MarkerOptions().position(latLng).title("Test Marker"));
         }
         Polyline line = mMap.addPolyline(options);
+
+        // Add the interestPoints
+        for(InterestPoint interestPoint : path.interestPoints){
+            LatLng latLng = new LatLng(interestPoint.coordinate.lat, interestPoint.coordinate.lon);
+
+            BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.interest_point_castle);
+            Bitmap b=bitmapdraw.getBitmap();
+            Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);
+            MarkerOptions marker = new MarkerOptions().position(latLng).title("Test Marker").icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+            mMap.addMarker(marker);
+        }
 
     }
 }

@@ -27,17 +27,11 @@ public class Path {
     public String vehicle; // e.g. OnFoot
     public String area; // e.g. Urban
 
+    // Path
     public ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
 
-    public class Coordinate{
-        public double lat, lon;
-        public final int ID;
+    // Interest Points
+    public ArrayList<InterestPoint> interestPoints = new ArrayList<InterestPoint>();
 
-        public Coordinate(double lat, double lon, int id){
-            this.lat = lat;
-            this.lon = lon;
-            this.ID = id;
-        }
-    }
 
 }
