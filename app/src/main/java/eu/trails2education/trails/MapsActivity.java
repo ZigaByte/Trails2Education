@@ -26,6 +26,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -164,8 +166,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add the
         for(InterestPoint interestPoint : path.interestPoints){
-            MyMarker marker = new MyMarker(this, interestPoint);
-            mMap.addMarker(marker.marker);
+            MyMarker myMarker = new MyMarker(this, interestPoint);
+            Marker marker = mMap.addMarker(myMarker.markerOptions);
+
+            // Set myMarker as the Tag of the marker so the onClick and all other components can
+            // later be retreived from the marker.
+            marker.setTag(myMarker);
         }
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                // Call the on click method of the marker
+                ((MyMarker)marker.getTag()).onClick();
+                return true;
+            }
+        });
     }
 }
