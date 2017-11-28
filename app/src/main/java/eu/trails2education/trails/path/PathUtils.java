@@ -69,10 +69,10 @@ public class PathUtils {
 
 
         // Return if the coordinates array is not present
-        if(!jsonObject.has("coordenates")) return p;
+        if(!jsonObject.has("coordinates")) return p;
 
         // Read all the coordinates
-        JSONArray coordinates = jsonObject.getJSONArray("coordenates");
+        JSONArray coordinates = jsonObject.getJSONArray("coordinates");
         for(int i = 0; i < coordinates.length(); i++){
             JSONObject currentCoordinate = coordinates.getJSONObject(i);
             double lat = currentCoordinate.getDouble("lat");
