@@ -1,6 +1,7 @@
 package eu.trails2education.trails.views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
@@ -11,6 +12,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import eu.trails2education.trails.ContentActivity;
 import eu.trails2education.trails.R;
 import eu.trails2education.trails.path.InterestPoint;
 
@@ -24,7 +26,10 @@ public class MyMarker{
     private Marker marker;
     public InterestPoint interestPoint;
 
+    private Context context;
+
     public MyMarker(Context context, InterestPoint interestPoint){
+        this.context = context;
         this.interestPoint = interestPoint;
 
         LatLng latLng = new LatLng(interestPoint.coordinate.lat, interestPoint.coordinate.lon);
@@ -38,6 +43,10 @@ public class MyMarker{
 
     public void onClick(){
         Log.e("MARKER CLICKED", "TEST");
+
+        // Start the content activity
+        Intent i = new Intent(context, ContentActivity.class);
+        context.startActivity(i);
     }
 
     public void setMarker(Marker marker){
