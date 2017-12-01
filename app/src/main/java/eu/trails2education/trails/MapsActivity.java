@@ -1,9 +1,5 @@
 package eu.trails2education.trails;
 
-import android.graphics.Bitmap;
-import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Icon;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,19 +11,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,9 +25,6 @@ import eu.trails2education.trails.path.InterestPoint;
 import eu.trails2education.trails.path.PathUtils;
 import eu.trails2education.trails.path.Path;
 import eu.trails2education.trails.views.MyMarker;
-
-import static android.R.attr.width;
-import static eu.trails2education.trails.R.id.map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -67,7 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    path = PathUtils.createPathFromJSON(response,0);
+                    path = PathUtils.createPathFromJSON(MapsActivity.this, response,0);
                 }catch(Exception e){
                     Log.e("PATH LOADING ERROR", "Failed loading the path");
                 }

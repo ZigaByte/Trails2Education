@@ -34,10 +34,10 @@ public class PathUtils {
      * Extracts the Path data from the JSON String
      * @param jsonObject JSONObject to extract from
      * */
-    public static ArrayList<Path> createPathListFromJSON(JSONObject jsonObject) throws JSONException{
+    public static ArrayList<Path> createPathListFromJSON(Context context, JSONObject jsonObject) throws JSONException{
         ArrayList<Path> pathList = new ArrayList<Path>();
         for(int i = 0; i < jsonObject.getJSONArray("posts").length(); i++){
-            Path p = createPathFromJSON(jsonObject, i);
+            Path p = createPathFromJSON(context, jsonObject, i);
             pathList.add(p);
         }
         return pathList;
@@ -48,7 +48,7 @@ public class PathUtils {
      * @param jsonObject JSONObject to extract from
      * @param index Index of the path to read
      * */
-    public static Path createPathFromJSON(JSONObject jsonObject, int index) throws JSONException{
+    public static Path createPathFromJSON(Context context, JSONObject jsonObject, int index) throws JSONException{
         jsonObject = jsonObject.getJSONArray("posts").getJSONObject(index);
         Path p = new Path(); // New path to populate
 
@@ -97,7 +97,7 @@ public class PathUtils {
             int type = currentInterestPoint.getInt("idPointType");
 
             Coordinate interestPointCoordinate = new Coordinate(lat, lon, id);
-            InterestPoint interestPoint = new InterestPoint(interestPointCoordinate, id, type);
+            InterestPoint interestPoint = new InterestPoint(context, interestPointCoordinate, id, type);
             p.interestPoints.add(interestPoint);
         }
 
@@ -164,7 +164,7 @@ public class PathUtils {
         queue.add(jsObjRequest);
         queue.start();
     }
-
+/*
     // Temporary method that generates the path from the file. This will be replaced by network stream
     public static Path createPath(Context context, int resource){
         JSONObject object = deserialize(context, resource);
@@ -188,7 +188,7 @@ public class PathUtils {
         }
         return p;
     }
-
+*/
 
 
 }

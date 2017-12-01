@@ -39,7 +39,7 @@ public class SelectionAdapter extends BaseAdapter {
 
     ArrayList<Path> paths;
 
-    public SelectionAdapter(Activity a) {
+    public SelectionAdapter(final Activity a) {
         activity = a;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -52,7 +52,7 @@ public class SelectionAdapter extends BaseAdapter {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    paths = PathUtils.createPathListFromJSON(response);
+                    paths = PathUtils.createPathListFromJSON(a, response);
                 }catch(Exception e){
                     Log.e("PATH LIST ERROR","Loading the paths list failed");
                 }
