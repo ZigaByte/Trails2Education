@@ -48,7 +48,13 @@ public class InterestPoint implements Serializable{
 
                     subjects = new Subject[subjectIDs.length];
                     for(int i = 0; i < subjectIDs.length; i++){
-                        subjects[i] = new Subject(context, ID, subjectIDs[i]);
+                        if(subjectIDs[i] == -1){
+                            subjects[i] = new Subject();
+                            subjects[i].title = "Not Found";
+                            subjects[i].description = "There are no subjects in this interest point.";
+                        }
+                        else
+                            subjects[i] = new Subject(context, ID, subjectIDs[i]);
                     }
 
                 }catch (Exception e){

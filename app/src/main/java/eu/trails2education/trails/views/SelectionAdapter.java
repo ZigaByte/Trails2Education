@@ -112,4 +112,9 @@ public class SelectionAdapter extends BaseAdapter {
 
         return vi;
     }
+
+    public Path getPath(int position){
+        return paths.get(position);
+    }
+
 }

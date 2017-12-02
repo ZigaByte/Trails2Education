@@ -45,8 +45,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        //path = PathUtils.deserialize(this.getApplicationContext(), R.raw.track_coords);
-        //path = PathUtils.createPath(this, R.raw.track_coords);
+        int pathID = getIntent().getExtras().getInt("PathID"); // Get the selected path
+        Log.e("MapsActivity", "Loading path with ID: " + pathID);
 
         // Read the path from the network
         PathUtils.readPathFromNetwork(this, new Response.Listener<JSONObject>() {
@@ -63,7 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(mapReady)
                     populateMap();
             }
-        }, 27);
+        }, pathID);
 
 
         findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
