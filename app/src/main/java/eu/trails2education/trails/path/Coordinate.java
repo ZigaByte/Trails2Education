@@ -1,10 +1,12 @@
 package eu.trails2education.trails.path;
 
+import java.io.Serializable;
+
 /**
  * Created by Žiga on 25. 11. 2017.
  */
 
-public class Coordinate{
+public class Coordinate implements Serializable{
     public double lat, lon;
     public final int ID;
 

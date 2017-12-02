@@ -7,6 +7,7 @@ import com.android.volley.Response;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import static android.R.attr.id;
@@ -17,7 +18,7 @@ import static android.R.attr.type;
  * Created by Žiga on 2. 12. 2017.
  */
 
-public class Subject {
+public class Subject implements Serializable{
 
     public int interestPointID;
     public int ID;

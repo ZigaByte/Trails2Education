@@ -7,15 +7,14 @@ import com.android.volley.Response;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
  * Created by Žiga on 25. 11. 2017.
  */
 
-public class InterestPoint {
-
-    private Context context;
+public class InterestPoint implements Serializable{
 
     public Coordinate coordinate;
     public int ID;

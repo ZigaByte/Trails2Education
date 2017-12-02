@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -46,6 +47,7 @@ public class MyMarker{
 
         // Start the content activity
         Intent i = new Intent(context, ContentActivity.class);
+        i.putExtra("InterestPoint", interestPoint); // Pass the interestPoint as a serializable
         context.startActivity(i);
     }
 
