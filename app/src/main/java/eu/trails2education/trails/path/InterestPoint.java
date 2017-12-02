@@ -23,10 +23,11 @@ public class InterestPoint {
 
     public String name;
     public int subjectIDs[];
+    public Subject[] subjects;
 
     public boolean interestPointReady = false;
 
-    public InterestPoint(Context context, Coordinate coordinate, int ID, final int type){
+    public InterestPoint(final Context context, Coordinate coordinate, final int ID, final int type){
         this.coordinate = coordinate;
         this.ID = ID;
         this.type = type;
@@ -34,7 +35,6 @@ public class InterestPoint {
         InterestPointUtils.readInterestPointFromNetwork(context, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                interestPointReady = true;
                 try{
                     InterestPoint data = InterestPointUtils.createInterestPointFromJSON(response);
 
@@ -47,7 +47,10 @@ public class InterestPoint {
 
                     interestPointReady =  true;
 
-                    // TODO load all the subjects or something
+                    subjects = new Subject[subjectIDs.length];
+                    for(int i = 0; i < subjectIDs.length; i++){
+                        subjects[i] = new Subject(context, ID, subjectIDs[i]);
+                    }
 
                 }catch (Exception e){
                     Log.e("INTEREST POINT ERROR", "Loading InterestPoint failed");
@@ -57,5 +60,9 @@ public class InterestPoint {
     }
 
     public InterestPoint(){}
+
+    public int getSubjectCount(){
+        return subjectIDs.length;
+    }
 
 }
