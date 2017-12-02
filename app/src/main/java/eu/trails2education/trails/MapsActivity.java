@@ -139,7 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         else{
             LatLng latLng = new LatLng(path.coordinates.get(0).lat, path.coordinates.get(0).lon);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
         }
 
         // Create the path line
