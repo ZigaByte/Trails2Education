@@ -94,7 +94,9 @@ public class PathUtils {
             double lon = currentInterestPoint.getDouble("lon");
             double alt = currentInterestPoint.getDouble("alt");
             int id = currentInterestPoint.getInt("idInterestPoint");
-            int type = currentInterestPoint.getInt("idPointType");
+            int type = 0;
+            if(!currentInterestPoint.isNull("idPointType"))
+                type = currentInterestPoint.getInt("idPointType");
 
             Coordinate interestPointCoordinate = new Coordinate(lat, lon, id);
             InterestPoint interestPoint = new InterestPoint(context, interestPointCoordinate, id, type);

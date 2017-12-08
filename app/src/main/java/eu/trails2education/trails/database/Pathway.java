@@ -103,38 +103,38 @@ public class Pathway implements Serializable{
     }
 
     public String getNameFR() {
-        return pathwayNameEN;
+        return pathwayNameFR;
     }
-    public void setNameFR(String nameEN) {
-        this.pathwayNameEE = nameEN;
+    public void setNameFR(String nameFR) {
+        this.pathwayNameFR = nameFR;
     }
 
     public String getNamePT() {
-        return pathwayNameEN;
+        return pathwayNamePT;
     }
-    public void setNamePT(String nameEN) {
-        this.pathwayNameEE = nameEN;
+    public void setNamePT(String namePT) {
+        this.pathwayNamePT = namePT;
     }
 
     public String getNameSL() {
-        return pathwayNameEN;
+        return pathwayNameSL;
     }
-    public void setNameSL(String nameEN) {
-        this.pathwayNameEE = nameEN;
+    public void setNameSL(String nameSL) {
+        this.pathwayNameSL = nameSL;
     }
 
     public String getNameEE() {
-        return pathwayNameEN;
+        return pathwayNameEE;
     }
-    public void setNameEE(String nameEN) {
-        this.pathwayNameEE = nameEN;
+    public void setNameEE(String nameEE) {
+        this.pathwayNameEE = nameEE;
     }
 
     public String getNameIT() {
-        return pathwayNameEN;
+        return pathwayNameIT;
     }
-    public void setNameIT(String nameEN) {
-        this.pathwayNameEE = nameEN;
+    public void setNameIT(String nameIT) {
+        this.pathwayNameIT = nameIT;
     }
 
     public String getregDate() {

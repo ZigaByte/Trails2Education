@@ -75,7 +75,7 @@ public class Content implements Serializable {
         this.subjectEN = subEN;
     }
 
-    public String gesubFR() {
+    public String getsubFR() {
         return subjectFR;
     }
     public void setsubFR(String subFR) {
