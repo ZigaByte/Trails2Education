@@ -107,31 +107,6 @@ public class PathUtils {
     }
 
     /**
-     * Reads a File from local storage and deserializes it to s JSONObject
-     * @param context Context of the app
-     * @param resource R.raw.something of the file to read
-     * */
-    public static JSONObject deserialize(Context context, int resource){
-        InputStream input = context.getResources().openRawResource(resource);
-
-        StringBuilder stringBuilder = new StringBuilder();
-        Scanner scanner  = new Scanner(input);
-        while(scanner.hasNext()){
-            stringBuilder.append(scanner.next());
-        }
-
-        String json = stringBuilder.toString();
-        JSONObject jsonObject = null;
-        try {
-             jsonObject = new JSONObject(json);
-        }catch (JSONException exception){
-            Log.e("JSON Exception", "Unable to read from the resource!");
-        }
-
-        return jsonObject;
-    }
-
-    /**
      * Read the JSON object of the Path list from the network
      * @param context Context of the application. The activity
      * @param listener The listener that will handle the returned JSONObject
@@ -166,31 +141,4 @@ public class PathUtils {
         queue.add(jsObjRequest);
         queue.start();
     }
-/*
-    // Temporary method that generates the path from the file. This will be replaced by network stream
-    public static Path createPath(Context context, int resource){
-        JSONObject object = deserialize(context, resource);
-        Path p = null;
-        try{
-            p = createPathFromJSON(object, 0);
-        }catch(Exception e){
-            Log.e("Path creation Exception", "Unable to create path!");
-        }
-        return p;
-    }
-
-    // Temporary method that generates the path from the file. This will be replaced by network stream
-    public static ArrayList<Path> createPathList(Context context, int resource){
-        JSONObject object = deserialize(context, resource);
-        ArrayList<Path> p = null;
-        try{
-            p = createPathListFromJSON(object);
-        }catch(Exception e){
-            Log.e("Path creation Exception", "Unable to create path list!");
-        }
-        return p;
-    }
-*/
-
-
 }
