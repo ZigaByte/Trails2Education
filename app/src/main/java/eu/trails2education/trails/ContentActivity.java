@@ -1,29 +1,17 @@
 package eu.trails2education.trails;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.List;
-
-import eu.trails2education.trails.path.InterestPoint;
+import eu.trails2education.trails.database.InterestPoint;
 import eu.trails2education.trails.path.Subject;
 import eu.trails2education.trails.views.ContentSelectionAdapter;
-import eu.trails2education.trails.views.SelectionAdapter;
 
 public class ContentActivity extends AppCompatActivity {
 
@@ -50,7 +38,7 @@ public class ContentActivity extends AppCompatActivity {
         interestPoint = (InterestPoint) getIntent().getSerializableExtra("InterestPoint");
 
         Log.e("Will load ", "test");
-        if(interestPoint.getSubjectCount() > 0){
+        /*if(interestPoint.getSubjectCount() > 0){
             contentList = (RecyclerView)findViewById(R.id.recyclerView);
             contentList.setAdapter(new ContentSelectionAdapter(interestPoint.subjects)); // Pass the ids for the icons
             contentList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -63,7 +51,7 @@ public class ContentActivity extends AppCompatActivity {
             ((TextView)findViewById(R.id.subject_content)).setText(first.description);
         }else{
             // There is no content!!!!
-        }
+        }*/
     }
 
 }

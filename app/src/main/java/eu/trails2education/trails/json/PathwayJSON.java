@@ -108,7 +108,7 @@ public class PathwayJSON {
     public static Pathway createFullPathFromJSON(Context context, JSONObject jsonObject) throws JSONException{
         Pathway p = createPathFromJSON(context, jsonObject, 0);
         p.setCoorinates(CoordinateJSON.createCoordinateListFromJSON(context, jsonObject.getJSONArray("posts").getJSONObject(0).getJSONArray("coordinates"), (int)p.getId()));
-
+        p.setInterestPoints(InterestPointJSON.createInterestPointListFromJSON(context, jsonObject.getJSONArray("posts").getJSONObject(0).getJSONArray("interestPoints"), (int)p.getId()));
         return p;
     }
 }

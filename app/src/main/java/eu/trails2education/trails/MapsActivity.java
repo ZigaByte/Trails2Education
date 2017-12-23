@@ -23,12 +23,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import eu.trails2education.trails.database.Coordinates;
+import eu.trails2education.trails.database.InterestPoint;
 import eu.trails2education.trails.database.Pathway;
 import eu.trails2education.trails.json.PathwayJSON;
-import eu.trails2education.trails.path.Coordinate;
-import eu.trails2education.trails.path.InterestPoint;
 import eu.trails2education.trails.path.PathUtils;
-import eu.trails2education.trails.path.Path;
 import eu.trails2education.trails.views.MyMarker;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -149,9 +147,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             options.add(latLng);
         }
         Polyline line = mMap.addPolyline(options);
-/*
+
         // Add the
-        for(InterestPoint interestPoint : path.interestPoints){
+        for(InterestPoint interestPoint : path.getInterestPoints()){
             MyMarker myMarker = new MyMarker(this, interestPoint);
             Marker marker = mMap.addMarker(myMarker.markerOptions);
 
@@ -167,6 +165,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ((MyMarker)marker.getTag()).onClick();
                 return true;
             }
-        });*/
+        });
     }
 }

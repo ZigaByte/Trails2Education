@@ -12,6 +12,11 @@ public class InterestPoint implements Serializable {
     private static final long serialVersionUID = -7406082437623008161L;
 
     private long cIdIP;
+
+    private double lat;
+    private double lon;
+    private double alt;
+
     private String ipnameEN;
     private String ipnameFR;
     private String ipnamePT;
@@ -19,6 +24,9 @@ public class InterestPoint implements Serializable {
     private String ipnameEE;
     private String ipnameIT;
     private long pointtype;
+
+    private long pathwayID;
+
     private Pathway mPathway;
 
     public InterestPoint() {
@@ -35,11 +43,39 @@ public class InterestPoint implements Serializable {
         this.pointtype = ctype;
     }
 
+    public long getPathwayID() {
+        return pathwayID;
+    }
+    public void setPathwayID(long mIdC) {
+        this.pathwayID = mIdC;
+    }
+
     public long getcIdIP() {
         return cIdIP;
     }
     public void setIdIP(long mIdIP) {
         this.cIdIP = mIdIP;
+    }
+
+    public double getclat() {
+        return lat;
+    }
+    public void setclat(double clat) {
+        this.lat = clat;
+    }
+
+    public double getclon() {
+        return lon;
+    }
+    public void setclon(double clon) {
+        this.lon = clon;
+    }
+
+    public double getcalt() {
+        return alt;
+    }
+    public void setcalt(double calt) {
+        this.alt = calt;
     }
 
     public String getNameEN() {

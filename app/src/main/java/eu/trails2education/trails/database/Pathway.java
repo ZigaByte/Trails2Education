@@ -47,6 +47,8 @@ public class Pathway implements Serializable{
     private String difficultyIT;
 
     private ArrayList<Coordinates> coordinates = new ArrayList<Coordinates>();
+    private ArrayList<InterestPoint> interestPoints = new ArrayList<InterestPoint>();
+
 
     public Pathway() {}
 
@@ -327,6 +329,13 @@ public class Pathway implements Serializable{
     }
     public ArrayList<Coordinates> getCoordinates(){
        return coordinates;
+    }
+
+    public void setInterestPoints(ArrayList<InterestPoint> interestPoints){
+        this.interestPoints = interestPoints;
+    }
+    public ArrayList<InterestPoint> getInterestPoints(){
+        return interestPoints;
     }
 
 }
