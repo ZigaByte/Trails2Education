@@ -17,9 +17,14 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import eu.trails2education.trails.database.Coordinates;
+import eu.trails2education.trails.database.Pathway;
+import eu.trails2education.trails.json.PathwayJSON;
 import eu.trails2education.trails.path.Coordinate;
 import eu.trails2education.trails.path.InterestPoint;
 import eu.trails2education.trails.path.PathUtils;
@@ -29,7 +34,7 @@ import eu.trails2education.trails.views.MyMarker;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private Path path;
+    private Pathway path;
 
     // Timer
     public int seconds = 0;
@@ -45,7 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        int pathID = getIntent().getExtras().getInt("PathID"); // Get the selected path
+        int pathID = (int)getIntent().getExtras().getLong("PathID"); // Get the selected path
         Log.e("MapsActivity", "Loading path with ID: " + pathID);
 
         // Read the path from the network
@@ -53,7 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    path = PathUtils.createPathFromJSON(MapsActivity.this, response,0);
+                    path = PathwayJSON.createFullPathFromJSON(MapsActivity.this, response);
                 }catch(Exception e){
                     Log.e("PATH LOADING ERROR", "Failed loading the path");
                 }
@@ -98,20 +103,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    private void fillViews(Path path){
+    private void fillViews(Pathway path){
         Log.e("Path" , path + " ");
         Log.e("Path" ,  path.toString());
-        ((TextView)findViewById(R.id.distanceTextContent)).setText(String.valueOf(path.totalMeters));
-        ((TextView)findViewById(R.id.heartRateTextContent)).setText(String.valueOf(path.averageHeartBeatRate));
-        ((TextView)findViewById(R.id.caloriesTextContent)).setText(String.valueOf(path.estimatedCalories));
+        ((TextView)findViewById(R.id.distanceTextContent)).setText(String.valueOf(path.gettotM()));
+        ((TextView)findViewById(R.id.heartRateTextContent)).setText(String.valueOf(path.getavgHB()));
+        ((TextView)findViewById(R.id.caloriesTextContent)).setText(String.valueOf(path.getestCal()));
     }
 
-    /**
-     * This callback is triggered when the map is ready to be used.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -135,21 +134,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void populateMap(){
         boolean first = true;
         // Move to the first point of the path
-        if(path.coordinates.size() == 0)
+        if(path.getCoordinates().size() == 0)
             return;
         else{
-            LatLng latLng = new LatLng(path.coordinates.get(0).lat, path.coordinates.get(0).lon);
+            ArrayList<Coordinates> coordinates = path.getCoordinates();
+            LatLng latLng = new LatLng(coordinates.get(0).getclat(), coordinates.get(0).getclon());
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
         }
 
         // Create the path line
         PolylineOptions options = new PolylineOptions().clickable(false);
-        for(Coordinate coordinate : path.coordinates){
-            LatLng latLng = new LatLng(coordinate.lat, coordinate.lon);
+        for(Coordinates coordinate : path.getCoordinates()){
+            LatLng latLng = new LatLng(coordinate.getclat(), coordinate.getclon());
             options.add(latLng);
         }
         Polyline line = mMap.addPolyline(options);
-
+/*
         // Add the
         for(InterestPoint interestPoint : path.interestPoints){
             MyMarker myMarker = new MyMarker(this, interestPoint);
@@ -167,6 +167,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ((MyMarker)marker.getTag()).onClick();
                 return true;
             }
-        });
+        });*/
     }
 }

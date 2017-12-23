@@ -3,6 +3,7 @@ package eu.trails2education.trails;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -37,6 +38,7 @@ public class SelectionActivity extends AppCompatActivity {
 
                 // Start the map activity
                 Intent i = new Intent(SelectionActivity.this, MapsActivity.class);
+                Log.e("SENDING ID ", "AAA" + adapter.getPath(position).getId());
                 i.putExtra("PathID", adapter.getPath(position).getId());
                 startActivity(i);
 

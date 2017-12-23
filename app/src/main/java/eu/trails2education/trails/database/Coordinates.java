@@ -16,6 +16,9 @@ public class Coordinates implements Serializable {
     private double lon;
     private double alt;
     private long sort;
+
+    private long pathwayID;
+
     private Pathway mPathway;
 
     public Coordinates() {
@@ -29,10 +32,16 @@ public class Coordinates implements Serializable {
         this.sort = csort;
     }
 
+    public long getPathwayID() {
+        return pathwayID;
+    }
+    public void setPathwayID(long mIdC) {
+        this.pathwayID = mIdC;
+    }
+
     public long getIdC() {
         return cId;
     }
-
     public void setIdC(long mIdC) {
         this.cId = mIdC;
     }

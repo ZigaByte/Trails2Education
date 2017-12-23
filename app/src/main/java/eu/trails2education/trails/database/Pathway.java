@@ -1,6 +1,7 @@
 package eu.trails2education.trails.database;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by svetl on 4. 12. 2017.
@@ -44,6 +45,8 @@ public class Pathway implements Serializable{
     private String difficultySL;
     private String difficultyEE;
     private String difficultyIT;
+
+    private ArrayList<Coordinates> coordinates = new ArrayList<Coordinates>();
 
     public Pathway() {}
 
@@ -317,6 +320,13 @@ public class Pathway implements Serializable{
     }
     public void setdifIT(String difIT) {
         this.difficultyIT = difIT;
+    }
+
+    public void setCoorinates(ArrayList<Coordinates> coordinates){
+        this.coordinates = coordinates;
+    }
+    public ArrayList<Coordinates> getCoordinates(){
+       return coordinates;
     }
 
 }
