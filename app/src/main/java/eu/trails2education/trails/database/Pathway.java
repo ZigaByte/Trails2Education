@@ -11,7 +11,7 @@ public class Pathway implements Serializable{
     public static final String TAG = "Pathway";
     private static final long serialVersionUID = -7406082437623008161L;
 
-    public static long idPathway;
+    public long idPathway;
     private String pathwayNameEN;
     private String pathwayNameFR;
     private String pathwayNamePT;
@@ -99,7 +99,7 @@ public class Pathway implements Serializable{
         return pathwayNameEN;
     }
     public void setNameEN(String nameEN) {
-        this.pathwayNameEE = nameEN;
+        this.pathwayNameEN = nameEN;
     }
 
     public String getNameFR() {

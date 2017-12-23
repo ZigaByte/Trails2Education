@@ -37,7 +37,7 @@ public class SelectionActivity extends AppCompatActivity {
 
                 // Start the map activity
                 Intent i = new Intent(SelectionActivity.this, MapsActivity.class);
-                i.putExtra("PathID", adapter.getPath(position).ID);
+                i.putExtra("PathID", adapter.getPath(position).getId());
                 startActivity(i);
 
             }

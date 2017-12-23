@@ -20,6 +20,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import eu.trails2education.trails.R;
+import eu.trails2education.trails.database.Pathway;
+import eu.trails2education.trails.json.PathwayJSON;
 import eu.trails2education.trails.network.RequestManager;
 import eu.trails2education.trails.path.Path;
 import eu.trails2education.trails.path.PathUtils;
@@ -37,7 +39,7 @@ public class SelectionAdapter extends BaseAdapter {
 
     private static LayoutInflater inflater = null;
 
-    ArrayList<Path> paths;
+    ArrayList<Pathway> paths;
 
     public SelectionAdapter(final Activity a) {
         activity = a;
@@ -47,12 +49,12 @@ public class SelectionAdapter extends BaseAdapter {
         //paths = PathUtils.createPathList(a.getApplicationContext(), R.raw.track_list);
 
         // Read data from network and notify the list when done
-        paths = new ArrayList<Path>();
+        paths = new ArrayList<Pathway>();
         PathUtils.readPathListFromNetwork(a, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    paths = PathUtils.createPathListFromJSON(a, response);
+                    paths = PathwayJSON.createPathListFromJSON(a, response);
                 }catch(Exception e){
                     Log.e("PATH LIST ERROR","Loading the paths list failed");
                 }
@@ -92,20 +94,21 @@ public class SelectionAdapter extends BaseAdapter {
         TextView durationText = (TextView)vi.findViewById(R.id.path_length);// vehicle
         TextView caloriesText = (TextView)vi.findViewById(R.id.path_calories);// vehicle
 
-        Path p = paths.get(position);
-        titleText.setText(p.name);
-        countryText.setText(p.region); // NOT COUNTRY TODO
-        areaText.setText(p.area);
-        vehicleText.setText(p.vehicle);
+        Pathway p = paths.get(position);
+        Log.e("SETTING THE NAME ", " waaaaa-" + p.getNameEN() + "-");
+        titleText.setText(p.getNameEN());
+        countryText.setText(p.getreg()); // NOT COUNTRY TODO
+        areaText.setText(p.getar());
+        vehicleText.setText(p.getvehEN());
 
         ratingText.setText("5.0");
-        distanceText.setText(p.totalMeters + " m");
-        durationText.setText(p.estimatedTime + " min");
-        caloriesText.setText(p.estimatedCalories + " cal");
+        distanceText.setText(p.gettotM() + " m");
+        durationText.setText(p.getestTime() + " min");
+        caloriesText.setText(p.getestCal() + " cal");
 
         // Get the image from the network
         NetworkImageView imageView = (NetworkImageView) vi.findViewById(R.id.path_thumbnail);
-        String url = "http://trails2education.eu/img/pathways/" + p.ID + ".jpg";
+        String url = "http://trails2education.eu/img/pathways/" + p.getId() + ".jpg";
         ImageLoader loader = RequestManager.getInstance(activity.getApplicationContext()).getImageLoader();
         loader.get(url, loader.getImageListener(imageView, R.mipmap.ic_launcher, R.mipmap.ic_launcher_round));
         imageView.setImageUrl(url, loader);
@@ -113,7 +116,7 @@ public class SelectionAdapter extends BaseAdapter {
         return vi;
     }
 
-    public Path getPath(int position){
+    public Pathway getPath(int position){
         return paths.get(position);
     }
 

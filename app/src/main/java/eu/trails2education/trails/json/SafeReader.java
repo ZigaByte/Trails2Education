@@ -15,13 +15,15 @@ public class SafeReader {
      * it returns the provided default value.
      * */
     public static int readInt(JSONObject object, String key, int defaultValue) {
-        if(!object.has(key) || object.isNull(key))
+        if(!object.has(key) || object.isNull(key)){
+            Log.e("JSON int EXCEPTION", "Value not found at key: " + key);
             return defaultValue;
+        }
         try{
             int value = object.getInt(key);
             return value;
         }catch (Exception e){
-            Log.e("JSON int EXCEPTION", "A JSON int READING EXCETPTION");
+            Log.e("JSON int EXCEPTION", "A JSON int READING EXCETPTION at key: " + key);
             return defaultValue;
         }
     }
@@ -36,13 +38,15 @@ public class SafeReader {
      * it returns the provided default value.
      * */
     public static String readString(JSONObject object, String key, String defaultValue) {
-        if(!object.has(key) || object.isNull(key))
+        if(!object.has(key) || object.isNull(key)) {
+            Log.e("JSON int EXCEPTION", "Value not found at key: " + key);
             return defaultValue;
+        }
         try{
             String value = object.getString(key);
             return value;
         }catch (Exception e){
-            Log.e("JSON String EXCEPTION", "A JSON String READING EXCETPTION");
+            Log.e("JSON String EXCEPTION", "A JSON String READING EXCETPTION at key: " + key);
             return defaultValue;
         }
     }
