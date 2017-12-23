@@ -13,18 +13,11 @@ import com.android.volley.Response;
 
 import org.json.JSONObject;
 
-import java.util.Arrays;
-
 import eu.trails2education.trails.database.Content;
 import eu.trails2education.trails.database.InterestPoint;
 import eu.trails2education.trails.json.InterestPointJSON;
-import eu.trails2education.trails.json.PathwayJSON;
 import eu.trails2education.trails.path.InterestPointUtils;
-import eu.trails2education.trails.path.PathUtils;
-import eu.trails2education.trails.path.Subject;
 import eu.trails2education.trails.views.ContentSelectionAdapter;
-
-import static android.R.attr.path;
 
 public class ContentActivity extends AppCompatActivity {
 

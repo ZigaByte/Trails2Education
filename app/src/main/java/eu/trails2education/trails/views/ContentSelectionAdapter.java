@@ -2,19 +2,16 @@ package eu.trails2education.trails.views;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import eu.trails2education.trails.R;
 
 import eu.trails2education.trails.database.Content;
-import eu.trails2education.trails.path.Subject;
 
 /**
  * Created by Ziga on 02-Dec-17.

@@ -7,10 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -23,11 +21,7 @@ import eu.trails2education.trails.R;
 import eu.trails2education.trails.database.Pathway;
 import eu.trails2education.trails.json.PathwayJSON;
 import eu.trails2education.trails.network.RequestManager;
-import eu.trails2education.trails.path.Path;
 import eu.trails2education.trails.path.PathUtils;
-
-import static android.R.attr.country;
-import static android.R.attr.path;
 
 /**
  * Created by Žiga on 29. 09. 2017.

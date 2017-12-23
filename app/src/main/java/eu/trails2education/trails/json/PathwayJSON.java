@@ -2,17 +2,12 @@ package eu.trails2education.trails.json;
 
 import android.content.Context;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import eu.trails2education.trails.database.Coordinates;
 import eu.trails2education.trails.database.Pathway;
-import eu.trails2education.trails.path.Coordinate;
-import eu.trails2education.trails.path.InterestPoint;
-import eu.trails2education.trails.path.Path;
 
 /**
  * Created by Žiga on 23. 12. 2017.
