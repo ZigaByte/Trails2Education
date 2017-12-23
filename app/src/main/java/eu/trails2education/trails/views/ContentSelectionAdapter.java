@@ -13,6 +13,7 @@ import java.util.List;
 
 import eu.trails2education.trails.R;
 
+import eu.trails2education.trails.database.Content;
 import eu.trails2education.trails.path.Subject;
 
 /**
@@ -21,7 +22,7 @@ import eu.trails2education.trails.path.Subject;
 
 public class ContentSelectionAdapter extends RecyclerView.Adapter<ContentSelectionAdapter.MyViewHolder> {
 
-    private List<Subject> contentList;
+    private List<Content> contentList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         View view;
@@ -38,21 +39,14 @@ public class ContentSelectionAdapter extends RecyclerView.Adapter<ContentSelecti
                     //Log.e("Title" , contentList.get(id).title);
                     //Log.e("Descrpiption" , contentList.get(id).description);
 
-                    ((TextView)((Activity)view.getContext()).findViewById(R.id.subject_title)).setText(contentList.get(id).title);
-                    ((TextView)((Activity)view.getContext()).findViewById(R.id.subject_content)).setText(contentList.get(id).description);
+                    ((TextView)((Activity)view.getContext()).findViewById(R.id.subject_title)).setText(contentList.get(id).gettitEN());
+                    ((TextView)((Activity)view.getContext()).findViewById(R.id.subject_content)).setText(contentList.get(id).getdesEN());
                 }
             });
         }
     }
-    public ContentSelectionAdapter(Subject[] subjects) {
-        contentList = new ArrayList<Subject>();
-        for(Subject s : subjects){
-            Log.e("SUBJECT IN ADAPTER", s + "");
-            contentList.add(s);
-        }
-    }
 
-    public ContentSelectionAdapter(List<Subject> contentList) {
+    public ContentSelectionAdapter(List<Content> contentList) {
         this.contentList = contentList;
     }
 

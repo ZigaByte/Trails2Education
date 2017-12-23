@@ -9,9 +9,22 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+
+import org.json.JSONObject;
+
+import java.util.Arrays;
+
+import eu.trails2education.trails.database.Content;
 import eu.trails2education.trails.database.InterestPoint;
+import eu.trails2education.trails.json.InterestPointJSON;
+import eu.trails2education.trails.json.PathwayJSON;
+import eu.trails2education.trails.path.InterestPointUtils;
+import eu.trails2education.trails.path.PathUtils;
 import eu.trails2education.trails.path.Subject;
 import eu.trails2education.trails.views.ContentSelectionAdapter;
+
+import static android.R.attr.path;
 
 public class ContentActivity extends AppCompatActivity {
 
@@ -35,23 +48,44 @@ public class ContentActivity extends AppCompatActivity {
         });
 
         // Fill the title and description
-        interestPoint = (InterestPoint) getIntent().getSerializableExtra("InterestPoint");
+        //interestPoint = (InterestPoint) getIntent().getSerializableExtra("InterestPoint");
 
-        Log.e("Will load ", "test");
-        /*if(interestPoint.getSubjectCount() > 0){
+        final int interestPointID = (int)getIntent().getExtras().getLong("InterestPointID");
+        // Read the path from the network
+        InterestPointUtils.readInterestPointFromNetwork(this, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.e("RESPONSE" , response.toString());
+                try {
+                    interestPoint = InterestPointJSON.createInterestPointFromJSON(ContentActivity.this, response.getJSONArray("posts").getJSONObject(0), 0);
+                    fillViews();
+                    Log.e("INTEREST POINT LOADED ", "SUCCESS at id: " + interestPointID);
+
+                }catch(Exception e){
+                    Log.e("INTEREST POINT LOADING ", "ERROR at id: " + interestPointID);
+                }
+            }
+        }, interestPointID);
+
+
+    }
+
+    public void fillViews(){
+        Log.e("CONTENTS", interestPoint.getContents().size() + "");
+        if(interestPoint.getContents().size() > 0){
             contentList = (RecyclerView)findViewById(R.id.recyclerView);
-            contentList.setAdapter(new ContentSelectionAdapter(interestPoint.subjects)); // Pass the ids for the icons
+            contentList.setAdapter(new ContentSelectionAdapter(interestPoint.getContents())); // Pass the ids for the icons
             contentList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
             // Get first subject to populate views
-            Subject first = interestPoint.subjects[0];
-            Log.e("Loading", first.description);
+            Content first = interestPoint.getContents().get(0);
+            //Log.e("Loading", first.description);
 
-            ((TextView)findViewById(R.id.subject_title)).setText(first.title);
-            ((TextView)findViewById(R.id.subject_content)).setText(first.description);
+            ((TextView)findViewById(R.id.subject_title)).setText(first.gettitEN());
+            ((TextView)findViewById(R.id.subject_content)).setText(first.getdesEN());
         }else{
             // There is no content!!!!
-        }*/
+        }
     }
 
 }

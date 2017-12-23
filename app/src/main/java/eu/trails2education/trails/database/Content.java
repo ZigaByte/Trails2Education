@@ -31,6 +31,7 @@ public class Content implements Serializable {
     private String descriptionSL;
     private String descriptionEE;
     private String descriptionIT;
+
     private InterestPoint mInterestPoint;
 
     public Content() {

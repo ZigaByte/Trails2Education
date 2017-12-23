@@ -1,6 +1,7 @@
 package eu.trails2education.trails.database;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by svetl on 6. 12. 2017.
@@ -26,6 +27,8 @@ public class InterestPoint implements Serializable {
     private long pointtype;
 
     private long pathwayID;
+
+    private ArrayList<Content> contents = new ArrayList<Content>();
 
     private Pathway mPathway;
 
@@ -134,5 +137,10 @@ public class InterestPoint implements Serializable {
         this.mPathway = mPathway;
     }
 
-
+    public void setContents(ArrayList<Content> contents) {
+        this.contents = contents;
+    }
+    public ArrayList<Content> getContents() {
+        return contents;
+    }
 }

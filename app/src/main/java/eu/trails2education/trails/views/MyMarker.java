@@ -43,11 +43,9 @@ public class MyMarker{
     }
 
     public void onClick(){
-        Log.e("MARKER CLICKED", "TEST");
-
         // Start the content activity
         Intent i = new Intent(context, ContentActivity.class);
-        i.putExtra("InterestPoint", interestPoint); // Pass the interestPoint as a serializable
+        i.putExtra("InterestPointID", interestPoint.getcIdIP()); // Pass the interestPointID
         context.startActivity(i);
     }
 

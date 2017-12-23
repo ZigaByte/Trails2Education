@@ -35,13 +35,10 @@ public class SelectionActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 // Start the map activity
                 Intent i = new Intent(SelectionActivity.this, MapsActivity.class);
-                Log.e("SENDING ID ", "AAA" + adapter.getPath(position).getId());
                 i.putExtra("PathID", adapter.getPath(position).getId());
                 startActivity(i);
-
             }
         });
     }
