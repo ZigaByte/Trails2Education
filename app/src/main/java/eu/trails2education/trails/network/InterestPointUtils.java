@@ -1,4 +1,4 @@
-package eu.trails2education.trails.path;
+package eu.trails2education.trails.network;
 
 import android.content.Context;
 
@@ -9,23 +9,20 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by Žiga on 2. 12. 2017.
+ * Created by zvene on 29-Nov-17.
  */
 
-public class SubjectUtils {
-    /**
-     * Read the JSON object of the Subject from the network
+public class InterestPointUtils {
+        /**
+     * Read the JSON object of the InterestPoint from the network
      * @param context Context of the application. The activity
      * @param listener The listener that will handle the returned JSONObject
-     * @param interestPointId The id of the interest point that the subject belongs to
-     * @param subjectId The id of the subject
      * */
-    public static void readSubjectFromNetwork(Context context, Response.Listener<JSONObject> listener, int interestPointId, int subjectId){
-        String url = "http://trails2education.eu/subjectContentJson.php?idInterestPoint=" + interestPointId + "&idSubject=" + subjectId;
+    public static void readInterestPointFromNetwork(Context context, Response.Listener<JSONObject> listener, int id){
+        String url = "http://trails2education.eu/interestPointJson.php?idInterestPoint=" + id;
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, listener, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {}
@@ -34,5 +31,6 @@ public class SubjectUtils {
         queue.add(jsObjRequest);
         queue.start();
     }
+
 
 }

@@ -39,11 +39,10 @@ public class MyMarker{
         Bitmap b = bitmapdraw.getBitmap();
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, 130, 130, false);
         markerOptions = new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
-        // Load more data about this interest point
     }
 
+    // Start the content activity
     public void onClick(){
-        // Start the content activity
         Intent i = new Intent(context, ContentActivity.class);
         i.putExtra("InterestPointID", interestPoint.getcIdIP()); // Pass the interestPointID
         context.startActivity(i);

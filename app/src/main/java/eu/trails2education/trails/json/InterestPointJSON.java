@@ -13,11 +13,8 @@ import java.util.ArrayList;
 
 import eu.trails2education.trails.ContentActivity;
 import eu.trails2education.trails.database.Content;
-import eu.trails2education.trails.database.Coordinates;
 import eu.trails2education.trails.database.InterestPoint;
-import eu.trails2education.trails.path.SubjectUtils;
-
-import static eu.trails2education.trails.json.CoordinateJSON.createPathFromJSON;
+import eu.trails2education.trails.network.SubjectUtils;
 
 /**
  * Created by Žiga on 23. 12. 2017.
@@ -54,20 +51,15 @@ public class InterestPointJSON {
         p.setNameIT(SafeReader.readString(jsonObject, ipnameITKey));
 
         // MAYBE REDO THIS, NOT SURE
-        Log.e("Satarted with subjects", "zes");
         if(jsonObject.has("subjects")){
-
             final ArrayList<Content> contents = new ArrayList<Content>();
             JSONArray subjects = jsonObject.getJSONArray("subjects");
             for(int i = 0; i < subjects.length();i++){
-                Log.e("Loading subject ", "zes " + i + " " + subjects.getJSONObject(i).toString());
-                // Load the content
                 SubjectUtils.readSubjectFromNetwork(context, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             contents.add(ContentJSON.createContentFromJSON(context, response.getJSONArray("posts").getJSONObject(0), 0));
-                            Log.e("Loaded successfully ", "z");
                             ((ContentActivity)context).fillViews(); // Update the views TODO REMOVE after db implementation
                         }catch (Exception e){
                             Log.e("CONTENT LOADING ERROR", "ERROR WITH CONTENT");

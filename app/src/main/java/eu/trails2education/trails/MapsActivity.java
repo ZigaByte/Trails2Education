@@ -26,7 +26,7 @@ import eu.trails2education.trails.database.Coordinates;
 import eu.trails2education.trails.database.InterestPoint;
 import eu.trails2education.trails.database.Pathway;
 import eu.trails2education.trails.json.PathwayJSON;
-import eu.trails2education.trails.path.PathUtils;
+import eu.trails2education.trails.network.PathUtils;
 import eu.trails2education.trails.views.MyMarker;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -153,8 +153,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             MyMarker myMarker = new MyMarker(this, interestPoint);
             Marker marker = mMap.addMarker(myMarker.markerOptions);
 
-            // Set myMarker as the Tag of the marker so the onClick and all other components can
-            // later be retreived from the marker.
             marker.setTag(myMarker);
         }
 

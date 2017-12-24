@@ -33,9 +33,6 @@ public class ContentSelectionAdapter extends RecyclerView.Adapter<ContentSelecti
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Log.e("Title" , contentList.get(id).title);
-                    //Log.e("Descrpiption" , contentList.get(id).description);
-
                     ((TextView)((Activity)view.getContext()).findViewById(R.id.subject_title)).setText(contentList.get(id).gettitEN());
                     ((TextView)((Activity)view.getContext()).findViewById(R.id.subject_content)).setText(contentList.get(id).getdesEN());
                 }

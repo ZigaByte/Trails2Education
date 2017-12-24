@@ -21,7 +21,7 @@ import eu.trails2education.trails.R;
 import eu.trails2education.trails.database.Pathway;
 import eu.trails2education.trails.json.PathwayJSON;
 import eu.trails2education.trails.network.RequestManager;
-import eu.trails2education.trails.path.PathUtils;
+import eu.trails2education.trails.network.PathUtils;
 
 /**
  * Created by Žiga on 29. 09. 2017.
@@ -33,14 +33,11 @@ public class SelectionAdapter extends BaseAdapter {
 
     private static LayoutInflater inflater = null;
 
-    ArrayList<Pathway> paths;
+    private ArrayList<Pathway> paths;
 
     public SelectionAdapter(final Activity a) {
         activity = a;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        // Get all the paths
-        //paths = PathUtils.createPathList(a.getApplicationContext(), R.raw.track_list);
 
         // Read data from network and notify the list when done
         paths = new ArrayList<Pathway>();
@@ -58,7 +55,6 @@ public class SelectionAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        //return data.size();
         return paths.size();
     }
 
@@ -89,13 +85,12 @@ public class SelectionAdapter extends BaseAdapter {
         TextView caloriesText = (TextView)vi.findViewById(R.id.path_calories);// vehicle
 
         Pathway p = paths.get(position);
-        Log.e("SETTING THE NAME ", " waaaaa-" + p.getNameEN() + "-");
         titleText.setText(p.getNameEN());
-        countryText.setText(p.getreg()); // NOT COUNTRY TODO
+        countryText.setText(p.getcouEN());
         areaText.setText(p.getar());
         vehicleText.setText(p.getvehEN());
 
-        ratingText.setText("5.0");
+        ratingText.setText("3.5");
         distanceText.setText(p.gettotM() + " m");
         durationText.setText(p.getestTime() + " min");
         caloriesText.setText(p.getestCal() + " cal");

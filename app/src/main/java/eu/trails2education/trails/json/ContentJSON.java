@@ -2,17 +2,10 @@ package eu.trails2education.trails.json;
 
 import android.content.Context;
 
-import com.android.volley.Response;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 import eu.trails2education.trails.database.Content;
-import eu.trails2education.trails.database.InterestPoint;
-import eu.trails2education.trails.path.SubjectUtils;
 
 /**
  * Created by Žiga on 23. 12. 2017.

@@ -1,4 +1,4 @@
-package eu.trails2education.trails.path;
+package eu.trails2education.trails.network;
 
 import android.content.Context;
 
