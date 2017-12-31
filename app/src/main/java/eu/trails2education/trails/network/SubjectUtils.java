@@ -1,4 +1,4 @@
-package eu.trails2education.trails.path;
+package eu.trails2education.trails.network;
 
 import android.content.Context;
 
@@ -17,19 +17,6 @@ import org.json.JSONObject;
  */
 
 public class SubjectUtils {
-
-    public static Subject createSubjectFromJSON(JSONObject jsonObject) throws JSONException {
-        jsonObject = jsonObject.getJSONArray("posts").getJSONObject(0);
-        Subject p = new Subject();
-
-        p.title = jsonObject.getString("titleEN");
-        p.subject = jsonObject.getString("subjectEN");
-        p.description = jsonObject.getString("descriptionEN");
-
-        // TODO Read multimedia elements
-        return p;
-    }
-
     /**
      * Read the JSON object of the Subject from the network
      * @param context Context of the application. The activity

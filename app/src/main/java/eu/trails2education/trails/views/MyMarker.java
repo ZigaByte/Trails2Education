@@ -15,7 +15,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import eu.trails2education.trails.ContentActivity;
 import eu.trails2education.trails.R;
-import eu.trails2education.trails.path.InterestPoint;
+import eu.trails2education.trails.database.InterestPoint;
 
 /**
  * Created by Žiga on 25. 11. 2017.
@@ -33,21 +33,18 @@ public class MyMarker{
         this.context = context;
         this.interestPoint = interestPoint;
 
-        LatLng latLng = new LatLng(interestPoint.coordinate.lat, interestPoint.coordinate.lon);
+        LatLng latLng = new LatLng(interestPoint.getclat(), interestPoint.getclon());
 
         BitmapDrawable bitmapdraw = (BitmapDrawable)context.getResources().getDrawable(R.drawable.interest_point_castle);
         Bitmap b = bitmapdraw.getBitmap();
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, 130, 130, false);
         markerOptions = new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
-        // Load more data about this interest point
     }
 
+    // Start the content activity
     public void onClick(){
-        Log.e("MARKER CLICKED", "TEST");
-
-        // Start the content activity
         Intent i = new Intent(context, ContentActivity.class);
-        i.putExtra("InterestPoint", interestPoint); // Pass the interestPoint as a serializable
+        i.putExtra("InterestPointID", interestPoint.getcIdIP()); // Pass the interestPointID
         context.startActivity(i);
     }
 

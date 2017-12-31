@@ -34,34 +34,6 @@ public class LaunchActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
 
-/*     // This is how we download data. Using Volley
-        TextView mTxtDisplay;
-        ImageView mImageView;
-        String url = "https://www.trails2education.eu/json1.php";
-
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.e("respois ds", "Response: " + response.toString());
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(jsObjRequest);
-        queue.start();
-*/
-
-        // Set up the basic RequestQueue
-        //RequestManager.getInstance(this);
-
         // Switch after DELAY
         Handler h = new Handler();
         h.postDelayed(new Runnable() {

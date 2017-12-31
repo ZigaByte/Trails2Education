@@ -1,34 +1,27 @@
 package eu.trails2education.trails;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.List;
+import com.android.volley.Response;
 
-import eu.trails2education.trails.path.InterestPoint;
-import eu.trails2education.trails.path.Subject;
+import org.json.JSONObject;
+
+import eu.trails2education.trails.database.Content;
+import eu.trails2education.trails.database.InterestPoint;
+import eu.trails2education.trails.json.InterestPointJSON;
+import eu.trails2education.trails.network.InterestPointUtils;
 import eu.trails2education.trails.views.ContentSelectionAdapter;
-import eu.trails2education.trails.views.SelectionAdapter;
 
 public class ContentActivity extends AppCompatActivity {
 
     RecyclerView contentList;
-    ContentSelectionAdapter adapter;
 
     private InterestPoint interestPoint;
 
@@ -46,23 +39,38 @@ public class ContentActivity extends AppCompatActivity {
             }
         });
 
-        // Fill the title and description
-        interestPoint = (InterestPoint) getIntent().getSerializableExtra("InterestPoint");
+        final int interestPointID = (int)getIntent().getExtras().getLong("InterestPointID");
+        InterestPointUtils.readInterestPointFromNetwork(this, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    interestPoint = InterestPointJSON.createInterestPointFromJSON(ContentActivity.this, response.getJSONArray("posts").getJSONObject(0), 0);
+                    fillViews();
 
-        Log.e("Will load ", "test");
-        if(interestPoint.getSubjectCount() > 0){
+                }catch(Exception e){
+                    Log.e("INTEREST POINT LOADING ", "ERROR at id: " + interestPointID);
+                }
+            }
+        }, interestPointID);
+
+
+    }
+
+    /**
+     * Updates the views. Network or DB updates may change data in interestPoint.
+     * */
+    public void fillViews(){
+        if(interestPoint.getContents().size() > 0){
             contentList = (RecyclerView)findViewById(R.id.recyclerView);
-            contentList.setAdapter(new ContentSelectionAdapter(interestPoint.subjects)); // Pass the ids for the icons
+            contentList.setAdapter(new ContentSelectionAdapter(interestPoint.getContents())); // Pass the ids for the icons
             contentList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
             // Get first subject to populate views
-            Subject first = interestPoint.subjects[0];
-            Log.e("Loading", first.description);
+            Content first = interestPoint.getContents().get(0);
 
-            ((TextView)findViewById(R.id.subject_title)).setText(first.title);
-            ((TextView)findViewById(R.id.subject_content)).setText(first.description);
+            ((TextView)findViewById(R.id.subject_title)).setText(first.gettitEN());
+            ((TextView)findViewById(R.id.subject_content)).setText(first.getdesEN());
         }else{
-            // There is no content!!!!
         }
     }
 
