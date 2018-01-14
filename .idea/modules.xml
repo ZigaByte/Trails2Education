@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Trails2Education.iml" filepath="$PROJECT_DIR$/Trails2Education.iml" />
+      <module fileurl="file://C:\Users\svetl\OneDrive\Documents\GitHub\Trails2Education\Trails2Education.iml" filepath="C:\Users\svetl\OneDrive\Documents\GitHub\Trails2Education\Trails2Education.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\svetl\OneDrive\Documents\GitHub\Trails2Education\app\app.iml" filepath="C:\Users\svetl\OneDrive\Documents\GitHub\Trails2Education\app\app.iml" />
     </modules>
   </component>
 </project>
