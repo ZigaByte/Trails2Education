@@ -1,6 +1,7 @@
 package eu.trails2education.trails;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -55,9 +56,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public int minutes = 0;
     public int hours = 0;
 
+    private static Activity activityReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        activityReference = this;
+
         setContentView(R.layout.activity_maps);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -126,6 +132,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }, 0, 1000);
 
+
     }
 
     private void fillViews(Pathway path){
@@ -134,6 +141,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ((TextView)findViewById(R.id.distanceTextContent)).setText(String.valueOf(path.gettotM()));
         ((TextView)findViewById(R.id.heartRateTextContent)).setText(String.valueOf(path.getavgHB()));
         ((TextView)findViewById(R.id.caloriesTextContent)).setText(String.valueOf(path.getestCal()));
+
+        ((TextView)findViewById(R.id.textView2)).setText(String.valueOf(path.getNameEN()));  // Svetlana: 17.1.2018
+        ((TextView)findViewById(R.id.textView3)).setText(String.valueOf(path.getcouEN()));
+
     }
 
     @Override
@@ -178,7 +189,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add the
         for(InterestPoint interestPoint : path.getInterestPoints()){
-            MyMarker myMarker = new MyMarker(this, interestPoint);
+            MyMarker myMarker = new MyMarker(this, interestPoint, path);
             Marker marker = mMap.addMarker(myMarker.markerOptions);
 
             marker.setTag(myMarker);
@@ -231,5 +242,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return;
             }
         }
+    }
+
+    public static String read_timer(){
+        String beri="";
+        try{
+            beri = ((TextView)activityReference.findViewById(R.id.timeText)).getText().toString();
+        }
+        catch (Exception ex){
+            Log.d("Exception","Exception of type"+ex.getMessage());
+        }
+
+        return beri;
     }
 }
