@@ -56,7 +56,7 @@ public class MyMarker{
         Intent i = new Intent(context, ContentActivity.class);
         i.putExtra("InterestPointID", interestPoint.getcIdIP()); // Pass the interestPointID
         i.putExtra("PathwayID", path.getId());
-        i.putExtra("time", MapsActivity.read_timer());
+        i.putExtra("time", ((MapsActivity)context).read_timer());
         context.startActivity(i);
     }
 
