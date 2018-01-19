@@ -103,7 +103,7 @@ public class ContentActivity extends AppCompatActivity {
     public void fillViews(){
         if(interestPoint.getContents().size() > 0){
             contentList = (RecyclerView)findViewById(R.id.recyclerView);
-            contentList.setAdapter(new ContentSelectionAdapter(interestPoint.getContents())); // Pass the ids for the icons
+            contentList.setAdapter(new ContentSelectionAdapter(this, interestPoint.getContents())); // Pass the ids for the icons
             contentList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
             // Get first subject to populate views

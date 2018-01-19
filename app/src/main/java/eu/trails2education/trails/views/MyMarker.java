@@ -42,7 +42,24 @@ public class MyMarker{
 
         LatLng latLng = new LatLng(interestPoint.getclat(), interestPoint.getclon());
 
-        BitmapDrawable bitmapdraw = (BitmapDrawable)context.getResources().getDrawable(R.drawable.interest_point_castle);
+        // Select the drawable that should be on the marker.
+        int drawable = 0;
+        switch((int)interestPoint.getctype()){
+            case 1: drawable = R.drawable.interest_point_castle;break;
+            case 2: drawable = R.drawable.interest_point_fauna;break;
+            case 3: drawable = R.drawable.interest_point_flora;break;
+            case 4: drawable = R.drawable.interest_point_museum;break;
+            case 5: drawable = R.drawable.interest_point_observation;break;
+            case 6: drawable = R.drawable.interest_point_park;break;
+            case 7: drawable = R.drawable.interest_point_ruins;break;
+            case 8: drawable = R.drawable.interest_point_temple;break;
+            case 9: drawable = R.drawable.interest_point_water;break;
+            case 10: drawable = R.drawable.interest_point_waypoint;break;
+
+            default: drawable = R.drawable.interest_point_waypoint;break;
+        }
+
+        BitmapDrawable bitmapdraw = (BitmapDrawable)context.getResources().getDrawable(drawable);
         Bitmap b = bitmapdraw.getBitmap();
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, 130, 130, false);
         markerOptions = new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
