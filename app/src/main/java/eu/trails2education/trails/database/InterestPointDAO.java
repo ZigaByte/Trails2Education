@@ -31,7 +31,10 @@ public class InterestPointDAO {
             DatabaseHelper.COL_3_6,
             DatabaseHelper.COL_3_7,
             DatabaseHelper.COL_3_8,
-            DatabaseHelper.COL_3_9};
+            DatabaseHelper.COL_3_9,
+            DatabaseHelper.COL_3_10,
+            DatabaseHelper.COL_3_11,
+            DatabaseHelper.COL_3_12};    // Svetlana: 13.1.2018 dodala koordinate
 
     public InterestPointDAO(Context context) {
         mDbHelper = new DatabaseHelper(context);
@@ -54,7 +57,7 @@ public class InterestPointDAO {
     }
 
     public InterestPoint createInterestPoint(String nameEN, String nameFR, String namePT, String nameSL, String nameEE, String nameIT,
-                                             long ctype, long pathwayId) {
+                                             long ctype, long pathwayId, double clat, double clon, double calt) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COL_3_1, pathwayId);
         values.put(DatabaseHelper.COL_3_3, nameEN);
@@ -64,6 +67,9 @@ public class InterestPointDAO {
         values.put(DatabaseHelper.COL_3_7, nameEE);
         values.put(DatabaseHelper.COL_3_8, nameIT);
         values.put(DatabaseHelper.COL_3_9, ctype);
+        values.put(DatabaseHelper.COL_3_10, clat);    // Svetlana: 13.1.2018 dodala koordinate
+        values.put(DatabaseHelper.COL_3_11, clon);
+        values.put(DatabaseHelper.COL_3_12, calt);
 
         long insertId = mDatabase
                 .insert(DatabaseHelper.TABLE_3_NAME, null, values);
@@ -150,6 +156,9 @@ public class InterestPointDAO {
         interestpoint.setNameEE(cursor.getString(6));
         interestpoint.setNameIT(cursor.getString(7));
         interestpoint.setctype(cursor.getLong(8));
+        interestpoint.setclat(cursor.getLong(9));   // Svetlana: 13.1.2018 dodala koordinate
+        interestpoint.setclon(cursor.getLong(10));
+        interestpoint.setcalt(cursor.getLong(11));
 
         // get The pathway by id
         long pathwayId = cursor.getLong(0);

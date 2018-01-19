@@ -59,50 +59,127 @@ public class PathwaysDAO {
                                  String vehEN, String vehFR, String vehPT, String vehSL, String vehEE, String vehIT,
                                  String couEN, String couFR, String couPT, String couSL, String couEE, String couIT,
                                  String reg, String ar,
-                                 String difEN, String difFR, String difPT, String difSL, String difEE, String difIT) {
+                                 String difEN, String difFR, String difPT, String difSL, String difEE, String difIT, long id) {
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COL_1_2, nameEN);
-        values.put(DatabaseHelper.COL_1_3, nameFR);
-        values.put(DatabaseHelper.COL_1_4, namePT);
-        values.put(DatabaseHelper.COL_1_5, nameSL);
-        values.put(DatabaseHelper.COL_1_6, nameEE);
-        values.put(DatabaseHelper.COL_1_7, nameIT);
-        values.put(DatabaseHelper.COL_1_8, regDate);
-        values.put(DatabaseHelper.COL_1_9, totM);
-        values.put(DatabaseHelper.COL_1_10, estCal);
-        values.put(DatabaseHelper.COL_1_11, estTime);
-        values.put(DatabaseHelper.COL_1_12, estStep);
-        values.put(DatabaseHelper.COL_1_13, avgHB);
-        values.put(DatabaseHelper.COL_1_14, vehEN);
-        values.put(DatabaseHelper.COL_1_15, vehFR);
-        values.put(DatabaseHelper.COL_1_16, vehPT);
-        values.put(DatabaseHelper.COL_1_17, vehSL);
-        values.put(DatabaseHelper.COL_1_18, vehEE);
-        values.put(DatabaseHelper.COL_1_19, vehIT);
-        values.put(DatabaseHelper.COL_1_20, couEN);
-        values.put(DatabaseHelper.COL_1_21, couFR);
-        values.put(DatabaseHelper.COL_1_22, couPT);
-        values.put(DatabaseHelper.COL_1_23, couSL);
-        values.put(DatabaseHelper.COL_1_24, couEE);
-        values.put(DatabaseHelper.COL_1_25, couIT);
-        values.put(DatabaseHelper.COL_1_26, reg);
-        values.put(DatabaseHelper.COL_1_27, ar);
-        values.put(DatabaseHelper.COL_1_28, difEN);
-        values.put(DatabaseHelper.COL_1_29, difFR);
-        values.put(DatabaseHelper.COL_1_30, difPT);
-        values.put(DatabaseHelper.COL_1_31, difSL);
-        values.put(DatabaseHelper.COL_1_32, difEE);
-        values.put(DatabaseHelper.COL_1_33, difIT);
 
-        long insertId = mDatabase
-                .insert(DatabaseHelper.TABLE_1_NAME, null, values);   // mogoče ga pa kar dodamo iz prenešenega json-a
+        Pathway newPathway;
+
+        // preveri, ali pathway obstaja
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_1_NAME, mAllColumns,
-                DatabaseHelper.COL_1_1 + " = " + insertId, null, null,
+                DatabaseHelper.COL_1_1 + " = " + id, null, null,
                 null, null);
-        cursor.moveToFirst();
-        Pathway newCompany = cursorToPathway(cursor);
-        cursor.close();
-        return newCompany;
+        if (cursor != null) {  // update podatkov
+            cursor.moveToFirst();
+
+            values.put(DatabaseHelper.COL_1_2, nameEN);
+            values.put(DatabaseHelper.COL_1_3, nameFR);
+            values.put(DatabaseHelper.COL_1_4, namePT);
+            values.put(DatabaseHelper.COL_1_5, nameSL);
+            values.put(DatabaseHelper.COL_1_6, nameEE);
+            values.put(DatabaseHelper.COL_1_7, nameIT);
+            values.put(DatabaseHelper.COL_1_8, regDate);
+            values.put(DatabaseHelper.COL_1_9, totM);
+            values.put(DatabaseHelper.COL_1_10, estCal);
+            values.put(DatabaseHelper.COL_1_11, estTime);
+            values.put(DatabaseHelper.COL_1_12, estStep);
+            values.put(DatabaseHelper.COL_1_13, avgHB);
+            values.put(DatabaseHelper.COL_1_14, vehEN);
+            values.put(DatabaseHelper.COL_1_15, vehFR);
+            values.put(DatabaseHelper.COL_1_16, vehPT);
+            values.put(DatabaseHelper.COL_1_17, vehSL);
+            values.put(DatabaseHelper.COL_1_18, vehEE);
+            values.put(DatabaseHelper.COL_1_19, vehIT);
+            values.put(DatabaseHelper.COL_1_20, couEN);
+            values.put(DatabaseHelper.COL_1_21, couFR);
+            values.put(DatabaseHelper.COL_1_22, couPT);
+            values.put(DatabaseHelper.COL_1_23, couSL);
+            values.put(DatabaseHelper.COL_1_24, couEE);
+            values.put(DatabaseHelper.COL_1_25, couIT);
+            values.put(DatabaseHelper.COL_1_26, reg);
+            values.put(DatabaseHelper.COL_1_27, ar);
+            values.put(DatabaseHelper.COL_1_28, difEN);
+            values.put(DatabaseHelper.COL_1_29, difFR);
+            values.put(DatabaseHelper.COL_1_30, difPT);
+            values.put(DatabaseHelper.COL_1_31, difSL);
+            values.put(DatabaseHelper.COL_1_32, difEE);
+            values.put(DatabaseHelper.COL_1_33, difIT);
+
+            long insertId = mDatabase.update(DatabaseHelper.TABLE_1_NAME, values, DatabaseHelper.COL_1_1 +"=?",
+                    new String[]{Long.toString(id)});   // mogoče ga pa kar dodamo iz prenešenega json-a
+            cursor = mDatabase.query(DatabaseHelper.TABLE_1_NAME, mAllColumns,
+                    DatabaseHelper.COL_1_1 + " = " + insertId, null, null,
+                    null, null);
+            cursor.moveToFirst();
+            newPathway = cursorToPathway(cursor);
+            cursor.close();
+
+        }
+        else {   // v bazo dodaj novo pot
+
+            values.put(DatabaseHelper.COL_1_1, id);
+            values.put(DatabaseHelper.COL_1_2, nameEN);
+            values.put(DatabaseHelper.COL_1_3, nameFR);
+            values.put(DatabaseHelper.COL_1_4, namePT);
+            values.put(DatabaseHelper.COL_1_5, nameSL);
+            values.put(DatabaseHelper.COL_1_6, nameEE);
+            values.put(DatabaseHelper.COL_1_7, nameIT);
+            values.put(DatabaseHelper.COL_1_8, regDate);
+            values.put(DatabaseHelper.COL_1_9, totM);
+            values.put(DatabaseHelper.COL_1_10, estCal);
+            values.put(DatabaseHelper.COL_1_11, estTime);
+            values.put(DatabaseHelper.COL_1_12, estStep);
+            values.put(DatabaseHelper.COL_1_13, avgHB);
+            values.put(DatabaseHelper.COL_1_14, vehEN);
+            values.put(DatabaseHelper.COL_1_15, vehFR);
+            values.put(DatabaseHelper.COL_1_16, vehPT);
+            values.put(DatabaseHelper.COL_1_17, vehSL);
+            values.put(DatabaseHelper.COL_1_18, vehEE);
+            values.put(DatabaseHelper.COL_1_19, vehIT);
+            values.put(DatabaseHelper.COL_1_20, couEN);
+            values.put(DatabaseHelper.COL_1_21, couFR);
+            values.put(DatabaseHelper.COL_1_22, couPT);
+            values.put(DatabaseHelper.COL_1_23, couSL);
+            values.put(DatabaseHelper.COL_1_24, couEE);
+            values.put(DatabaseHelper.COL_1_25, couIT);
+            values.put(DatabaseHelper.COL_1_26, reg);
+            values.put(DatabaseHelper.COL_1_27, ar);
+            values.put(DatabaseHelper.COL_1_28, difEN);
+            values.put(DatabaseHelper.COL_1_29, difFR);
+            values.put(DatabaseHelper.COL_1_30, difPT);
+            values.put(DatabaseHelper.COL_1_31, difSL);
+            values.put(DatabaseHelper.COL_1_32, difEE);
+            values.put(DatabaseHelper.COL_1_33, difIT);
+
+            long insertId = mDatabase
+                    .insert(DatabaseHelper.TABLE_1_NAME, null, values);   // mogoče ga pa kar dodamo iz prenešenega json-a
+            cursor = mDatabase.query(DatabaseHelper.TABLE_1_NAME, mAllColumns,
+                    DatabaseHelper.COL_1_1 + " = " + insertId, null, null,
+                    null, null);
+            cursor.moveToFirst();
+            newPathway = cursorToPathway(cursor);
+            cursor.close();
+
+        }
+
+        // izbrišemo vse podatke za pot, da dodamo nove
+        InterestPointDAO interestPointDao = new InterestPointDAO(mContext);
+        List<InterestPoint> listInterestPoints = interestPointDao.getInterestPointsOfPathway(id);
+        if (listInterestPoints != null && !listInterestPoints.isEmpty()) {
+            for (InterestPoint i : listInterestPoints) {
+                interestPointDao.deleteInterestPoint(i);
+            }
+        }
+
+        // deleting coordinates
+        CoordinatesDAO coordinatesDao = new CoordinatesDAO(mContext);
+        List<Coordinates> listCoordinates = coordinatesDao.getCoordinatsOfPathway(id);
+        if (listCoordinates != null && !listCoordinates.isEmpty())
+            for (Coordinates c : listCoordinates) {
+                coordinatesDao.deleteCoordinates(c);
+            }
+
+        return newPathway;
+
     }
 
     public void deletePathway(Pathway pathway) {

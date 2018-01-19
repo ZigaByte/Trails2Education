@@ -63,6 +63,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_3_7 = "interestPointNameEE";
     public static final String COL_3_8 = "interestPointNameIT";
     public static final String COL_3_9 = "idPointType";
+    public static final String COL_3_10 = "lat";    // Svetlana: 13.1.2018 dodala koordinate
+    public static final String COL_3_11 = "lon";
+    public static final String COL_3_12 = "alt";
     public static final String TABLE_4_NAME = "content";
     public static final String COL_4_1 = "idInterestPoint";
     public static final String COL_4_2 = "idContent";
@@ -129,8 +132,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COL_3_2 + " INTEGER PRIMARY KEY, "
             + COL_3_3 + " TEXT NOT NULL, " + COL_3_4 + " TEXT, " + COL_3_5 + " TEXT, " + COL_3_6 + " TEXT, " + COL_3_7 + " TEXT, " + COL_3_8 + " TEXT, "
             + COL_3_9 + " INTEGER"
+            + COL_3_10 + " REAL NOT NULL, "
+            + COL_3_11 + " REAL NOT NULL, "
+            + COL_3_12 + " REAL NOT NULL "
             + ");"
-            ;
+            ;    // Svetlana: 13.1.2018 dodala koordinate
+
 
     private static final String SQL_CREATE_TABLE_4 = "CREATE TABLE " + TABLE_4_NAME + "("
             + COL_4_1 + " INTEGER NOT NULL, "

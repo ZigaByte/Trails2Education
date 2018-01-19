@@ -36,7 +36,8 @@ public class InterestPoint implements Serializable {
 
     }
 
-    public InterestPoint(String nameEN, String nameFR, String namePT, String nameSL, String nameEE, String nameIT, long ctype) {
+    public InterestPoint(String nameEN, String nameFR, String namePT, String nameSL, String nameEE, String nameIT, long ctype,
+                         double clat, double clon, double calt) {
         this.ipnameEN = nameEN;
         this.ipnameFR = nameFR;
         this.ipnamePT = namePT;
@@ -44,6 +45,9 @@ public class InterestPoint implements Serializable {
         this.ipnameEE = nameEE;
         this.ipnameIT = nameIT;
         this.pointtype = ctype;
+        this.lat = clat;    // Svetlana: 13.1.2018 dodala koordinate
+        this.lon = clon;
+        this.alt = calt;
     }
 
     public long getPathwayID() {

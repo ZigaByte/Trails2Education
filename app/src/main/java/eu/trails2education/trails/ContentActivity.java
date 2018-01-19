@@ -13,10 +13,16 @@ import com.android.volley.Response;
 
 import org.json.JSONObject;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import eu.trails2education.trails.database.Content;
 import eu.trails2education.trails.database.InterestPoint;
+import eu.trails2education.trails.database.Pathway;
 import eu.trails2education.trails.json.InterestPointJSON;
+import eu.trails2education.trails.json.PathwayJSON;
 import eu.trails2education.trails.network.InterestPointUtils;
+import eu.trails2education.trails.network.PathUtils;
 import eu.trails2education.trails.views.ContentSelectionAdapter;
 
 public class ContentActivity extends AppCompatActivity {
@@ -24,6 +30,12 @@ public class ContentActivity extends AppCompatActivity {
     RecyclerView contentList;
 
     private InterestPoint interestPoint;
+    private Pathway path;
+
+    // Timer
+    public int seconds = 0;
+    public int minutes = 0;
+    public int hours = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +52,7 @@ public class ContentActivity extends AppCompatActivity {
         });
 
         final int interestPointID = (int)getIntent().getExtras().getLong("InterestPointID");
+
         InterestPointUtils.readInterestPointFromNetwork(this, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -53,6 +66,34 @@ public class ContentActivity extends AppCompatActivity {
             }
         }, interestPointID);
 
+        String time = getIntent().getExtras().getString("time");//((TextView)findViewById(R.id.timeText)).getText().toString();
+        int colonStart=time.indexOf(":");
+
+        seconds = Integer.parseInt(time.substring(colonStart+4));//Integer.parseInt(String.valueOf(((TextView)findViewById(R.id.timeText)).getText().subSequence(colonStart+4,colonStart+5)));
+        minutes = Integer.parseInt(time.substring(colonStart+1,colonStart+2));//Integer.parseInt(String.valueOf(((TextView)findViewById(R.id.timeText)).getText().subSequence(colonStart+1,colonStart+2)));
+        hours = Integer.parseInt(time.substring(0,colonStart));//Integer.parseInt(String.valueOf(((TextView)findViewById(R.id.timeText)).getText().subSequence(0,colonStart)));
+
+        Timer t = new Timer();
+        t.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        seconds++;
+                        if(seconds >= 60){
+                            seconds -= 60;
+                            minutes++;
+                            if(minutes >= 60){
+                                minutes-= 60;
+                                hours++;
+                            }
+                        }
+                        ((TextView)findViewById(R.id.timeText)).setText(hours + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
+                    }
+                });
+            }
+        }, 0, 1000);
 
     }
 
@@ -70,6 +111,27 @@ public class ContentActivity extends AppCompatActivity {
 
             ((TextView)findViewById(R.id.subject_title)).setText(first.gettitEN());
             ((TextView)findViewById(R.id.subject_content)).setText(first.getdesEN());
+
+            final int pathID = (int)getIntent().getExtras().getLong("PathwayID");
+            // Read the path from the network
+            PathUtils.readPathFromNetwork(this, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        path = PathwayJSON.createFullPathFromJSON(ContentActivity.this, response);
+                    }catch(Exception e){
+                        Log.e("PATH LOADING ERROR", "Failed loading the path");
+                    }
+
+                    ((TextView)findViewById(R.id.textView2)).setText(String.valueOf(path.getNameEN()));  // Svetlana: 17.1.2018
+                    ((TextView)findViewById(R.id.textView3)).setText(String.valueOf(path.getcouEN()));
+
+                }
+            }, pathID);
+
+
+
+
         }else{
         }
     }
