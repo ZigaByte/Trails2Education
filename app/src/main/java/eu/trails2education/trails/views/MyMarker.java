@@ -45,16 +45,15 @@ public class MyMarker{
         // Select the drawable that should be on the marker.
         int drawable = 0;
         switch((int)interestPoint.getctype()){
-            case 1: drawable = R.drawable.interest_point_castle;break;
-            case 2: drawable = R.drawable.interest_point_fauna;break;
-            case 3: drawable = R.drawable.interest_point_flora;break;
-            case 4: drawable = R.drawable.interest_point_museum;break;
-            case 5: drawable = R.drawable.interest_point_observation;break;
-            case 6: drawable = R.drawable.interest_point_park;break;
-            case 7: drawable = R.drawable.interest_point_ruins;break;
-            case 8: drawable = R.drawable.interest_point_temple;break;
-            case 9: drawable = R.drawable.interest_point_water;break;
-            case 10: drawable = R.drawable.interest_point_waypoint;break;
+            case 1: drawable = R.drawable.interest_point_fauna;break;
+            case 2: drawable = R.drawable.interest_point_flora;break;
+            case 3: drawable = R.drawable.interest_point_ruins;break;
+            case 4: drawable = R.drawable.interest_point_castle;break;
+            case 5: drawable = R.drawable.interest_point_museum;break;
+            case 6: drawable = R.drawable.interest_point_observation;break;
+            case 7: drawable = R.drawable.interest_point_temple;break;
+            case 8: drawable = R.drawable.interest_point_water;break;
+            case 9: drawable = R.drawable.interest_point_waypoint;break;
 
             default: drawable = R.drawable.interest_point_waypoint;break;
         }

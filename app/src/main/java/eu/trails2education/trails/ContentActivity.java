@@ -25,6 +25,8 @@ import eu.trails2education.trails.network.InterestPointUtils;
 import eu.trails2education.trails.network.PathUtils;
 import eu.trails2education.trails.views.ContentSelectionAdapter;
 
+import static android.R.attr.name;
+
 public class ContentActivity extends AppCompatActivity {
 
     RecyclerView contentList;
@@ -109,7 +111,7 @@ public class ContentActivity extends AppCompatActivity {
             // Get first subject to populate views
             Content first = interestPoint.getContents().get(0);
 
-            ((TextView)findViewById(R.id.subject_title)).setText(first.gettitEN());
+            ((TextView)findViewById(R.id.subject_title)).setText(first.gettitEN());  
             ((TextView)findViewById(R.id.subject_content)).setText(first.getdesEN());
 
             final int pathID = (int)getIntent().getExtras().getLong("PathwayID");
@@ -123,7 +125,11 @@ public class ContentActivity extends AppCompatActivity {
                         Log.e("PATH LOADING ERROR", "Failed loading the path");
                     }
 
-                    ((TextView)findViewById(R.id.textView2)).setText(String.valueOf(path.getNameEN()));  // Svetlana: 17.1.2018
+                    String name = path.getNameEN();
+                    if(name.length() > 12)
+                        name = name.substring(0, 8) + " ..";
+
+                    ((TextView)findViewById(R.id.textView2)).setText(name);  // Svetlana: 17.1.2018
                     ((TextView)findViewById(R.id.textView3)).setText(String.valueOf(path.getcouEN()));
 
                 }
