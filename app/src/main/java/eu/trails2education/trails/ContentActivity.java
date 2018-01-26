@@ -111,7 +111,7 @@ public class ContentActivity extends AppCompatActivity {
             // Get first subject to populate views
             Content first = interestPoint.getContents().get(0);
 
-            ((TextView)findViewById(R.id.subject_title)).setText(first.gettitEN());  
+            ((TextView)findViewById(R.id.subject_title)).setText(first.gettitEN());
             ((TextView)findViewById(R.id.subject_content)).setText(first.getdesEN());
 
             final int pathID = (int)getIntent().getExtras().getLong("PathwayID");
