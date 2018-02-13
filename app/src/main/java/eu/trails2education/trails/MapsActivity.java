@@ -142,7 +142,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ((TextView)findViewById(R.id.heartRateTextContent)).setText(String.valueOf(path.getavgHB()));
         ((TextView)findViewById(R.id.caloriesTextContent)).setText(String.valueOf(path.getestCal()));
 
-        ((TextView)findViewById(R.id.textView2)).setText(String.valueOf(path.getNameEN()));  // Svetlana: 17.1.2018
+        // Skrajsa ime, good for now ..
+        String name = path.getNameEN();
+        if(name.length() > 12)
+            name = name.substring(0, 8) + " ..";
+
+        ((TextView)findViewById(R.id.textView2)).setText(name);  // Svetlana: 17.1.2018
         ((TextView)findViewById(R.id.textView3)).setText(String.valueOf(path.getcouEN()));
 
     }
@@ -176,7 +181,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         else{
             ArrayList<Coordinates> coordinates = path.getCoordinates();
             LatLng latLng = new LatLng(coordinates.get(0).getclat(), coordinates.get(0).getclon());
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
         }
 
         // Create the path line
@@ -244,7 +249,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public static String read_timer(){
+    public String read_timer(){
         String beri="";
         try{
             beri = ((TextView)activityReference.findViewById(R.id.timeText)).getText().toString();

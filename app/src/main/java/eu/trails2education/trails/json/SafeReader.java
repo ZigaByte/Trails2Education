@@ -16,7 +16,7 @@ public class SafeReader {
      * */
     public static int readInt(JSONObject object, String key, int defaultValue) {
         if(!object.has(key) || object.isNull(key)){
-            Log.e("JSON int EXCEPTION", "Value not found at key: " + key);
+            //Log.e("JSON int EXCEPTION", "Value not found at key: " + key);
             return defaultValue;
         }
         try{
@@ -39,7 +39,7 @@ public class SafeReader {
      * */
     public static double readDouble(JSONObject object, String key, double defaultValue) {
         if(!object.has(key) || object.isNull(key)){
-            Log.e("JSON int EXCEPTION", "Value not found at key: " + key);
+            //Log.e("JSON int EXCEPTION", "Value not found at key: " + key);
             return defaultValue;
         }
         try{
@@ -62,7 +62,7 @@ public class SafeReader {
      * */
     public static String readString(JSONObject object, String key, String defaultValue) {
         if(!object.has(key) || object.isNull(key)) {
-            Log.e("JSON String EXCEPTION", "Value not found at key: " + key);
+            //Log.e("JSON String EXCEPTION", "Value not found at key: " + key);
             return defaultValue;
         }
         try{
