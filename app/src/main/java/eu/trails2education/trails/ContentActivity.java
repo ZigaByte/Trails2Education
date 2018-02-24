@@ -1,5 +1,6 @@
 package eu.trails2education.trails;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,15 +14,20 @@ import com.android.volley.Response;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import eu.trails2education.trails.database.Content;
+import eu.trails2education.trails.database.ContentDAO;
 import eu.trails2education.trails.database.InterestPoint;
 import eu.trails2education.trails.database.InterestPointDAO;
 import eu.trails2education.trails.database.Pathway;
+import eu.trails2education.trails.json.ContentJSON;
 import eu.trails2education.trails.json.InterestPointJSON;
 import eu.trails2education.trails.json.PathwayJSON;
+import eu.trails2education.trails.network.ContentUtils;
 import eu.trails2education.trails.network.InterestPointUtils;
 import eu.trails2education.trails.network.PathUtils;
 import eu.trails2education.trails.views.ContentSelectionAdapter;
@@ -33,6 +39,7 @@ public class ContentActivity extends AppCompatActivity {
     RecyclerView contentList;
 
     private InterestPointDAO interestPointDAO;
+    private ContentDAO contentDAO;
 
     private InterestPoint interestPoint;
     private Pathway path;
@@ -57,6 +64,7 @@ public class ContentActivity extends AppCompatActivity {
         });
 
         interestPointDAO = new InterestPointDAO(this);
+        contentDAO = new ContentDAO(this);
 
         final int interestPointID = (int)getIntent().getExtras().getLong("InterestPointID");
         readInterestPointFromDatabase(interestPointID);
@@ -95,7 +103,12 @@ public class ContentActivity extends AppCompatActivity {
 
     private void readInterestPointFromDatabase(int interestPointID){
         interestPoint = interestPointDAO.getInterestPointsById(interestPointID);
+        interestPoint.setContents(contentDAO.getContentsOfInterestPoint(interestPointID));
         fillViews();
+
+        for(Content c: interestPoint.getContents()){
+            Log.e("Content ", "IpID: " + c.getIpId() + ", " + c.getstype() + ", " + c.getsubEN());
+        }
     }
 
     private void readInterestPointFromNetwork(final int interestPointID){
@@ -108,10 +121,40 @@ public class ContentActivity extends AppCompatActivity {
                 }catch(Exception e){
                     Log.e("INTEREST POINT LOADING ", "ERROR at id: " + interestPointID);
                 }
+
+                readContentFromNetwork((int)newInterestPoint.getcIdIP(), newInterestPoint.getSubjectIds());
+
                 interestPointDAO.createInterestPoint(newInterestPoint, InterestPointDAO.INSERT_TYPE_DATA);
                 readInterestPointFromDatabase(interestPointID);
             }
         }, interestPointID);
+    }
+
+    private void readContentFromNetwork(final int interestPointID, ArrayList<Integer> subjectIds){
+        Log.e("Loading CONTENT", "subject id size: "+ subjectIds.size());
+        final ArrayList<Content> contents = new ArrayList<Content>();
+        final Context context = this;
+        for(Integer i : subjectIds){
+            final int ii = i;
+            ContentUtils.readContentFromNetwork(this, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Content newContent = null;
+                    try {
+                        newContent = ContentJSON.createContentFromJSON(context, response.getJSONArray("posts").getJSONObject(0), 0);
+                        //interestPoint.contents.add(ContentJSON.createContentFromJSON(context, response.getJSONArray("posts").getJSONObject(0), 0));
+                        //fillViews(); // Update the views TODO REMOVE after db implementation
+                    }catch (Exception e){
+                        Log.e("CONTENT LOADING ERROR", "ERROR WITH CONTENT");
+                    }
+                    newContent.setIpId(interestPointID);
+                    newContent.setstype(ii);
+
+                    contentDAO.createContent(newContent, ContentDAO.INSERT_TYPE_DATA);
+                    readInterestPointFromDatabase(interestPointID);
+                }
+            }, interestPointID, i);
+        }
     }
 
     /**
@@ -150,11 +193,6 @@ public class ContentActivity extends AppCompatActivity {
 
                 }
             }, pathID);
-
-
-
-
-        }else{
         }
     }
 

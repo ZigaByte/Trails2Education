@@ -11,6 +11,7 @@ public class Content implements Serializable {
     public static final String TAG = "Content";
     private static final long serialVersionUID = -7406082437623008161L;
 
+    private long interestpointid;
     private long cIdC;
     private long pointtype;
     private String subjectEN;
@@ -31,16 +32,23 @@ public class Content implements Serializable {
     private String descriptionSL;
     private String descriptionEE;
     private String descriptionIT;
-
-    private InterestPoint mInterestPoint;
+    private long subjecttype;
 
     public Content() {
 
     }
 
-    public Content(long ctype, String subEN, String subFR, String subPT, String subSL, String subEE, String subIT,
+    public Content(long ipid, long ctype, long stype){
+        this.pointtype = ctype;
+        this.subjecttype = stype;
+        this.interestpointid = ipid;
+    }
+
+    public Content(long ipid, long ctype, String subEN, String subFR, String subPT, String subSL, String subEE, String subIT,
                    String titEN, String titFR, String titPT, String titSL, String titEE, String titIT,
-                   String desEN, String desFR, String desPT, String desSL, String desEE, String desIT) {
+                   String desEN, String desFR, String desPT, String desSL, String desEE, String desIT,
+                   long stype) {
+        this.interestpointid = ipid;
         this.pointtype = ctype;
         this.subjectEN = subEN;
         this.subjectFR = subFR;
@@ -60,6 +68,14 @@ public class Content implements Serializable {
         this.descriptionSL = desSL;
         this.descriptionEE = desEE;
         this.descriptionIT = desIT;
+        this.subjecttype = stype;
+    }
+
+    public long getIpId() {
+        return interestpointid;
+    }
+    public void setIpId(long interestpointid) {
+        this.interestpointid = interestpointid;
     }
 
     public long getcIdC() {
@@ -202,12 +218,10 @@ public class Content implements Serializable {
         this.pointtype = ctype;
     }
 
-    public InterestPoint getInterestPoint() {
-        return mInterestPoint;
+    public long getstype() {
+        return subjecttype;
     }
-    public void setInterestPoint(InterestPoint mIP) {
-        this.mInterestPoint = mIP;
+    public void setstype(long ctype) {
+        this.subjecttype = ctype;
     }
-
-
 }

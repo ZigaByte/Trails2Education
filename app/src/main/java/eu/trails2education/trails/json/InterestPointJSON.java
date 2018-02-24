@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import eu.trails2education.trails.ContentActivity;
 import eu.trails2education.trails.database.Content;
 import eu.trails2education.trails.database.InterestPoint;
-import eu.trails2education.trails.network.SubjectUtils;
+import eu.trails2education.trails.network.ContentUtils;
 
 /**
  * Created by Žiga on 23. 12. 2017.
@@ -52,22 +52,12 @@ public class InterestPointJSON {
 
         // MAYBE REDO THIS, NOT SURE
         if(jsonObject.has("subjects")){
-            final ArrayList<Content> contents = new ArrayList<Content>();
+            ArrayList<Integer> subjectIds = new ArrayList<Integer>();
             JSONArray subjects = jsonObject.getJSONArray("subjects");
             for(int i = 0; i < subjects.length();i++){
-                SubjectUtils.readSubjectFromNetwork(context, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            contents.add(ContentJSON.createContentFromJSON(context, response.getJSONArray("posts").getJSONObject(0), 0));
-                            ((ContentActivity)context).fillViews(); // Update the views TODO REMOVE after db implementation
-                        }catch (Exception e){
-                            Log.e("CONTENT LOADING ERROR", "ERROR WITH CONTENT");
-                        }
-                    }
-                }, (int)p.getcIdIP(), subjects.getJSONObject(i).getInt("idSubject"));
+                subjectIds.add(new Integer(subjects.getJSONObject(i).getInt("idSubject")));
             }
-            p.setContents(contents);
+            p.setSubjectIds(subjectIds);
         }
         return p;
     }

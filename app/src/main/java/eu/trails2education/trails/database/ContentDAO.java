@@ -27,7 +27,7 @@ public class ContentDAO {
             DatabaseHelper.COL_4_2, DatabaseHelper.COL_4_3, DatabaseHelper.COL_4_4, DatabaseHelper.COL_4_5, DatabaseHelper.COL_4_6, DatabaseHelper.COL_4_7,
             DatabaseHelper.COL_4_8, DatabaseHelper.COL_4_9, DatabaseHelper.COL_4_10, DatabaseHelper.COL_4_11, DatabaseHelper.COL_4_12, DatabaseHelper.COL_4_13,
             DatabaseHelper.COL_4_14, DatabaseHelper.COL_4_15, DatabaseHelper.COL_4_16, DatabaseHelper.COL_4_17, DatabaseHelper.COL_4_18, DatabaseHelper.COL_4_19,
-            DatabaseHelper.COL_4_20, DatabaseHelper.COL_4_21 };
+            DatabaseHelper.COL_4_20, DatabaseHelper.COL_4_21, DatabaseHelper.COL_4_22 };
 
     public ContentDAO(Context context) {
         mDbHelper = new DatabaseHelper(context);
@@ -49,40 +49,62 @@ public class ContentDAO {
         mDbHelper.close();
     }
 
-    public Content createContent(long ctype, String subEN, String subFR, String subPT, String subSL, String subEE, String subIT,
+    public static final int INSERT_TYPE_FULL = 1;
+    public static final int INSERT_TYPE_DATA = 2;
+    public static final int INSERT_TYPE_SUBJECT = 3;
+
+    public void createContent(Content c, int INSERT_TYPE){
+        createContent(c.getctype(), c.getsubEN(), c.getsubFR(), c.getsubPT(), c.getsubSL(), c.getsubEE(), c.getsubIT(),
+                c.gettitEN(), c.gettitFR(), c.gettitPT(), c.gettitSL(), c.gettitEE(), c.gettitIT(),
+                c.getdesEN(), c.getdesFR(), c.getdesPT(), c.getdesSL(), c.getdesEE(), c.getdesIT(), c.getIpId(), c.getstype(), INSERT_TYPE);
+    }
+
+    public void createContent(long ctype, String subEN, String subFR, String subPT, String subSL, String subEE, String subIT,
                                  String titEN, String titFR, String titPT, String titSL, String titEE, String titIT,
-                                 String desEN, String desFR, String desPT, String desSL, String desEE, String desIT, long interestpointId) {
+                                 String desEN, String desFR, String desPT, String desSL, String desEE, String desIT, long interestpointId, long subjectType, final int INSERT_TYPE) {
         ContentValues values = new ContentValues();
+
         values.put(DatabaseHelper.COL_4_1, interestpointId);
         values.put(DatabaseHelper.COL_4_3, ctype);
-        values.put(DatabaseHelper.COL_4_4, subEN);
-        values.put(DatabaseHelper.COL_4_5, subFR);
-        values.put(DatabaseHelper.COL_4_6, subPT);
-        values.put(DatabaseHelper.COL_4_7, subSL);
-        values.put(DatabaseHelper.COL_4_8, subEE);
-        values.put(DatabaseHelper.COL_4_9, subIT);
-        values.put(DatabaseHelper.COL_4_10, titEN);
-        values.put(DatabaseHelper.COL_4_11, titFR);
-        values.put(DatabaseHelper.COL_4_12, titPT);
-        values.put(DatabaseHelper.COL_4_13, titSL);
-        values.put(DatabaseHelper.COL_4_14, titEE);
-        values.put(DatabaseHelper.COL_4_15, titIT);
-        values.put(DatabaseHelper.COL_4_16, desEN);
-        values.put(DatabaseHelper.COL_4_17, desFR);
-        values.put(DatabaseHelper.COL_4_18, desPT);
-        values.put(DatabaseHelper.COL_4_19, desSL);
-        values.put(DatabaseHelper.COL_4_20, desEE);
-        values.put(DatabaseHelper.COL_4_21, desIT);
+        values.put(DatabaseHelper.COL_4_22, subjectType);
 
-        long insertId = mDatabase
-                .insert(DatabaseHelper.TABLE_4_NAME, null, values);
-        Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_4_NAME, mAllColumns,
-                DatabaseHelper.COL_4_2 + " = " + insertId, null, null,
-                null, null);
-        cursor.moveToFirst();
-        Content content = cursorToContent(cursor);
-        cursor.close();
-        return content;
+        if(INSERT_TYPE == INSERT_TYPE_FULL || INSERT_TYPE == INSERT_TYPE_SUBJECT){
+        }
+        if(INSERT_TYPE == INSERT_TYPE_FULL || INSERT_TYPE == INSERT_TYPE_DATA){
+            values.put(DatabaseHelper.COL_4_4, subEN);
+            values.put(DatabaseHelper.COL_4_5, subFR);
+            values.put(DatabaseHelper.COL_4_6, subPT);
+            values.put(DatabaseHelper.COL_4_7, subSL);
+            values.put(DatabaseHelper.COL_4_8, subEE);
+            values.put(DatabaseHelper.COL_4_9, subIT);
+            values.put(DatabaseHelper.COL_4_10, titEN);
+            values.put(DatabaseHelper.COL_4_11, titFR);
+            values.put(DatabaseHelper.COL_4_12, titPT);
+            values.put(DatabaseHelper.COL_4_13, titSL);
+            values.put(DatabaseHelper.COL_4_14, titEE);
+            values.put(DatabaseHelper.COL_4_15, titIT);
+            values.put(DatabaseHelper.COL_4_16, desEN);
+            values.put(DatabaseHelper.COL_4_17, desFR);
+            values.put(DatabaseHelper.COL_4_18, desPT);
+            values.put(DatabaseHelper.COL_4_19, desSL);
+            values.put(DatabaseHelper.COL_4_20, desEE);
+            values.put(DatabaseHelper.COL_4_21, desIT);
+        }
+
+        // preveri, ali content obstaja
+        Log.e("WHERE CLAUSE" , DatabaseHelper.COL_4_1 + " = " + interestpointId + " AND " + DatabaseHelper.COL_4_22 + " = " + subjectType);
+        Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_4_NAME, mAllColumns,DatabaseHelper.COL_4_1 + " = " + interestpointId + " AND " + DatabaseHelper.COL_4_22 + " = " + subjectType,
+                null, null,null, null);
+
+        if(cursor.getCount() > 0){
+            // Update the existing db entry.
+            Log.e("UPDATE CURRENT", DatabaseHelper.COL_4_1 + " = " + interestpointId + " AND " + DatabaseHelper.COL_4_22 + "=" + subjectType);
+            mDatabase.update(DatabaseHelper.TABLE_4_NAME, values, DatabaseHelper.COL_4_1 + " = " + interestpointId + " AND " + DatabaseHelper.COL_4_22 + "=" + subjectType, null);
+        }
+        else {
+            Log.e("Inserting with ", DatabaseHelper.COL_4_1 + " = " + interestpointId + " AND " + DatabaseHelper.COL_4_22 + "=" + subjectType );
+            mDatabase.insert(DatabaseHelper.TABLE_4_NAME, null, values);
+        }
     }
 
     public void deleteContent(Content content) {
@@ -101,8 +123,8 @@ public class ContentDAO {
                 + " = " + id, null);
     }
 
-    public List<Content> getAllContents() {
-        List<Content> listContents = new ArrayList<>();
+    public ArrayList<Content> getAllContents() {
+        ArrayList<Content> listContents = new ArrayList<>();
 
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_4_NAME, mAllColumns,
                 null, null, null, null, null);
@@ -118,16 +140,17 @@ public class ContentDAO {
         return listContents;
     }
 
-    public List<Content> getContentsOfInterestPoint(long interestpointId) {
-        List<Content> listContents = new ArrayList<>();
+    public ArrayList<Content> getContentsOfInterestPoint(long interestpointId) {
+        ArrayList<Content> listContents = new ArrayList<>();
 
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_4_NAME, mAllColumns,
-                DatabaseHelper.COL_4_2 + " = ?",
+                DatabaseHelper.COL_4_1 + " = ?",
                 new String[] { String.valueOf(interestpointId) }, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Content content = cursorToContent(cursor);
+            Log.e("Woo content", content.getdesEN() + " ?" + content.getsubEN());
             listContents.add(content);
             cursor.moveToNext();
         }
@@ -151,6 +174,7 @@ public class ContentDAO {
 
     private Content cursorToContent(Cursor cursor) {
         Content content = new Content();
+        content.setIpId(cursor.getLong(0));
         content.setIdC(cursor.getLong(1));
         content.setctype(cursor.getLong(2));
         content.setsubEN(cursor.getString(3));
@@ -171,14 +195,7 @@ public class ContentDAO {
         content.setdesSL(cursor.getString(18));
         content.setdesEE(cursor.getString(19));
         content.setdesIT(cursor.getString(20));
-
-        // get The interest point by id
-        long interestpointId = cursor.getLong(0);
-        InterestPointDAO dao = new InterestPointDAO(mContext);
-        InterestPoint interestpoint = dao.getInterestPointsById(interestpointId);
-        if (interestpoint != null)
-            content.setInterestPoint(interestpoint);
-
+        content.setstype(cursor.getLong(21));
         return content;
     }
 

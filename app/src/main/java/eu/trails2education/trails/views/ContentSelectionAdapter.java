@@ -70,7 +70,7 @@ public class ContentSelectionAdapter extends RecyclerView.Adapter<ContentSelecti
                 default: drawable = R.drawable.subject_history;break;
             }*/
             String subject = contentList.get(id).getsubEN();
-            Log.e("test", subject);
+            //Log.e("test", subject);
             if(subject.equals("Geography"))
                 drawable = R.drawable.subject_geography;
             else if(subject.equals("History"))

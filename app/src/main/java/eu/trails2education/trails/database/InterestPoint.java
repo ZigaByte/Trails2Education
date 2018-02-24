@@ -29,6 +29,7 @@ public class InterestPoint implements Serializable {
     private long pathwayID;
 
     private ArrayList<Content> contents = new ArrayList<Content>();
+    public ArrayList<Integer> subjectIds = new ArrayList<Integer>();
 
     private Pathway mPathway;
 
@@ -147,4 +148,12 @@ public class InterestPoint implements Serializable {
     public ArrayList<Content> getContents() {
         return contents;
     }
+
+    public void setSubjectIds(ArrayList<Integer> subjectIds) {
+        this.subjectIds = subjectIds;
+    }
+    public ArrayList<Integer> getSubjectIds() {
+        return subjectIds;
+    }
+
 }

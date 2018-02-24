@@ -88,6 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_4_19 = "descriptionSL";
     public static final String COL_4_20 = "descriptionEE";
     public static final String COL_4_21 = "descriptionIT";
+    public static final String COL_4_22 = "idSubjectType";
     public static final String TABLE_5_NAME = "multimedia";
     public static final String COL_5_1 = "idContent";
     public static final String COL_5_2 = "idMultElement";
@@ -145,12 +146,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String SQL_CREATE_TABLE_4 = "CREATE TABLE " + TABLE_4_NAME + "("
-            + COL_4_1 + " INTEGER NOT NULL, "
+            + COL_4_1 + " INTEGER, "
             + COL_4_2 + " INTEGER PRIMARY KEY, "
-            + COL_4_3 + " INTEGER NOT NULL, "
-            + COL_4_4 + " TEXT NOT NULL, " + COL_4_5 + " TEXT, " + COL_4_6 + " TEXT, " + COL_4_7 + " TEXT, " + COL_4_8 + " TEXT, " + COL_4_9 + " TEXT, "
-            + COL_4_10 + " TEXT NOT NULL, " + COL_4_11 + " TEXT, " + COL_4_12 + " TEXT, " + COL_4_13 + " TEXT, " + COL_4_14 + " TEXT, " + COL_4_15 + " TEXT, "
-            + COL_4_16 + " TEXT NOT NULL, " + COL_4_17 + " TEXT, " + COL_4_18 + " TEXT, " + COL_4_19 + " TEXT, " + COL_4_20 + " TEXT, " + COL_4_21 + " TEXT "
+            + COL_4_3 + " INTEGER, "
+            + COL_4_4 + " TEXT, " + COL_4_5 + " TEXT, " + COL_4_6 + " TEXT, " + COL_4_7 + " TEXT, " + COL_4_8 + " TEXT, " + COL_4_9 + " TEXT, "
+            + COL_4_10 + " TEXT, " + COL_4_11 + " TEXT, " + COL_4_12 + " TEXT, " + COL_4_13 + " TEXT, " + COL_4_14 + " TEXT, " + COL_4_15 + " TEXT, "
+            + COL_4_16 + " TEXT, " + COL_4_17 + " TEXT, " + COL_4_18 + " TEXT, " + COL_4_19 + " TEXT, " + COL_4_20 + " TEXT, " + COL_4_21 + " TEXT, "
+            + COL_4_22 + " INTEGER "
             + ");"
             ;
 
