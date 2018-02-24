@@ -63,7 +63,7 @@ public class PathwaysDAO {
                 p.getdifEN(), p.getdifFR(), p.getdifPT(), p.getdifSL(), p.getdifEE(), p.getdifIT(), p.getId());
     }
 
-    public Pathway createPathway(String nameEN, String nameFR, String namePT, String nameSL, String nameEE, String nameIT, String regDate,
+    public void createPathway(String nameEN, String nameFR, String namePT, String nameSL, String nameEE, String nameIT, String regDate,
                                  long totM, long estCal, long estTime, long estStep, String avgHB,
                                  String vehEN, String vehFR, String vehPT, String vehSL, String vehEE, String vehIT,
                                  String couEN, String couFR, String couPT, String couSL, String couEE, String couIT,
@@ -71,7 +71,7 @@ public class PathwaysDAO {
                                  String difEN, String difFR, String difPT, String difSL, String difEE, String difIT, long id) {
         ContentValues values = new ContentValues();
 
-        Pathway newPathway;
+        //Pathway newPathway;
 
         // preveri, ali pathway obstaja
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_1_NAME, mAllColumns,
@@ -119,12 +119,12 @@ public class PathwaysDAO {
 
             long insertId = mDatabase.update(DatabaseHelper.TABLE_1_NAME, values, DatabaseHelper.COL_1_1 +"=?",
                     new String[]{Long.toString(id)});   // mogoče ga pa kar dodamo iz prenešenega json-a
-            cursor = mDatabase.query(DatabaseHelper.TABLE_1_NAME, mAllColumns,
+           /* cursor = mDatabase.query(DatabaseHelper.TABLE_1_NAME, mAllColumns,
                     DatabaseHelper.COL_1_1 + " = " + insertId, null, null,
                     null, null);
             cursor.moveToFirst();
             newPathway = cursorToPathway(cursor);
-            cursor.close();
+            cursor.close();*/
 
         }
         else {   // v bazo dodaj novo pot
@@ -165,12 +165,12 @@ public class PathwaysDAO {
 
             long insertId = mDatabase
                     .insert(DatabaseHelper.TABLE_1_NAME, null, values);   // mogoče ga pa kar dodamo iz prenešenega json-a
-            cursor = mDatabase.query(DatabaseHelper.TABLE_1_NAME, mAllColumns,
+           /* cursor = mDatabase.query(DatabaseHelper.TABLE_1_NAME, mAllColumns,
                     DatabaseHelper.COL_1_1 + " = " + insertId, null, null,
                     null, null);
             cursor.moveToFirst();
             newPathway = cursorToPathway(cursor);
-            cursor.close();
+            cursor.close();*/
 
         }
 /*
@@ -191,7 +191,7 @@ public class PathwaysDAO {
                 coordinatesDao.deleteCoordinates(c);
             }
 */
-        return newPathway;
+        //return newPathway;
 
     }
 
@@ -254,7 +254,8 @@ public class PathwaysDAO {
 
     protected Pathway cursorToPathway(Cursor cursor) {
         Pathway pathway = new Pathway();
-        pathway.setId(cursor.getLong(0));
+        //pathway.setId(cursor.getLong(0));
+        pathway.setId(cursor.getInt(0));
         pathway.setNameEN(cursor.getString(1));
         pathway.setNameFR(cursor.getString(2));
         pathway.setNamePT(cursor.getString(3));
