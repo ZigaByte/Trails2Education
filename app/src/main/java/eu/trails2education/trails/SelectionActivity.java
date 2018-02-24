@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import eu.trails2education.trails.database.PathwaysDAO;
 import eu.trails2education.trails.views.SelectionAdapter;
 
 /**
@@ -19,6 +20,8 @@ public class SelectionActivity extends AppCompatActivity {
     ListView list;
     SelectionAdapter adapter;
 
+    private PathwaysDAO pathwaysDAO;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +29,10 @@ public class SelectionActivity extends AppCompatActivity {
 
         list = (ListView)findViewById(R.id.selectionList);
 
+        pathwaysDAO = new PathwaysDAO(this);
+
         // Getting adapter by passing xml data ArrayList
-        adapter = new SelectionAdapter(this);
+        adapter = new SelectionAdapter(this, pathwaysDAO);
         list.setAdapter(adapter);
 
         // Click event for single list row

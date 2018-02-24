@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import eu.trails2education.trails.R;
 import eu.trails2education.trails.database.Pathway;
+import eu.trails2education.trails.database.PathwaysDAO;
 import eu.trails2education.trails.json.PathwayJSON;
 import eu.trails2education.trails.network.RequestManager;
 import eu.trails2education.trails.network.PathUtils;
@@ -29,26 +30,47 @@ import eu.trails2education.trails.network.PathUtils;
 
 public class SelectionAdapter extends BaseAdapter {
 
-    private Activity activity;
+    private final Activity activity;
+    private final PathwaysDAO pathwaysDAO;
 
     private static LayoutInflater inflater = null;
 
     private ArrayList<Pathway> paths;
 
-    public SelectionAdapter(final Activity a) {
+    public SelectionAdapter(final Activity a, final PathwaysDAO pathwaysDAO) {
         activity = a;
-        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.pathwaysDAO = pathwaysDAO;
+        inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        // Read data from network and notify the list when done
-        paths = new ArrayList<Pathway>();
-        PathUtils.readPathListFromNetwork(a, new Response.Listener<JSONObject>() {
+        readPathwaysFromDatabase();
+        readPathwaysFromNetwork();
+    }
+
+    private void readPathwaysFromDatabase(){
+        paths = pathwaysDAO.getAllPathways();
+    }
+
+    /**
+     * Reads all the pathways from network, updates the database and updates the list from
+     * the updated database.
+     * */
+    private void readPathwaysFromNetwork(){
+        PathUtils.readPathListFromNetwork(activity, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                   // Load the pathways into the database
+                ArrayList<Pathway> networkPaths = null;
                 try {
-                    paths = PathwayJSON.createPathListFromJSON(a, response);
-                }catch(Exception e){
-                    Log.e("PATH LIST ERROR","Loading the paths list failed");
+                    networkPaths = PathwayJSON.createPathListFromJSON(activity, response);
+                } catch (Exception e) {
+                    Log.e("PATH LIST ERROR", "Loading the paths list failed");
                 }
+                    for(Pathway p : networkPaths){
+                        pathwaysDAO.createPathway(p);
+                    }
+                    // Load paths from database again.
+                    readPathwaysFromDatabase();
+
                 notifyDataSetChanged();
             }
         });

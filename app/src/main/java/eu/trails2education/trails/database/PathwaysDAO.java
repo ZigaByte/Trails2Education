@@ -54,6 +54,15 @@ public class PathwaysDAO {
         mDbHelper.close();
     }
 
+    public void createPathway(Pathway p){
+        createPathway(p.getNameEN(), p.getNameFR(), p.getNamePT(), p.getNameSL(), p.getNameEE(), p.getNameIT(), p.getregDate(),
+                p.gettotM(), p.getestCal(), p.getestTime(), p.getestStep(), p.getavgHB(),
+                p.getvehEN(), p.getvehFR(), p.getvehPT(), p.getvehSL(), p.getvehEE(), p.getvehIT(),
+                p.getcouEN(), p.getcouFR(), p.getcouPT(), p.getcouSL(), p.getcouEE(), p.getcouIT(),
+                p.getreg(), p.getar(),
+                p.getdifEN(), p.getdifFR(), p.getdifPT(), p.getdifSL(), p.getdifEE(), p.getdifIT(), p.getId());
+    }
+
     public Pathway createPathway(String nameEN, String nameFR, String namePT, String nameSL, String nameEE, String nameIT, String regDate,
                                  long totM, long estCal, long estTime, long estStep, String avgHB,
                                  String vehEN, String vehFR, String vehPT, String vehSL, String vehEE, String vehIT,
@@ -68,7 +77,11 @@ public class PathwaysDAO {
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_1_NAME, mAllColumns,
                 DatabaseHelper.COL_1_1 + " = " + id, null, null,
                 null, null);
-        if (cursor != null) {  // update podatkov
+
+        Log.e("Create Pathway", "Id: " + id + ", row count: " + cursor.getCount() );
+
+        if(cursor.getCount() > 0){
+        //if (cursor != null) {  // update podatkov
             cursor.moveToFirst();
 
             values.put(DatabaseHelper.COL_1_2, nameEN);
@@ -160,7 +173,7 @@ public class PathwaysDAO {
             cursor.close();
 
         }
-
+/*
         // izbrišemo vse podatke za pot, da dodamo nove
         InterestPointDAO interestPointDao = new InterestPointDAO(mContext);
         List<InterestPoint> listInterestPoints = interestPointDao.getInterestPointsOfPathway(id);
@@ -177,7 +190,7 @@ public class PathwaysDAO {
             for (Coordinates c : listCoordinates) {
                 coordinatesDao.deleteCoordinates(c);
             }
-
+*/
         return newPathway;
 
     }
@@ -208,8 +221,8 @@ public class PathwaysDAO {
                 + " = " + id, null);
     }
 
-    public List<Pathway> getAllPathways() {
-        List<Pathway> listPathways = new ArrayList<>();
+    public ArrayList<Pathway> getAllPathways() {
+        ArrayList<Pathway> listPathways = new ArrayList<>();
 
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_1_NAME, mAllColumns,
                 null, null, null, null, null);
