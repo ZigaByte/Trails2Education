@@ -49,33 +49,28 @@ public class CoordinatesDAO {
         mDbHelper.close();
     }
 
-    public Coordinates createCoordinates(double clat, double clon, double calt, long csort, long pathwayId) {
+    public void createCoordinates(Coordinates c){
+        createCoordinates(c.getclat(), c.getclon(), c.getcalt(), c.getcsort(), c.getPathwayID());
+    }
+
+    public void createCoordinates(double clat, double clon, double calt, long csort, long pathwayId) {
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COL_2_3, calt);
+        values.put(DatabaseHelper.COL_2_3, clat);
         values.put(DatabaseHelper.COL_2_4, clon);
         values.put(DatabaseHelper.COL_2_5, calt);
         values.put(DatabaseHelper.COL_2_6, csort);
         values.put(DatabaseHelper.COL_2_2, pathwayId);
-        long insertId = mDatabase
-                .insert(DatabaseHelper.TABLE_2_NAME, null, values);
-        Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_2_NAME, mAllColumns,
-                DatabaseHelper.COL_2_1 + " = " + insertId, null, null,
-                null, null);
-        cursor.moveToFirst();
-        Coordinates newCoordinates = cursorToCoordinates(cursor);
-        cursor.close();
-        return newCoordinates;
+        long insertId = mDatabase.insert(DatabaseHelper.TABLE_2_NAME, null, values);
     }
 
     public void deleteCoordinates(Coordinates coordinates) {
         long id = coordinates.getIdC();
-        System.out.println("the deleted coordinates has the id: " + id);
         mDatabase.delete(DatabaseHelper.TABLE_2_NAME, DatabaseHelper.COL_2_1
                 + " = " + id, null);
     }
 
-    public List<Coordinates> getAllCoordinates() {
-        List<Coordinates> listCoordinates = new ArrayList<>();
+    /*public ArrayList<Coordinates> getAllCoordinates() {
+        ArrayList<Coordinates> listCoordinates = new ArrayList<>();
 
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_2_NAME, mAllColumns,
                 null, null, null, null, null);
@@ -89,10 +84,14 @@ public class CoordinatesDAO {
         // make sure to close the cursor
         cursor.close();
         return listCoordinates;
+    }*/
+
+    public void deleteCoordinatesOfPathway(int pathwayId){
+        mDatabase.delete(DatabaseHelper.TABLE_2_NAME, DatabaseHelper.COL_2_2 +  "= ?", new String[]{String.valueOf(pathwayId)});
     }
 
-    public List<Coordinates> getCoordinatsOfPathway(long pathwayId) {
-        List<Coordinates> listCoordinates = new ArrayList<>();
+    public ArrayList<Coordinates> getCoordinatesOfPathway(long pathwayId) {
+        ArrayList<Coordinates> listCoordinates = new ArrayList<>();
 
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_2_NAME, mAllColumns,
                 DatabaseHelper.COL_2_2 + " = ?",
@@ -101,6 +100,9 @@ public class CoordinatesDAO {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Coordinates coordinates = cursorToCoordinates(cursor);
+
+            //Log.e("DATABASE COORDINATES", coordinates.getIdC() +  ", " + coordinates.getclat() + ", " + coordinates.getclon());
+
             listCoordinates.add(coordinates);
             cursor.moveToNext();
         }
@@ -112,17 +114,17 @@ public class CoordinatesDAO {
     private Coordinates cursorToCoordinates(Cursor cursor) {
         Coordinates coordinates = new Coordinates();
         coordinates.setIdC(cursor.getLong(0));
-        coordinates.setclat(cursor.getDouble(1));
-        coordinates.setclon(cursor.getDouble(2));
-        coordinates.setcalt(cursor.getDouble(3));
-        coordinates.setcsort(cursor.getLong(4));
+        coordinates.setPathwayID(cursor.getInt(1));
+        coordinates.setclat(cursor.getDouble(2));
+        coordinates.setclon(cursor.getDouble(3));
+        coordinates.setcalt(cursor.getDouble(4));
+        coordinates.setcsort(cursor.getLong(5));
 
         // get The pathway by id
-        long pathwayId = cursor.getLong(5);
-        PathwaysDAO dao = new PathwaysDAO(mContext);
+        /*PathwaysDAO dao = new PathwaysDAO(mContext);
         Pathway pathway = dao.getPathwayById(pathwayId);
         if (pathway != null)
-            coordinates.setPathway(pathway);
+            coordinates.setPathway(pathway);*/
 
         return coordinates;
     }

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Path;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -37,8 +38,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import eu.trails2education.trails.database.Coordinates;
+import eu.trails2education.trails.database.CoordinatesDAO;
 import eu.trails2education.trails.database.InterestPoint;
+import eu.trails2education.trails.database.InterestPointDAO;
 import eu.trails2education.trails.database.Pathway;
+import eu.trails2education.trails.database.PathwaysDAO;
 import eu.trails2education.trails.json.PathwayJSON;
 import eu.trails2education.trails.network.PathUtils;
 import eu.trails2education.trails.views.MyMarker;
@@ -46,7 +50,7 @@ import eu.trails2education.trails.views.MyMarker;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private Pathway path;
+    private Pathway pathway;
     private LatLng lastLocation;
 
     private FusedLocationProviderClient mFusedLocationClient;
@@ -56,13 +60,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public int minutes = 0;
     public int hours = 0;
 
-    private static Activity activityReference;
+    //private static Activity activityReference;
+    private PathwaysDAO pathwaysDAO;
+    private CoordinatesDAO coordinatesDAO;
+    private InterestPointDAO interestPointDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        activityReference = this;
+        //activityReference = this;
 
         setContentView(R.layout.activity_maps);
 
@@ -81,27 +88,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             requestLocation();
         }
 
-        int pathID = (int)getIntent().getExtras().getLong("PathID"); // Get the selected path
-        Log.e("MapsActivity", "Loading path with ID: " + pathID);
+        pathwaysDAO = new PathwaysDAO(this);
+        coordinatesDAO = new CoordinatesDAO(this);
+        interestPointDAO = new InterestPointDAO(this);
 
-        // Read the path from the network
-        PathUtils.readPathFromNetwork(this, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    path = PathwayJSON.createFullPathFromJSON(MapsActivity.this, response);
-                }catch(Exception e){
-                    Log.e("PATH LOADING ERROR", "Failed loading the path");
-                }
+        int pathID = (int)getIntent().getExtras().getLong("PathID"); // Get the selected path ID
+        readPathwayFromDatabase(pathID);
+        readPathwayFromNetwork(pathID);
 
-                fillViews(path);
-                pathReady = true;
-                if(mapReady)
-                    populateMap();
-            }
-        }, pathID);
-
-
+        // Set up the back button. TODO: Change to finish path thing.
         findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,8 +126,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
             }
         }, 0, 1000);
+    }
 
+    private void readPathwayFromDatabase(int pathwayId) {
+        pathway = pathwaysDAO.getPathwayById(pathwayId);
+        pathway.setCoorinates(coordinatesDAO.getCoordinatesOfPathway(pathwayId));
 
+        fillViews(pathway);
+        pathReady = true;
+        if(mapReady)
+            populateMap();
+    }
+
+    private void readPathwayFromNetwork(final int pathwayId){
+        // Read the path from the network
+        PathUtils.readPathFromNetwork(this, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Pathway newPathway = null;
+                try {
+                    newPathway = PathwayJSON.createFullPathFromJSON(MapsActivity.this, response);
+                }catch(Exception e){
+                    Log.e("PATH LOADING ERROR", "Failed loading the path");
+                }
+                // Insert Pathway into the database
+                pathwaysDAO.createPathway(newPathway);
+
+                // Insert the cooridnates into the database
+                coordinatesDAO.deleteCoordinatesOfPathway((int)newPathway.getId());
+                for(Coordinates c : newPathway.getCoordinates()){
+                    //Log.e("NETWORK COORDINATES", c.getIdC() +  ", " + c.getclat() + ", " + c.getclon());
+                    coordinatesDAO.createCoordinates(c);
+                }
+
+                readPathwayFromDatabase(pathwayId);
+            }
+        }, pathwayId);
     }
 
     private void fillViews(Pathway path){
@@ -176,25 +205,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void populateMap(){
         boolean first = true;
         // Move to the first point of the path
-        if(path.getCoordinates().size() == 0)
+        if(pathway.getCoordinates().size() == 0)
             return;
         else{
-            ArrayList<Coordinates> coordinates = path.getCoordinates();
+            ArrayList<Coordinates> coordinates = pathway.getCoordinates();
             LatLng latLng = new LatLng(coordinates.get(0).getclat(), coordinates.get(0).getclon());
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
         }
 
         // Create the path line
         PolylineOptions options = new PolylineOptions().clickable(false);
-        for(Coordinates coordinate : path.getCoordinates()){
+        for(Coordinates coordinate : pathway.getCoordinates()){
             LatLng latLng = new LatLng(coordinate.getclat(), coordinate.getclon());
             options.add(latLng);
         }
         Polyline line = mMap.addPolyline(options);
 
         // Add the
-        for(InterestPoint interestPoint : path.getInterestPoints()){
-            MyMarker myMarker = new MyMarker(this, interestPoint, path);
+        for(InterestPoint interestPoint : pathway.getInterestPoints()){
+            MyMarker myMarker = new MyMarker(this, interestPoint, pathway);
             Marker marker = mMap.addMarker(myMarker.markerOptions);
 
             marker.setTag(myMarker);
@@ -252,7 +281,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public String read_timer(){
         String beri="";
         try{
-            beri = ((TextView)activityReference.findViewById(R.id.timeText)).getText().toString();
+            beri = ((TextView)this.findViewById(R.id.timeText)).getText().toString();
         }
         catch (Exception ex){
             Log.d("Exception","Exception of type"+ex.getMessage());

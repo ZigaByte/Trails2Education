@@ -140,7 +140,7 @@ public class PathwaysDAO {
 
         // deleting coordinates
         CoordinatesDAO coordinatesDao = new CoordinatesDAO(mContext);
-        List<Coordinates> listCoordinates = coordinatesDao.getCoordinatsOfPathway(id);
+        List<Coordinates> listCoordinates = coordinatesDao.getCoordinatesOfPathway(id);
         if (listCoordinates != null && !listCoordinates.isEmpty())
             for (Coordinates c : listCoordinates) {
                 coordinatesDao.deleteCoordinates(c);

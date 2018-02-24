@@ -98,8 +98,8 @@ public class InterestPointDAO {
                 + " = " + id, null);
     }
 
-    public List<InterestPoint> getAllInterestPoints() {
-        List<InterestPoint> listInterestPoints = new ArrayList<>();
+    public ArrayList<InterestPoint> getAllInterestPoints() {
+        ArrayList<InterestPoint> listInterestPoints = new ArrayList<>();
 
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_3_NAME, mAllColumns,
                 null, null, null, null, null);
@@ -115,8 +115,8 @@ public class InterestPointDAO {
         return listInterestPoints;
     }
 
-    public List<InterestPoint> getInterestPointsOfPathway(long pathwayId) {
-        List<InterestPoint> listInterestPoints = new ArrayList<>();
+    public ArrayList<InterestPoint> getInterestPointsOfPathway(long pathwayId) {
+        ArrayList<InterestPoint> listInterestPoints = new ArrayList<>();
 
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_3_NAME, mAllColumns,
                 DatabaseHelper.COL_3_2 + " = ?",

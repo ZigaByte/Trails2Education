@@ -19,7 +19,7 @@ public class Coordinates implements Serializable {
 
     private long pathwayID;
 
-    private Pathway mPathway;
+    //private Pathway mPathway;
 
     public Coordinates() {
 
@@ -74,11 +74,11 @@ public class Coordinates implements Serializable {
         this.sort = csort;
     }
 
-    public Pathway getPathway() {
+   /* public Pathway getPathway() {
         return mPathway;
     }
     public void setPathway(Pathway mPathway) {
         this.mPathway = mPathway;
     }
-
+*/
 }
