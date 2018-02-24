@@ -131,6 +131,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void readPathwayFromDatabase(int pathwayId) {
         pathway = pathwaysDAO.getPathwayById(pathwayId);
         pathway.setCoorinates(coordinatesDAO.getCoordinatesOfPathway(pathwayId));
+        pathway.setInterestPoints(interestPointDAO.getInterestPointsOfPathway(pathwayId));
 
         fillViews(pathway);
         pathReady = true;
@@ -155,8 +156,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Insert the cooridnates into the database
                 coordinatesDAO.deleteCoordinatesOfPathway((int)newPathway.getId());
                 for(Coordinates c : newPathway.getCoordinates()){
-                    //Log.e("NETWORK COORDINATES", c.getIdC() +  ", " + c.getclat() + ", " + c.getclon());
                     coordinatesDAO.createCoordinates(c);
+                }
+                // Insert the interest points into the database
+                for(InterestPoint ip : newPathway.getInterestPoints()){
+                    ip.setPathwayID(newPathway.getId()); // Set the pathway ID as it is not present in the JSON TODO: Tell Duarte to include it
+                    interestPointDAO.createInterestPoint(ip, InterestPointDAO.INSERT_TYPE_COORDINATES);
                 }
 
                 readPathwayFromDatabase(pathwayId);

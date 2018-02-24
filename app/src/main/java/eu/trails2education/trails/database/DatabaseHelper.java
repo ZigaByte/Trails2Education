@@ -63,7 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_3_7 = "interestPointNameEE";
     public static final String COL_3_8 = "interestPointNameIT";
     public static final String COL_3_9 = "idPointType";
-    public static final String COL_3_10 = "lat";    // Svetlana: 13.1.2018 dodala koordinate
+    public static final String COL_3_10 = "lat";
     public static final String COL_3_11 = "lon";
     public static final String COL_3_12 = "alt";
     public static final String TABLE_4_NAME = "content";
@@ -128,13 +128,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ;
 
     private static final String SQL_CREATE_TABLE_3 = "CREATE TABLE " + TABLE_3_NAME + "("
-            + COL_3_1 + " INTEGER NOT NULL, "
+            + COL_3_1 + " INTEGER, "
             + COL_3_2 + " INTEGER PRIMARY KEY, "
-            + COL_3_3 + " TEXT NOT NULL, " + COL_3_4 + " TEXT, " + COL_3_5 + " TEXT, " + COL_3_6 + " TEXT, " + COL_3_7 + " TEXT, " + COL_3_8 + " TEXT, "
-            + COL_3_9 + " INTEGER"
-            + COL_3_10 + " REAL NOT NULL, "
-            + COL_3_11 + " REAL NOT NULL, "
-            + COL_3_12 + " REAL NOT NULL "
+            + COL_3_3 + " TEXT, "
+            + COL_3_4 + " TEXT, "
+            + COL_3_5 + " TEXT, "
+            + COL_3_6 + " TEXT, "
+            + COL_3_7 + " TEXT, "
+            + COL_3_8 + " TEXT, "
+            + COL_3_9 + " INTEGER,"
+            + COL_3_10 + " REAL, "
+            + COL_3_11 + " REAL, "
+            + COL_3_12 + " REAL "
             + ");"
             ;    // Svetlana: 13.1.2018 dodala koordinate
 

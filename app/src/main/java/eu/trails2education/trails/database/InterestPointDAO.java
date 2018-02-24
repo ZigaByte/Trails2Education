@@ -56,30 +56,48 @@ public class InterestPointDAO {
         mDbHelper.close();
     }
 
-    public InterestPoint createInterestPoint(String nameEN, String nameFR, String namePT, String nameSL, String nameEE, String nameIT,
-                                             long ctype, long pathwayId, double clat, double clon, double calt) {
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COL_3_1, pathwayId);
-        values.put(DatabaseHelper.COL_3_3, nameEN);
-        values.put(DatabaseHelper.COL_3_4, nameFR);
-        values.put(DatabaseHelper.COL_3_5, namePT);
-        values.put(DatabaseHelper.COL_3_6, nameSL);
-        values.put(DatabaseHelper.COL_3_7, nameEE);
-        values.put(DatabaseHelper.COL_3_8, nameIT);
-        values.put(DatabaseHelper.COL_3_9, ctype);
-        values.put(DatabaseHelper.COL_3_10, clat);    // Svetlana: 13.1.2018 dodala koordinate
-        values.put(DatabaseHelper.COL_3_11, clon);
-        values.put(DatabaseHelper.COL_3_12, calt);
+    public static final int INSERT_TYPE_FULL = 1;
+    public static final int INSERT_TYPE_COORDINATES = 2;
+    public static final int INSERT_TYPE_DATA = 3;
 
-        long insertId = mDatabase
-                .insert(DatabaseHelper.TABLE_3_NAME, null, values);
-        Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_3_NAME, mAllColumns,
-                DatabaseHelper.COL_3_1 + " = " + insertId, null, null,
-                null, null);
-        cursor.moveToFirst();
-        InterestPoint interestpoint = cursorToInterestPoint(cursor);
-        cursor.close();
-        return interestpoint;
+    public void createInterestPoint(InterestPoint ip, final int INSERT_TYPE){
+        createInterestPoint(ip.getNameEN(), ip.getNameFR(), ip.getNamePT(), ip.getNameSL(), ip.getNameEE(), ip.getNameIT(),
+                ip.getctype(), ip.getPathwayID(), ip.getclat(), ip.getclon(), ip.getcalt(), ip.getcIdIP(), INSERT_TYPE);
+    }
+
+    public void createInterestPoint(String nameEN, String nameFR, String namePT, String nameSL, String nameEE, String nameIT,
+                                             long ctype, long pathwayId, double clat, double clon, double calt, long id, final int INSERT_TYPE) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COL_3_9, ctype);
+
+        if(INSERT_TYPE == INSERT_TYPE_FULL || INSERT_TYPE == INSERT_TYPE_COORDINATES){
+            values.put(DatabaseHelper.COL_3_10, clat);
+            values.put(DatabaseHelper.COL_3_11, clon);
+            values.put(DatabaseHelper.COL_3_12, calt);
+            values.put(DatabaseHelper.COL_3_1, pathwayId);
+        }
+        if(INSERT_TYPE == INSERT_TYPE_FULL || INSERT_TYPE == INSERT_TYPE_DATA){
+            values.put(DatabaseHelper.COL_3_3, nameEN);
+            values.put(DatabaseHelper.COL_3_4, nameFR);
+            values.put(DatabaseHelper.COL_3_5, namePT);
+            values.put(DatabaseHelper.COL_3_6, nameSL);
+            values.put(DatabaseHelper.COL_3_7, nameEE);
+            values.put(DatabaseHelper.COL_3_8, nameIT);
+        }
+
+        // preveri, ali pathway obstaja
+        Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_3_NAME, mAllColumns,DatabaseHelper.COL_3_2 + " = " + id, null, null,null, null);
+
+        if(cursor.getCount() > 0){
+            // Update the existing db entry.
+            mDatabase.update(DatabaseHelper.TABLE_3_NAME, values, DatabaseHelper.COL_3_2 +"=?", new String[]{Long.toString(id)});
+        }
+        else {
+            // Create new db entry. Makes sure to also include the id provided from the network.
+            values.put(DatabaseHelper.COL_3_2, id);
+            mDatabase.insert(DatabaseHelper.TABLE_3_NAME, null, values);
+        }
+
     }
 
     public void deleteInterestPoint(InterestPoint interestpoint) {
@@ -119,7 +137,7 @@ public class InterestPointDAO {
         ArrayList<InterestPoint> listInterestPoints = new ArrayList<>();
 
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_3_NAME, mAllColumns,
-                DatabaseHelper.COL_3_2 + " = ?",
+                DatabaseHelper.COL_3_1 + " = ?",
                 new String[] { String.valueOf(pathwayId) }, null, null, null);
 
         cursor.moveToFirst();
@@ -156,9 +174,9 @@ public class InterestPointDAO {
         interestpoint.setNameEE(cursor.getString(6));
         interestpoint.setNameIT(cursor.getString(7));
         interestpoint.setctype(cursor.getLong(8));
-        interestpoint.setclat(cursor.getLong(9));   // Svetlana: 13.1.2018 dodala koordinate
-        interestpoint.setclon(cursor.getLong(10));
-        interestpoint.setcalt(cursor.getLong(11));
+        interestpoint.setclat(cursor.getDouble(9));   // Svetlana: 13.1.2018 dodala koordinate
+        interestpoint.setclon(cursor.getDouble(10));
+        interestpoint.setcalt(cursor.getDouble(11));
 
         // get The pathway by id
         long pathwayId = cursor.getLong(0);

@@ -18,6 +18,7 @@ import java.util.TimerTask;
 
 import eu.trails2education.trails.database.Content;
 import eu.trails2education.trails.database.InterestPoint;
+import eu.trails2education.trails.database.InterestPointDAO;
 import eu.trails2education.trails.database.Pathway;
 import eu.trails2education.trails.json.InterestPointJSON;
 import eu.trails2education.trails.json.PathwayJSON;
@@ -30,6 +31,8 @@ import static android.R.attr.name;
 public class ContentActivity extends AppCompatActivity {
 
     RecyclerView contentList;
+
+    private InterestPointDAO interestPointDAO;
 
     private InterestPoint interestPoint;
     private Pathway path;
@@ -53,20 +56,11 @@ public class ContentActivity extends AppCompatActivity {
             }
         });
 
+        interestPointDAO = new InterestPointDAO(this);
+
         final int interestPointID = (int)getIntent().getExtras().getLong("InterestPointID");
-
-        InterestPointUtils.readInterestPointFromNetwork(this, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    interestPoint = InterestPointJSON.createInterestPointFromJSON(ContentActivity.this, response.getJSONArray("posts").getJSONObject(0), 0);
-                    fillViews();
-
-                }catch(Exception e){
-                    Log.e("INTEREST POINT LOADING ", "ERROR at id: " + interestPointID);
-                }
-            }
-        }, interestPointID);
+        readInterestPointFromDatabase(interestPointID);
+        readInterestPointFromNetwork(interestPointID);
 
         String time = getIntent().getExtras().getString("time");//((TextView)findViewById(R.id.timeText)).getText().toString();
         int colonStart=time.indexOf(":");
@@ -99,10 +93,32 @@ public class ContentActivity extends AppCompatActivity {
 
     }
 
+    private void readInterestPointFromDatabase(int interestPointID){
+        interestPoint = interestPointDAO.getInterestPointsById(interestPointID);
+        fillViews();
+    }
+
+    private void readInterestPointFromNetwork(final int interestPointID){
+        InterestPointUtils.readInterestPointFromNetwork(this, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                InterestPoint newInterestPoint = null;
+                try {
+                    newInterestPoint = InterestPointJSON.createInterestPointFromJSON(ContentActivity.this, response.getJSONArray("posts").getJSONObject(0), 0);
+                }catch(Exception e){
+                    Log.e("INTEREST POINT LOADING ", "ERROR at id: " + interestPointID);
+                }
+                interestPointDAO.createInterestPoint(newInterestPoint, InterestPointDAO.INSERT_TYPE_DATA);
+                readInterestPointFromDatabase(interestPointID);
+            }
+        }, interestPointID);
+    }
+
     /**
      * Updates the views. Network or DB updates may change data in interestPoint.
      * */
     public void fillViews(){
+        Log.e("CONTENT", ""+ interestPoint.getContents().size());
         if(interestPoint.getContents().size() > 0){
             contentList = (RecyclerView)findViewById(R.id.recyclerView);
             contentList.setAdapter(new ContentSelectionAdapter(this, interestPoint.getContents())); // Pass the ids for the icons
