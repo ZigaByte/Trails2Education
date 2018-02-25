@@ -50,7 +50,7 @@ public class InterestPointJSON {
         p.setNameEE(SafeReader.readString(jsonObject, ipnameEEKey));
         p.setNameIT(SafeReader.readString(jsonObject, ipnameITKey));
 
-        // MAYBE REDO THIS, NOT SURE
+        // Get the subject integers and store them for later.
         if(jsonObject.has("subjects")){
             ArrayList<Integer> subjectIds = new ArrayList<Integer>();
             JSONArray subjects = jsonObject.getJSONArray("subjects");

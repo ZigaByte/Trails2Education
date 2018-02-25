@@ -3,12 +3,9 @@ package eu.trails2education.trails.views;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
-import eu.trails2education.trails.R;
 
 /**
  * Created by Žiga on 25. 02. 2018.
@@ -54,7 +51,6 @@ public class MyTimer extends MyTextViewBold {
                             }
                         }
                         setText(hours + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
-                        //(TextView)((Activity) context).findViewById(R.id.timeText)
                     }
                 });
             }
@@ -63,10 +59,9 @@ public class MyTimer extends MyTextViewBold {
 
     public void setTime(String time){
         int colonStart=time.indexOf(":");
-
-        seconds = Integer.parseInt(time.substring(colonStart+4));//Integer.parseInt(String.valueOf(((TextView)findViewById(R.id.timeText)).getText().subSequence(colonStart+4,colonStart+5)));
-        minutes = Integer.parseInt(time.substring(colonStart+1,colonStart+2));//Integer.parseInt(String.valueOf(((TextView)findViewById(R.id.timeText)).getText().subSequence(colonStart+1,colonStart+2)));
-        hours = Integer.parseInt(time.substring(0,colonStart));//Integer.parseInt(String.valueOf(((TextView)findViewById(R.id.timeText)).getText().subSequence(0,colonStart)));
+        seconds = Integer.parseInt(time.substring(colonStart+4));
+        minutes = Integer.parseInt(time.substring(colonStart+1,colonStart+2));
+        hours = Integer.parseInt(time.substring(0,colonStart));
     }
 
 }

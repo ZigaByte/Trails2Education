@@ -112,8 +112,11 @@ public class InterestPointDAO {
             }
         }
 
-        mDatabase.delete(DatabaseHelper.TABLE_3_NAME, DatabaseHelper.COL_3_2
-                + " = " + id, null);
+        mDatabase.delete(DatabaseHelper.TABLE_3_NAME, DatabaseHelper.COL_3_2 + " = " + id, null);
+    }
+
+    public void deleteInterestPointsOfPathway(int pathwayId){
+        mDatabase.delete(DatabaseHelper.TABLE_3_NAME, DatabaseHelper.COL_3_1 + " = " + pathwayId, null);
     }
 
     public ArrayList<InterestPoint> getAllInterestPoints() {

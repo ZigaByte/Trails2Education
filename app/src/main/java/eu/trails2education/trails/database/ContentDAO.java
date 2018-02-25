@@ -92,24 +92,20 @@ public class ContentDAO {
         }
 
         // preveri, ali content obstaja
-        Log.e("WHERE CLAUSE" , DatabaseHelper.COL_4_1 + " = " + interestpointId + " AND " + DatabaseHelper.COL_4_22 + " = " + subjectType);
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_4_NAME, mAllColumns,DatabaseHelper.COL_4_1 + " = " + interestpointId + " AND " + DatabaseHelper.COL_4_22 + " = " + subjectType,
                 null, null,null, null);
 
         if(cursor.getCount() > 0){
             // Update the existing db entry.
-            Log.e("UPDATE CURRENT", DatabaseHelper.COL_4_1 + " = " + interestpointId + " AND " + DatabaseHelper.COL_4_22 + "=" + subjectType);
             mDatabase.update(DatabaseHelper.TABLE_4_NAME, values, DatabaseHelper.COL_4_1 + " = " + interestpointId + " AND " + DatabaseHelper.COL_4_22 + "=" + subjectType, null);
         }
         else {
-            Log.e("Inserting with ", DatabaseHelper.COL_4_1 + " = " + interestpointId + " AND " + DatabaseHelper.COL_4_22 + "=" + subjectType );
             mDatabase.insert(DatabaseHelper.TABLE_4_NAME, null, values);
         }
     }
 
     public void deleteContent(Content content) {
         long id = content.getcIdC();
-        System.out.println("the deleted content has the id: " + id);
 
         MultimediaDAO multimediaDao = new MultimediaDAO(mContext);
         List<Multimedia> listMultimedia = multimediaDao.getMultimediaOfContent(id);
@@ -150,7 +146,6 @@ public class ContentDAO {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Content content = cursorToContent(cursor);
-            Log.e("Woo content", content.getdesEN() + " ?" + content.getsubEN());
             listContents.add(content);
             cursor.moveToNext();
         }

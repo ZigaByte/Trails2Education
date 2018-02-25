@@ -55,12 +55,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private FusedLocationProviderClient mFusedLocationClient;
 
-    // Timer
-    public int seconds = 0;
-    public int minutes = 0;
-    public int hours = 0;
-
-    //private static Activity activityReference;
     private PathwaysDAO pathwaysDAO;
     private CoordinatesDAO coordinatesDAO;
     private InterestPointDAO interestPointDAO;
@@ -68,8 +62,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //activityReference = this;
 
         setContentView(R.layout.activity_maps);
 
@@ -80,7 +72,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Start setting up the location listener
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         1);
@@ -137,6 +128,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     coordinatesDAO.createCoordinates(c);
                 }
                 // Insert the interest points into the database
+                interestPointDAO.deleteInterestPointsOfPathway((int)newPathway.getId());
                 for(InterestPoint ip : newPathway.getInterestPoints()){
                     ip.setPathwayID(newPathway.getId()); // Set the pathway ID as it is not present in the JSON TODO: Tell Duarte to include it
                     interestPointDAO.createInterestPoint(ip, InterestPointDAO.INSERT_TYPE_COORDINATES);
@@ -148,8 +140,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void fillViews(Pathway path){
-        Log.e("Path" , path + " ");
-        Log.e("Path" ,  path.toString());
         ((TextView)findViewById(R.id.distanceTextContent)).setText(String.valueOf(path.gettotM()));
         ((TextView)findViewById(R.id.heartRateTextContent)).setText(String.valueOf(path.getavgHB()));
         ((TextView)findViewById(R.id.caloriesTextContent)).setText(String.valueOf(path.getestCal()));
@@ -159,9 +149,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(name.length() > 12)
             name = name.substring(0, 8) + " ..";
 
-        ((TextView)findViewById(R.id.textView2)).setText(name);  // Svetlana: 17.1.2018
+        ((TextView)findViewById(R.id.textView2)).setText(name);
         ((TextView)findViewById(R.id.textView3)).setText(String.valueOf(path.getcouEN()));
-
     }
 
     @Override
@@ -234,18 +223,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void requestLocation(){
         if(checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-            mFusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            if (location != null) {
-                                lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                                locationReady = true;
-                                if (mapReady)
-                                    addLastLocation();
-                            }
-                        }
-                    });
+            mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        locationReady = true;
+                        if (mapReady)
+                            addLastLocation();
+                    }
+                }
+            });
         }
     }
 

@@ -69,23 +69,6 @@ public class CoordinatesDAO {
                 + " = " + id, null);
     }
 
-    /*public ArrayList<Coordinates> getAllCoordinates() {
-        ArrayList<Coordinates> listCoordinates = new ArrayList<>();
-
-        Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_2_NAME, mAllColumns,
-                null, null, null, null, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Coordinates coordinates = cursorToCoordinates(cursor);
-            listCoordinates.add(coordinates);
-            cursor.moveToNext();
-        }
-        // make sure to close the cursor
-        cursor.close();
-        return listCoordinates;
-    }*/
-
     public void deleteCoordinatesOfPathway(int pathwayId){
         mDatabase.delete(DatabaseHelper.TABLE_2_NAME, DatabaseHelper.COL_2_2 +  "= ?", new String[]{String.valueOf(pathwayId)});
     }

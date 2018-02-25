@@ -73,10 +73,6 @@ public class ContentActivity extends AppCompatActivity {
         interestPoint = interestPointDAO.getInterestPointsById(interestPointID);
         interestPoint.setContents(contentDAO.getContentsOfInterestPoint(interestPointID));
         fillViews();
-
-        for(Content c: interestPoint.getContents()){
-            Log.e("Content ", "IpID: " + c.getIpId() + ", " + c.getstype() + ", " + c.getsubEN());
-        }
     }
 
     private void readInterestPointFromNetwork(final int interestPointID){
@@ -99,19 +95,16 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     private void readContentFromNetwork(final int interestPointID, ArrayList<Integer> subjectIds){
-        Log.e("Loading CONTENT", "subject id size: "+ subjectIds.size());
         final ArrayList<Content> contents = new ArrayList<Content>();
         final Context context = this;
         for(Integer i : subjectIds){
-            final int ii = i;
+            final int ii = i; // ok.
             ContentUtils.readContentFromNetwork(this, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     Content newContent = null;
                     try {
                         newContent = ContentJSON.createContentFromJSON(context, response.getJSONArray("posts").getJSONObject(0), 0);
-                        //interestPoint.contents.add(ContentJSON.createContentFromJSON(context, response.getJSONArray("posts").getJSONObject(0), 0));
-                        //fillViews(); // Update the views TODO REMOVE after db implementation
                     }catch (Exception e){
                         Log.e("CONTENT LOADING ERROR", "ERROR WITH CONTENT");
                     }

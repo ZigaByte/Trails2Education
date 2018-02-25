@@ -16,6 +16,8 @@ import com.android.volley.toolbox.NetworkImageView;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import eu.trails2education.trails.R;
 import eu.trails2education.trails.database.Pathway;
@@ -48,6 +50,14 @@ public class SelectionAdapter extends BaseAdapter {
 
     private void readPathwaysFromDatabase(){
         paths = pathwaysDAO.getAllPathways();
+
+        // Sort and push Krsko first :D
+        Collections.sort(paths, new Comparator<Pathway>() {
+            @Override
+            public int compare(Pathway pathway, Pathway t1) {
+                return (pathway.getId() == 30) ? -1 : 1;
+            }
+        });
     }
 
     /**
