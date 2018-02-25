@@ -14,7 +14,6 @@ import com.android.volley.Response;
 
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -31,8 +30,7 @@ import eu.trails2education.trails.network.ContentUtils;
 import eu.trails2education.trails.network.InterestPointUtils;
 import eu.trails2education.trails.network.PathUtils;
 import eu.trails2education.trails.views.ContentSelectionAdapter;
-
-import static android.R.attr.name;
+import eu.trails2education.trails.views.MyTimer;
 
 public class ContentActivity extends AppCompatActivity {
 
@@ -44,10 +42,6 @@ public class ContentActivity extends AppCompatActivity {
     private InterestPoint interestPoint;
     private Pathway path;
 
-    // Timer
-    public int seconds = 0;
-    public int minutes = 0;
-    public int hours = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,33 +65,7 @@ public class ContentActivity extends AppCompatActivity {
         readInterestPointFromNetwork(interestPointID);
 
         String time = getIntent().getExtras().getString("time");//((TextView)findViewById(R.id.timeText)).getText().toString();
-        int colonStart=time.indexOf(":");
-
-        seconds = Integer.parseInt(time.substring(colonStart+4));//Integer.parseInt(String.valueOf(((TextView)findViewById(R.id.timeText)).getText().subSequence(colonStart+4,colonStart+5)));
-        minutes = Integer.parseInt(time.substring(colonStart+1,colonStart+2));//Integer.parseInt(String.valueOf(((TextView)findViewById(R.id.timeText)).getText().subSequence(colonStart+1,colonStart+2)));
-        hours = Integer.parseInt(time.substring(0,colonStart));//Integer.parseInt(String.valueOf(((TextView)findViewById(R.id.timeText)).getText().subSequence(0,colonStart)));
-
-        Timer t = new Timer();
-        t.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        seconds++;
-                        if(seconds >= 60){
-                            seconds -= 60;
-                            minutes++;
-                            if(minutes >= 60){
-                                minutes-= 60;
-                                hours++;
-                            }
-                        }
-                        ((TextView)findViewById(R.id.timeText)).setText(hours + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
-                    }
-                });
-            }
-        }, 0, 1000);
+        ((MyTimer)findViewById(R.id.timeText)).setTime(time);
 
     }
 

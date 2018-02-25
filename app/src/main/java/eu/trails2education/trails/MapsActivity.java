@@ -88,6 +88,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             requestLocation();
         }
 
+        // Database connections
         pathwaysDAO = new PathwaysDAO(this);
         coordinatesDAO = new CoordinatesDAO(this);
         interestPointDAO = new InterestPointDAO(this);
@@ -103,29 +104,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 finish();
             }
         });
-
-        // Create the timer
-        Timer t = new Timer();
-        t.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        seconds++;
-                        if(seconds >= 60){
-                            seconds -= 60;
-                            minutes++;
-                            if(minutes >= 60){
-                                minutes-= 60;
-                                hours++;
-                            }
-                        }
-                        ((TextView)findViewById(R.id.timeText)).setText(hours + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
-                    }
-                });
-            }
-        }, 0, 1000);
     }
 
     private void readPathwayFromDatabase(int pathwayId) {

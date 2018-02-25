@@ -30,16 +30,6 @@
             android:scaleType="centerCrop"
             android:src="@drawable/button_back" />
 
-        <!-- Nobody is really sure what this button does, so removed for the time being
-        <ImageButton
-            android:id="@+id/button_options"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:padding="0dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/button_options"
-            android:visibility="invisible" />
-        -->
     </LinearLayout>
 
     <View
@@ -62,7 +52,7 @@
 
             android:src="@drawable/clock" />
 
-        <eu.trails2education.trails.views.MyTextViewBold
+        <eu.trails2education.trails.views.MyTimer
             android:id="@+id/timeText"
             style="@style/timeText"
             android:layout_width="wrap_content"
