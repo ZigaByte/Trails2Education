@@ -2,6 +2,9 @@ package eu.trails2education.trails;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Path;
@@ -88,11 +91,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         readPathwayFromDatabase(pathID);
         readPathwayFromNetwork(pathID);
 
+        final Context context = this;
         // Set up the back button. TODO: Change to finish path thing.
         findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                finish();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Finish the path?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
             }
         });
     }
@@ -149,7 +170,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(name.length() > 12)
             name = name.substring(0, 8) + " ..";
 
-        ((TextView)findViewById(R.id.textView2)).setText(name);
+        //((TextView)findViewById(R.id.textView2)).setText(name);
+        ((TextView)findViewById(R.id.textView2)).setText(String.valueOf(path.getreg()));
         ((TextView)findViewById(R.id.textView3)).setText(String.valueOf(path.getcouEN()));
     }
 
