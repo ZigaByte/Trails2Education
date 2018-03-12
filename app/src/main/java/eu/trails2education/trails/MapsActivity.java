@@ -1,16 +1,11 @@
 package eu.trails2education.trails;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Path;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -21,6 +16,9 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,8 +35,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import eu.trails2education.trails.database.Coordinates;
 import eu.trails2education.trails.database.CoordinatesDAO;
@@ -55,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private Pathway pathway;
     private LatLng lastLocation;
+    private Marker locationMarker;
 
     private FusedLocationProviderClient mFusedLocationClient;
 
@@ -238,11 +235,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void addLastLocation(){
-        MarkerOptions markerOptions = new MarkerOptions().position(lastLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-        mMap.addMarker(markerOptions);
+        if(locationMarker == null){
+            MarkerOptions markerOptions = new MarkerOptions().position(lastLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+            locationMarker = mMap.addMarker(markerOptions);
+            locationMarker.setTitle("Current location");
+        }else{
+            locationMarker.setPosition(lastLocation);
+        }
     }
 
     private void requestLocation(){
+        Log.e("PRESMISSION REQUEST","location request + " + (checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED));
+
         if(checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
             mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
@@ -256,6 +260,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 }
             });
+
+            LocationCallback locationCallback = new LocationCallback(){
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    if (locationResult == null) {
+                        return;
+                    }
+                    for (Location location : locationResult.getLocations()) {
+                        lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        locationReady = true;
+                        addLastLocation();
+                        Log.e("LOCATION UPDATE", location.getLatitude() + " " + location.getLongitude());
+                    }
+                }
+            };
+            mFusedLocationClient.requestLocationUpdates(new LocationRequest().setInterval(1000).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY), locationCallback, null);
         }
     }
 
