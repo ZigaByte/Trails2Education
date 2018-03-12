@@ -223,6 +223,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                if(marker.getTag() == null)return false;
                 // Call the on click method of the marker
                 ((MyMarker)marker.getTag()).onClick();
                 return true;
@@ -271,7 +272,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
                         locationReady = true;
                         addLastLocation();
-                        Log.e("LOCATION UPDATE", location.getLatitude() + " " + location.getLongitude());
+                        //Log.e("LOCATION UPDATE", location.getLatitude() + " " + location.getLongitude());
                     }
                 }
             };
