@@ -22,6 +22,8 @@ import eu.trails2education.trails.database.Content;
 import eu.trails2education.trails.database.ContentDAO;
 import eu.trails2education.trails.database.InterestPoint;
 import eu.trails2education.trails.database.InterestPointDAO;
+import eu.trails2education.trails.database.Multimedia;
+import eu.trails2education.trails.database.MultimediaDAO;
 import eu.trails2education.trails.database.Pathway;
 import eu.trails2education.trails.json.ContentJSON;
 import eu.trails2education.trails.json.InterestPointJSON;
@@ -38,10 +40,10 @@ public class ContentActivity extends AppCompatActivity {
 
     private InterestPointDAO interestPointDAO;
     private ContentDAO contentDAO;
+    private MultimediaDAO multimediaDAO;
 
     private InterestPoint interestPoint;
     private Pathway path;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class ContentActivity extends AppCompatActivity {
 
         interestPointDAO = new InterestPointDAO(this);
         contentDAO = new ContentDAO(this);
+        multimediaDAO = new MultimediaDAO(this);
 
         final int interestPointID = (int)getIntent().getExtras().getLong("InterestPointID");
         readInterestPointFromDatabase(interestPointID);
@@ -70,8 +73,18 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     private void readInterestPointFromDatabase(int interestPointID){
+        Log.e("Pathway multimedia: ", "aa" );
         interestPoint = interestPointDAO.getInterestPointsById(interestPointID);
         interestPoint.setContents(contentDAO.getContentsOfInterestPoint(interestPointID));
+        for(Content c: interestPoint.getContents()){
+            c.setMultimedia(multimediaDAO.getMultimediaOfContent(c.getcIdC()));
+            Log.e("Content multimedia: ", "aa" + c.getMultimedia().size());
+
+            for(Multimedia m : c.getMultimedia()){
+                Log.e("Multimedia", "a " + m.getId() + " " + m.geteURL());
+
+            }
+        }
         fillViews();
     }
 
@@ -84,6 +97,7 @@ public class ContentActivity extends AppCompatActivity {
                     newInterestPoint = InterestPointJSON.createInterestPointFromJSON(ContentActivity.this, response.getJSONArray("posts").getJSONObject(0), 0);
                 }catch(Exception e){
                     Log.e("INTEREST POINT LOADING ", "ERROR at id: " + interestPointID);
+                    return;
                 }
 
                 readContentFromNetwork((int)newInterestPoint.getcIdIP(), newInterestPoint.getSubjectIds());
@@ -112,6 +126,11 @@ public class ContentActivity extends AppCompatActivity {
                     newContent.setstype(ii);
 
                     contentDAO.createContent(newContent, ContentDAO.INSERT_TYPE_DATA);
+                    for(Multimedia m : newContent.getMultimedia()){
+                        m.setCId(newContent.getcIdC());
+                        multimediaDAO.createMultimedia(m);
+                    }
+
                     readInterestPointFromDatabase(interestPointID);
                 }
             }, interestPointID, i);

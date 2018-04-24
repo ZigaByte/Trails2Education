@@ -11,7 +11,8 @@ public class Multimedia implements Serializable {
     public static final String TAG = "Multimedia";
     private static final long serialVersionUID = -7406082437623008161L;
 
-    private long cIdM;
+    private long cId;
+    private long id;
     private long multitype;
     private String multimediaTypeEN;
     private String multimediaTypeFR;
@@ -20,7 +21,7 @@ public class Multimedia implements Serializable {
     private String multimediaTypeEE;
     private String multimediaTypeIT;
     private String elementURL;
-    private Content mContent;
+    //private Content mContent;
 
     public Multimedia() {
 
@@ -39,11 +40,18 @@ public class Multimedia implements Serializable {
 
     }
 
-    public long getcIdM() {
-        return cIdM;
+    public long getCId() {
+        return cId;
     }
-    public void setIdM(long mIdM) {
-        this.cIdM = mIdM;
+    public void setCId(long mIdM) {
+        this.cId = mIdM;
+    }
+
+    public long getId() {
+        return id;
+    }
+    public void setId(long mId) {
+        this.id = mId;
     }
 
     public long getctype() {
@@ -60,7 +68,7 @@ public class Multimedia implements Serializable {
         this.multimediaTypeEN = mulEN;
     }
 
-    public String gemulFR() {
+    public String getmulFR() {
         return multimediaTypeFR;
     }
     public void setmulFR(String mulFR) {
@@ -101,12 +109,12 @@ public class Multimedia implements Serializable {
     public void seteURL(String eURL) {
         this.elementURL = eURL;
     }
-
+/*
     public Content getContent() {
         return mContent;
     }
     public void setContent(Content mC) {
         this.mContent = mC;
     }
-
+*/
 }

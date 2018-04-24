@@ -1,6 +1,7 @@
 package eu.trails2education.trails.database;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by svetl on 6. 12. 2017.
@@ -33,6 +34,8 @@ public class Content implements Serializable {
     private String descriptionEE;
     private String descriptionIT;
     private long subjecttype;
+
+    private ArrayList<Multimedia> multimedia = new ArrayList<Multimedia>();
 
     public Content() {
 
@@ -223,5 +226,13 @@ public class Content implements Serializable {
     }
     public void setstype(long ctype) {
         this.subjecttype = ctype;
+    }
+
+    public ArrayList<Multimedia> getMultimedia() {
+        return multimedia;
+    }
+
+    public void setMultimedia(ArrayList<Multimedia> multimedia) {
+        this.multimedia = multimedia;
     }
 }

@@ -54,12 +54,12 @@ public class ContentDAO {
     public static final int INSERT_TYPE_SUBJECT = 3;
 
     public void createContent(Content c, int INSERT_TYPE){
-        createContent(c.getctype(), c.getsubEN(), c.getsubFR(), c.getsubPT(), c.getsubSL(), c.getsubEE(), c.getsubIT(),
+        createContent(c.getcIdC(), c.getctype(), c.getsubEN(), c.getsubFR(), c.getsubPT(), c.getsubSL(), c.getsubEE(), c.getsubIT(),
                 c.gettitEN(), c.gettitFR(), c.gettitPT(), c.gettitSL(), c.gettitEE(), c.gettitIT(),
                 c.getdesEN(), c.getdesFR(), c.getdesPT(), c.getdesSL(), c.getdesEE(), c.getdesIT(), c.getIpId(), c.getstype(), INSERT_TYPE);
     }
 
-    public void createContent(long ctype, String subEN, String subFR, String subPT, String subSL, String subEE, String subIT,
+    public void createContent(long cid,long ctype, String subEN, String subFR, String subPT, String subSL, String subEE, String subIT,
                                  String titEN, String titFR, String titPT, String titSL, String titEE, String titIT,
                                  String desEN, String desFR, String desPT, String desSL, String desEE, String desIT, long interestpointId, long subjectType, final int INSERT_TYPE) {
         ContentValues values = new ContentValues();
@@ -100,6 +100,7 @@ public class ContentDAO {
             mDatabase.update(DatabaseHelper.TABLE_4_NAME, values, DatabaseHelper.COL_4_1 + " = " + interestpointId + " AND " + DatabaseHelper.COL_4_22 + "=" + subjectType, null);
         }
         else {
+            values.put(DatabaseHelper.COL_4_2, cid);
             mDatabase.insert(DatabaseHelper.TABLE_4_NAME, null, values);
         }
     }
