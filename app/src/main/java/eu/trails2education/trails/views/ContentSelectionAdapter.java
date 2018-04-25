@@ -3,16 +3,23 @@ package eu.trails2education.trails.views;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.List;
 
 import eu.trails2education.trails.R;
 
 import eu.trails2education.trails.database.Content;
+import eu.trails2education.trails.database.Multimedia;
+import eu.trails2education.trails.network.RequestManager;
 
 /**
  * Created by Ziga on 02-Dec-17.
@@ -35,8 +42,23 @@ public class ContentSelectionAdapter extends RecyclerView.Adapter<ContentSelecti
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((TextView)((Activity)view.getContext()).findViewById(R.id.subject_title)).setText(contentList.get(id).gettitEN());
-                    ((TextView)((Activity)view.getContext()).findViewById(R.id.subject_content)).setText(contentList.get(id).getdesEN());
+                    Content content = contentList.get(id);
+                    Activity activity = (Activity) view.getContext();
+
+                    ((TextView) activity.findViewById(R.id.subject_title)).setText(content.gettitEN());
+                    ((TextView) activity.findViewById(R.id.subject_content)).setText(content.getdesEN());
+
+                    LayoutInflater inflater = activity.getLayoutInflater();
+                    for(Multimedia m : content.getMultimedia()){
+                        NetworkImageView imageView = (NetworkImageView) inflater.inflate(R.layout.content_image, null);
+                        //NetworkImageView imageView = (NetworkImageView) vi.findViewById(R.id.path_thumbnail);
+                        String url = "http://" + m.geteURL();
+                        ImageLoader loader = RequestManager.getInstance(activity.getApplicationContext()).getImageLoader();
+                        loader.get(url, loader.getImageListener(imageView, R.mipmap.ic_launcher, R.mipmap.ic_launcher_round));
+                        imageView.setImageUrl(url, loader);
+                        Log.e("URL", url);
+                        ((LinearLayout)activity.findViewById(R.id.content_container)).addView(imageView);
+                    }
                 }
             });
         }

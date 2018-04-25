@@ -73,17 +73,14 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     private void readInterestPointFromDatabase(int interestPointID){
-        Log.e("Pathway multimedia: ", "aa" );
         interestPoint = interestPointDAO.getInterestPointsById(interestPointID);
         interestPoint.setContents(contentDAO.getContentsOfInterestPoint(interestPointID));
         for(Content c: interestPoint.getContents()){
             c.setMultimedia(multimediaDAO.getMultimediaOfContent(c.getcIdC()));
-            Log.e("Content multimedia: ", "aa" + c.getMultimedia().size());
 
-            for(Multimedia m : c.getMultimedia()){
+            /*for(Multimedia m : c.getMultimedia()){
                 Log.e("Multimedia", "a " + m.getId() + " " + m.geteURL());
-
-            }
+            }*/
         }
         fillViews();
     }
@@ -141,7 +138,6 @@ public class ContentActivity extends AppCompatActivity {
      * Updates the views. Network or DB updates may change data in interestPoint.
      * */
     public void fillViews(){
-        Log.e("CONTENT", ""+ interestPoint.getContents().size());
         if(interestPoint.getContents().size() > 0){
             contentList = (RecyclerView)findViewById(R.id.recyclerView);
             contentList.setAdapter(new ContentSelectionAdapter(this, interestPoint.getContents())); // Pass the ids for the icons
