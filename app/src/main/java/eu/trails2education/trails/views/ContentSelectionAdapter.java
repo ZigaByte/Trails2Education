@@ -49,15 +49,16 @@ public class ContentSelectionAdapter extends RecyclerView.Adapter<ContentSelecti
                     ((TextView) activity.findViewById(R.id.subject_content)).setText(content.getdesEN());
 
                     LayoutInflater inflater = activity.getLayoutInflater();
+                    LinearLayout linearLayout = ((LinearLayout)activity.findViewById(R.id.content_container));
+                    linearLayout.removeAllViewsInLayout();
                     for(Multimedia m : content.getMultimedia()){
                         NetworkImageView imageView = (NetworkImageView) inflater.inflate(R.layout.content_image, null);
-                        //NetworkImageView imageView = (NetworkImageView) vi.findViewById(R.id.path_thumbnail);
                         String url = "http://" + m.geteURL();
                         ImageLoader loader = RequestManager.getInstance(activity.getApplicationContext()).getImageLoader();
                         loader.get(url, loader.getImageListener(imageView, R.mipmap.ic_launcher, R.mipmap.ic_launcher_round));
                         imageView.setImageUrl(url, loader);
-                        Log.e("URL", url);
-                        ((LinearLayout)activity.findViewById(R.id.content_container)).addView(imageView);
+
+                        linearLayout.addView(imageView);
                     }
                 }
             });

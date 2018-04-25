@@ -6,11 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONObject;
 
@@ -31,6 +35,7 @@ import eu.trails2education.trails.json.PathwayJSON;
 import eu.trails2education.trails.network.ContentUtils;
 import eu.trails2education.trails.network.InterestPointUtils;
 import eu.trails2education.trails.network.PathUtils;
+import eu.trails2education.trails.network.RequestManager;
 import eu.trails2education.trails.views.ContentSelectionAdapter;
 import eu.trails2education.trails.views.MyTimer;
 
@@ -148,6 +153,20 @@ public class ContentActivity extends AppCompatActivity {
 
             ((TextView)findViewById(R.id.subject_title)).setText(first.gettitEN());
             ((TextView)findViewById(R.id.subject_content)).setText(first.getdesEN());
+
+            // Load multimedia
+            LayoutInflater inflater = getLayoutInflater();
+            LinearLayout linearLayout = ((LinearLayout)findViewById(R.id.content_container));
+            linearLayout.removeAllViewsInLayout();
+            for(Multimedia m : first.getMultimedia()){
+                NetworkImageView imageView = (NetworkImageView) inflater.inflate(R.layout.content_image, null);
+                String url = "http://" + m.geteURL();
+                ImageLoader loader = RequestManager.getInstance(getApplicationContext()).getImageLoader();
+                loader.get(url, loader.getImageListener(imageView, R.mipmap.ic_launcher, R.mipmap.ic_launcher_round));
+                imageView.setImageUrl(url, loader);
+
+                linearLayout.addView(imageView);
+            }
 
             final int pathID = (int)getIntent().getExtras().getLong("PathwayID");
             // Read the path from the network
