@@ -162,8 +162,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ((TextView)findViewById(R.id.heartRateTextContent)).setText(String.valueOf(path.getavgHB()));
         ((TextView)findViewById(R.id.caloriesTextContent)).setText(String.valueOf(path.getestCal()));
 
-        ((TextView)findViewById(R.id.textView2)).setText(String.valueOf(path.getreg()));
-        ((TextView)findViewById(R.id.textView3)).setText(String.valueOf(path.getcouEN()));
+        ((TextView)findViewById(R.id.regionText)).setText(String.valueOf(path.getreg()));
+        ((TextView)findViewById(R.id.countryText)).setText(String.valueOf(path.getcouEN()));
     }
 
     @Override

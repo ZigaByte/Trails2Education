@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -146,7 +147,7 @@ public class ContentActivity extends AppCompatActivity {
             Content first = interestPoint.getContents().get(0);
 
             ((TextView)findViewById(R.id.subject_title)).setText(first.gettitEN());
-            ((TextView)findViewById(R.id.subject_content)).setText(first.getdesEN());
+            ((TextView)findViewById(R.id.subject_content)).setText(Html.fromHtml(first.getdesEN()));
 
             // Load multimedia
             LayoutInflater inflater = getLayoutInflater();
@@ -173,8 +174,8 @@ public class ContentActivity extends AppCompatActivity {
                         Log.e("PATH LOADING ERROR", "Failed loading the path");
                     }
 
-                    ((TextView)findViewById(R.id.textView2)).setText(String.valueOf(path.getreg()));
-                    ((TextView)findViewById(R.id.textView3)).setText(String.valueOf(path.getcouEN()));
+                    ((TextView)findViewById(R.id.regionText)).setText(String.valueOf(path.getreg()));
+                    ((TextView)findViewById(R.id.countryText)).setText(String.valueOf(path.getcouEN()));
 
                 }
             }, pathID);

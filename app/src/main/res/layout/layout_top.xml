@@ -75,14 +75,14 @@
 
         <eu.trails2education.trails.views.MyTextViewBold
             style="@style/pathText"
-            android:id="@+id/textView2"
+            android:id="@+id/regionText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="" />
 
         <eu.trails2education.trails.views.MyTextView
             style="@style/countryText"
-            android:id="@+id/textView3"
+            android:id="@+id/countryText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="" />
