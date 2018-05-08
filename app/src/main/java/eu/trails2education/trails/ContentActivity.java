@@ -125,7 +125,7 @@ public class ContentActivity extends AppCompatActivity {
                         Log.e("CONTENT LOADING ERROR", "ERROR WITH CONTENT");
                     }
                     newContent.setIpId(interestPointID);
-                    newContent.setstype(ii);
+                    //newContent.setstype(ii);
 
                     contentDAO.createContent(newContent, ContentDAO.INSERT_TYPE_DATA);
                     for(Multimedia m : newContent.getMultimedia()){

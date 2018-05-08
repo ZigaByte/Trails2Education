@@ -70,10 +70,8 @@ public class ContentSelectionAdapter extends RecyclerView.Adapter<ContentSelecti
         public void changeIcon(final int id){
             int subjectType = (int)contentList.get(id).getctype();
             // Select the drawable that should be on the marker.
-           // Log.e("Setting image", "position: " + id +  "    type: "+ subjectType);
             int drawable = 0;
-            // This does not work currently. But it will when the JSON gets fixed
-            /*switch(subjectType){
+            switch(subjectType){
                 case 1: drawable = R.drawable.subject_geography;break;
                 case 2: drawable = R.drawable.subject_history;break;
                 case 3: drawable = R.drawable.subject_art;break;
@@ -87,33 +85,7 @@ public class ContentSelectionAdapter extends RecyclerView.Adapter<ContentSelecti
                 case 11: drawable = R.drawable.subject_architecture;break;
 
                 default: drawable = R.drawable.subject_history;break;
-            }*/
-            String subject = contentList.get(id).getsubEN();
-            //Log.e("test", subject);
-            if(subject.equals("Geography"))
-                drawable = R.drawable.subject_geography;
-            else if(subject.equals("History"))
-                drawable = R.drawable.subject_history;
-            else if(subject.equals("Arts"))
-                drawable = R.drawable.subject_art;
-            else if(subject.equals("Economics"))
-                drawable = R.drawable.subject_economics;
-            else if(subject.equals("Math"))
-                drawable = R.drawable.subject_math;
-            else if(subject.equals("Literature"))
-                drawable = R.drawable.subject_literature;
-            else if(subject.equals("Physics"))
-                drawable = R.drawable.subject_physics;
-            else if(subject.equals("Chemistry"))
-                drawable = R.drawable.subject_chemistry;
-            else if(subject.equals("Biology"))
-                drawable = R.drawable.subject_biology;
-            else if(subject.equals("Geology"))
-                drawable = R.drawable.subject_geology;
-            else if(subject.equals("Architecture"))
-                drawable = R.drawable.subject_architecture;
-            else
-                drawable = R.drawable.subject_history;
+            }
 
             view.findViewById(R.id.path_thumbnail).setBackgroundResource(drawable);
         }

@@ -65,6 +65,7 @@ public class ContentDAO {
         ContentValues values = new ContentValues();
 
         values.put(DatabaseHelper.COL_4_1, interestpointId);
+        values.put(DatabaseHelper.COL_4_2, cid);
         values.put(DatabaseHelper.COL_4_3, ctype);
         values.put(DatabaseHelper.COL_4_22, subjectType);
 
@@ -92,15 +93,14 @@ public class ContentDAO {
         }
 
         // preveri, ali content obstaja
-        Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_4_NAME, mAllColumns,DatabaseHelper.COL_4_1 + " = " + interestpointId + " AND " + DatabaseHelper.COL_4_22 + " = " + subjectType,
-                null, null,null, null);
+        Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_4_NAME, mAllColumns,DatabaseHelper.COL_4_2 + " = " + cid,null, null,null, null);
 
         if(cursor.getCount() > 0){
             // Update the existing db entry.
-            mDatabase.update(DatabaseHelper.TABLE_4_NAME, values, DatabaseHelper.COL_4_1 + " = " + interestpointId + " AND " + DatabaseHelper.COL_4_22 + "=" + subjectType, null);
+            mDatabase.update(DatabaseHelper.TABLE_4_NAME, values, DatabaseHelper.COL_4_2 + " = " + cid, null);
         }
         else {
-            values.put(DatabaseHelper.COL_4_2, cid);
+            //values.put(DatabaseHelper.COL_4_2, cid);
             mDatabase.insert(DatabaseHelper.TABLE_4_NAME, null, values);
         }
     }

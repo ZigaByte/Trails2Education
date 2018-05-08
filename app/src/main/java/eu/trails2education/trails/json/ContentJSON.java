@@ -20,6 +20,7 @@ public class ContentJSON {
 
     private static String idContentKey = "idContent";
     private static String pointtypeKey = "idPointType";
+    private static String subjectType = "idSubject";
     private static String subjectENKey = "subjectEN";
     private static String subjectFRKey = "subjectFR";
     private static String subjectPTKey = "subjectPT";
@@ -44,6 +45,7 @@ public class ContentJSON {
 
         p.setIdC(SafeReader.readInt(jsonObject, idContentKey));
         p.setctype(SafeReader.readInt(jsonObject, pointtypeKey));
+        p.setctype(SafeReader.readInt(jsonObject, subjectType));
 
         p.setsubEN(SafeReader.readString(jsonObject, subjectENKey));
         p.setsubFR(SafeReader.readString(jsonObject, subjectFRKey));
