@@ -44,6 +44,7 @@ public class LaunchActivity extends FragmentActivity {
                 finish();
             }
         }, DELAY);
+
     }
 
 }

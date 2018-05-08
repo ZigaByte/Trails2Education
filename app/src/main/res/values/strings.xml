@@ -8,6 +8,7 @@
     <string name="launch_partners">Partners</string>
     <string name="title_activity_selection">SelectionActivity</string>
 
+    <!--<string name="selection_title">Search Results</string>-->
     <string name="selection_title">Search Results</string>
     <string name="selection_sort">Sort By</string>
     <string name="selection_count">Pathways</string>
