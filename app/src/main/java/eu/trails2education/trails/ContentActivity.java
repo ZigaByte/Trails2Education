@@ -19,8 +19,6 @@ import com.android.volley.toolbox.NetworkImageView;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import eu.trails2education.trails.database.Content;
 import eu.trails2education.trails.database.ContentDAO;
@@ -82,10 +80,6 @@ public class ContentActivity extends AppCompatActivity {
         interestPoint.setContents(contentDAO.getContentsOfInterestPoint(interestPointID));
         for(Content c: interestPoint.getContents()){
             c.setMultimedia(multimediaDAO.getMultimediaOfContent(c.getcIdC()));
-
-            /*for(Multimedia m : c.getMultimedia()){
-                Log.e("Multimedia", "a " + m.getId() + " " + m.geteURL());
-            }*/
         }
         fillViews();
     }
@@ -179,11 +173,7 @@ public class ContentActivity extends AppCompatActivity {
                         Log.e("PATH LOADING ERROR", "Failed loading the path");
                     }
 
-                    String name = path.getNameEN();
-                    if(name.length() > 12)
-                        name = name.substring(0, 8) + " ..";
-
-                    ((TextView)findViewById(R.id.textView2)).setText(name);  // Svetlana: 17.1.2018
+                    ((TextView)findViewById(R.id.textView2)).setText(String.valueOf(path.getreg()));
                     ((TextView)findViewById(R.id.textView3)).setText(String.valueOf(path.getcouEN()));
 
                 }

@@ -162,12 +162,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ((TextView)findViewById(R.id.heartRateTextContent)).setText(String.valueOf(path.getavgHB()));
         ((TextView)findViewById(R.id.caloriesTextContent)).setText(String.valueOf(path.getestCal()));
 
-        // Skrajsa ime, good for now ..
-        String name = path.getNameEN();
-        if(name.length() > 12)
-            name = name.substring(0, 8) + " ..";
-
-        //((TextView)findViewById(R.id.textView2)).setText(name);
         ((TextView)findViewById(R.id.textView2)).setText(String.valueOf(path.getreg()));
         ((TextView)findViewById(R.id.textView3)).setText(String.valueOf(path.getcouEN()));
     }
@@ -212,7 +206,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         Polyline line = mMap.addPolyline(options);
 
-        // Add the
+        // Add the markers for the individual interest points
         for(InterestPoint interestPoint : pathway.getInterestPoints()){
             MyMarker myMarker = new MyMarker(this, interestPoint, pathway);
             Marker marker = mMap.addMarker(myMarker.markerOptions);
@@ -230,6 +224,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        // Add the start and finish markers.
+        if(pathway.getCoordinates().size() > 0){
+            Coordinates startCoordinate = pathway.getCoordinates().get(0);
+            Coordinates finishCoordinate = pathway.getCoordinates().get(pathway.getCoordinates().size() - 1);
+            MyMarker start = new MyMarker(this, new LatLng(startCoordinate.getclat(), startCoordinate.getclon()), true);
+            MyMarker finish = new MyMarker(this, new LatLng(finishCoordinate.getclat(), finishCoordinate.getclon()), false);
+            mMap.addMarker(start.markerOptions);
+            mMap.addMarker(finish.markerOptions);
+        }
+
         // Add last location if ready
         if(locationReady)
             addLastLocation();
@@ -246,8 +250,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void requestLocation(){
-        Log.e("PRESMISSION REQUEST","location request + " + (checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED));
-
         if(checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
             mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
@@ -272,7 +274,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
                         locationReady = true;
                         addLastLocation();
-                        //Log.e("LOCATION UPDATE", location.getLatitude() + " " + location.getLongitude());
                     }
                 }
             };

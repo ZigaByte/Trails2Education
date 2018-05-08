@@ -28,18 +28,24 @@ import eu.trails2education.trails.database.Pathway;
 public class MyMarker{
 
     public MarkerOptions markerOptions;
-    private Marker marker;
     public InterestPoint interestPoint;
     public Pathway path;
-    private String timer ="";
 
     private Context context;
 
+    // Constructor for start and finish markers
+    public MyMarker(Context context, LatLng position, boolean start){
+        this.context = context;
+        createMarker(position, start ? R.drawable.start : R.drawable.finish, 350);
+    }
+
+    // Constructor for interest point markers
     public MyMarker(Context context, InterestPoint interestPoint, Pathway p){
         this.context = context;
         this.interestPoint = interestPoint;
         this.path = p;
 
+        // Select location
         LatLng latLng = new LatLng(interestPoint.getclat(), interestPoint.getclon());
 
         // Select the drawable that should be on the marker.
@@ -57,26 +63,23 @@ public class MyMarker{
 
             default: drawable = R.drawable.interest_point_waypoint;break;
         }
+        createMarker(latLng, drawable, 130);
+    }
 
+    private void createMarker(LatLng pos, int drawable, int size){
         BitmapDrawable bitmapdraw = (BitmapDrawable)context.getResources().getDrawable(drawable);
         Bitmap b = bitmapdraw.getBitmap();
-        Bitmap smallMarker = Bitmap.createScaledBitmap(b, 130, 130, false);
-        markerOptions = new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+        Bitmap smallMarker = Bitmap.createScaledBitmap(b, size, size, false);
+
+        markerOptions = new MarkerOptions().position(pos).icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
     }
 
     // Start the content activity
     public void onClick(){
-
-        //timer = ((TextView)activity.findViewById(R.id.timeText)).getText().toString();
-
         Intent i = new Intent(context, ContentActivity.class);
         i.putExtra("InterestPointID", interestPoint.getcIdIP()); // Pass the interestPointID
         i.putExtra("PathwayID", path.getId());
         i.putExtra("time", ((MapsActivity)context).read_timer());
         context.startActivity(i);
-    }
-
-    public void setMarker(Marker marker){
-        this.marker = marker;
     }
 }
