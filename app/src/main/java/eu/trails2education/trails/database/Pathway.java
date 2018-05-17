@@ -125,6 +125,12 @@ public class Pathway implements Serializable{
         return pathwayNameSL;
     }
     public void setNameSL(String nameSL) {
+        if(nameSL.contains("Å¾")){
+            nameSL = nameSL.replaceAll("Å¾", "ž");
+        }
+        if(nameSL.contains("Ä\u008D")){
+            nameSL = nameSL.replaceAll("Ä\u008D", "č");
+        }
         this.pathwayNameSL = nameSL;
     }
 

@@ -1,5 +1,7 @@
 package eu.trails2education.trails.database;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -155,6 +157,12 @@ public class Content implements Serializable {
         return titleSL;
     }
     public void settitSL(String titSL) {
+        if(titSL.contains("Å¾")){
+            titSL = titSL.replaceAll("Å¾", "ž");
+        }
+        if(titSL.contains("Ä\u008D")){
+            titSL = titSL.replaceAll("Ä\u008D", "č");
+        }
         this.titleSL = titSL;
     }
 
@@ -197,6 +205,12 @@ public class Content implements Serializable {
         return descriptionSL;
     }
     public void setdesSL(String desSL) {
+        if(desSL.contains("Å¾")){
+            desSL = desSL.replaceAll("Å¾", "ž");
+        }
+        if(desSL.contains("Ä\u008D")){
+            desSL = desSL.replaceAll("Ä\u008D", "č");
+        }
         this.descriptionSL = desSL;
     }
 

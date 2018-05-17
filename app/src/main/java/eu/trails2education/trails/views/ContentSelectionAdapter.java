@@ -3,6 +3,7 @@ package eu.trails2education.trails.views;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +49,7 @@ public class ContentSelectionAdapter extends RecyclerView.Adapter<ContentSelecti
                     //((TextView) activity.findViewById(R.id.subject_title)).setText(content.gettitEN());
                     //((TextView) activity.findViewById(R.id.subject_content)).setText(content.getdesEN());
                     ((TextView) activity.findViewById(R.id.subject_title)).setText(content.gettitSL());
-                    ((TextView) activity.findViewById(R.id.subject_content)).setText(content.getdesSL());
+                    ((TextView) activity.findViewById(R.id.subject_content)).setText(Html.fromHtml(content.getdesSL()));
 
                     LayoutInflater inflater = activity.getLayoutInflater();
                     LinearLayout linearLayout = ((LinearLayout)activity.findViewById(R.id.content_container));
