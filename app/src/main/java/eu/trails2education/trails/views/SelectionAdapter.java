@@ -15,6 +15,8 @@ import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -50,6 +52,15 @@ public class SelectionAdapter extends BaseAdapter {
 
     private void readPathwaysFromDatabase(){
         paths = pathwaysDAO.getAllPathways();
+
+        {// Filter
+            ArrayList<Pathway> filtered = new ArrayList<Pathway>();
+            for(Pathway p : paths){
+                if(p.getId() == 51 || p.getId() == 115 || p.getId() == 134)
+                    filtered.add(p);
+            }
+            paths = filtered;
+        }
 
         // Sort and push Krsko first :D
         Collections.sort(paths, new Comparator<Pathway>() {
