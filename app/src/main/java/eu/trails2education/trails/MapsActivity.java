@@ -79,6 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             requestLocation();
         }
 
+
         // Database connections
         pathwaysDAO = new PathwaysDAO(this);
         coordinatesDAO = new CoordinatesDAO(this);
