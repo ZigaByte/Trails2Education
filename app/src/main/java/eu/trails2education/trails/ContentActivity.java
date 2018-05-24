@@ -123,6 +123,9 @@ public class ContentActivity extends AppCompatActivity {
                     //newContent.setstype(ii);
 
                     contentDAO.createContent(newContent, ContentDAO.INSERT_TYPE_DATA);
+
+                    // Do new multimedia
+                    multimediaDAO.deleteMultimediaOfContent((int)newContent.getcIdC());
                     for(Multimedia m : newContent.getMultimedia()){
                         m.setCId(newContent.getcIdC());
                         multimediaDAO.createMultimedia(m);

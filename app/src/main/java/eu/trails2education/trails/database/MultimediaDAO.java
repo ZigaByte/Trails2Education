@@ -85,10 +85,12 @@ public class MultimediaDAO {
 
     public void deleteMultimedia(Multimedia multimedia) {
         long id = multimedia.getId();
-        System.out.println("the deleted multimedia has the id: " + id);
-
         mDatabase.delete(DatabaseHelper.TABLE_5_NAME, DatabaseHelper.COL_5_2
                 + " = " + id, null);
+    }
+
+    public void deleteMultimediaOfContent(int idContent){
+        mDatabase.delete(DatabaseHelper.TABLE_5_NAME, DatabaseHelper.COL_5_1 + " = " + idContent, null);
     }
 
     public List<Multimedia> getAllMultimedia() {
