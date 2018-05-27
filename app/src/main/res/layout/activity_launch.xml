@@ -69,8 +69,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    style="@style/launch_logo"
                     android:id="@+id/launch_logo1"
+                    style="@style/launch_logo"
                     android:src="@drawable/launch_logo1" />
 
                 <ImageView
@@ -79,14 +79,14 @@
                     android:src="@drawable/launch_logo2" />
 
                 <ImageView
-                    android:id="@+id/launch_logo3"
-                    style="@style/launch_logo"
-                    android:src="@drawable/launch_logo3" />
-
-                <ImageView
                     android:id="@+id/launch_logo4"
                     style="@style/launch_logo"
                     android:src="@drawable/launch_logo4" />
+
+                <ImageView
+                    android:id="@+id/launch_logo3"
+                    style="@style/launch_logo"
+                    android:src="@drawable/launch_logo3" />
 
                 <ImageView
                     android:id="@+id/launch_logo5"
