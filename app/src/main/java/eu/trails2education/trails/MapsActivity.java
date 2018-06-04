@@ -44,14 +44,12 @@ import eu.trails2education.trails.database.Pathway;
 import eu.trails2education.trails.database.PathwaysDAO;
 import eu.trails2education.trails.json.PathwayJSON;
 import eu.trails2education.trails.network.PathUtils;
+import eu.trails2education.trails.views.MyMap;
 import eu.trails2education.trails.views.MyMarker;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity  {
 
-    private GoogleMap mMap;
-    private Pathway pathway;
-    private LatLng lastLocation;
-    private Marker locationMarker;
+    private MyMap myMap;
 
     private FusedLocationProviderClient mFusedLocationClient;
 
@@ -62,12 +60,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_maps);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        myMap = new MyMap(this);
 
         // Start setting up the location listener
         // Here, thisActivity is the current activity
@@ -78,7 +73,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }else{
             requestLocation();
         }
-
 
         // Database connections
         pathwaysDAO = new PathwaysDAO(this);
@@ -117,14 +111,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void readPathwayFromDatabase(int pathwayId) {
-        pathway = pathwaysDAO.getPathwayById(pathwayId);
+        Pathway pathway = pathwaysDAO.getPathwayById(pathwayId);
         pathway.setCoorinates(coordinatesDAO.getCoordinatesOfPathway(pathwayId));
         pathway.setInterestPoints(interestPointDAO.getInterestPointsOfPathway(pathwayId));
-
+        myMap.pathway = pathway;
         fillViews(pathway);
-        pathReady = true;
-        if(mapReady)
-            populateMap();
+        myMap.pathReady = true;
+        if(myMap.mapReady){
+            myMap.populateMap();
+        }
     }
 
     private void readPathwayFromNetwork(final int pathwayId){
@@ -167,88 +162,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ((TextView)findViewById(R.id.countryText)).setText(String.valueOf(path.getcouEN()));
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
-        // Disable map things we don't need.
-        mMap.getUiSettings().setMapToolbarEnabled(false);
 
-        mapReady = true;
-
-        if(pathReady)
-            populateMap();
-    }
-
-    // Make sure both are ready before populating to avoid Null Pointers
-    boolean pathReady = false;
-    boolean mapReady = false;
-    boolean locationReady = false;
-
-    /**
-     * Populate the map with the loaded path
-     */
-    public void populateMap(){
-        boolean first = true;
-        // Move to the first point of the path
-        if(pathway.getCoordinates().size() == 0)
-            return;
-        else{
-            ArrayList<Coordinates> coordinates = pathway.getCoordinates();
-            LatLng latLng = new LatLng(coordinates.get(0).getclat(), coordinates.get(0).getclon());
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
-        }
-
-        // Create the path line
-        PolylineOptions options = new PolylineOptions().clickable(false);
-        for(Coordinates coordinate : pathway.getCoordinates()){
-            LatLng latLng = new LatLng(coordinate.getclat(), coordinate.getclon());
-            options.add(latLng);
-        }
-        Polyline line = mMap.addPolyline(options);
-
-        // Add the markers for the individual interest points
-        for(InterestPoint interestPoint : pathway.getInterestPoints()){
-            MyMarker myMarker = new MyMarker(this, interestPoint, pathway);
-            Marker marker = mMap.addMarker(myMarker.markerOptions);
-
-            marker.setTag(myMarker);
-        }
-
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                if(marker.getTag() == null)return false;
-                // Call the on click method of the marker
-                ((MyMarker)marker.getTag()).onClick();
-                return true;
-            }
-        });
-
-        // Add the start and finish markers.
-        if(pathway.getCoordinates().size() > 0){
-            Coordinates startCoordinate = pathway.getCoordinates().get(0);
-            Coordinates finishCoordinate = pathway.getCoordinates().get(pathway.getCoordinates().size() - 1);
-            MyMarker start = new MyMarker(this, new LatLng(startCoordinate.getclat(), startCoordinate.getclon()), true);
-            MyMarker finish = new MyMarker(this, new LatLng(finishCoordinate.getclat(), finishCoordinate.getclon()), false);
-            mMap.addMarker(start.markerOptions);
-            mMap.addMarker(finish.markerOptions);
-        }
-
-        // Add last location if ready
-        if(locationReady)
-            addLastLocation();
-    }
-
-    private void addLastLocation(){
-        if(locationMarker == null){
-            MarkerOptions markerOptions = new MarkerOptions().position(lastLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-            locationMarker = mMap.addMarker(markerOptions);
-            locationMarker.setTitle("Current location");
-        }else{
-            locationMarker.setPosition(lastLocation);
-        }
-    }
 
     private void requestLocation(){
         if(checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -257,10 +172,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 @Override
                 public void onSuccess(Location location) {
                     if (location != null) {
-                        lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                        locationReady = true;
-                        if (mapReady)
-                            addLastLocation();
+                        myMap.lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        myMap.locationReady = true;
+                        if (myMap.mapReady)
+                            myMap.addLastLocation();
                     }
                 }
             });
@@ -272,9 +187,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         return;
                     }
                     for (Location location : locationResult.getLocations()) {
-                        lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                        locationReady = true;
-                        addLastLocation();
+                        myMap.lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        myMap.locationReady = true;
+                        myMap.addLastLocation();
                     }
                 }
             };

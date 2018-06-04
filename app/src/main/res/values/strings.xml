@@ -9,10 +9,8 @@
     <string name="title_activity_selection">SelectionActivity</string>
 
     <string name="selection_title">Search Results</string>
-    <!--<string name="selection_title">Rezultati iskanja</string>-->
     <string name="selection_sort">Sort By</string>
     <string name="selection_count">Pathways</string>
-    <!--<string name="selection_count">Poti</string>-->
     <string name="selection_count_singular">Pathway</string>
 
     <string name="path_name_placeholder">Pathway Name</string>
