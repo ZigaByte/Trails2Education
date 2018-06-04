@@ -110,8 +110,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 };
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Zaključi?").setPositiveButton("Da", dialogClickListener)
-                        .setNegativeButton("Ne", dialogClickListener).show();
+                builder.setMessage("Finish?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
             }
         });
     }
@@ -244,7 +244,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(locationMarker == null){
             MarkerOptions markerOptions = new MarkerOptions().position(lastLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
             locationMarker = mMap.addMarker(markerOptions);
-            locationMarker.setTitle("Trenutna lokacija");
+            locationMarker.setTitle("Current location");
         }else{
             locationMarker.setPosition(lastLocation);
         }

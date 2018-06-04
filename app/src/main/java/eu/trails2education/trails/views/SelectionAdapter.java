@@ -53,11 +53,16 @@ public class SelectionAdapter extends BaseAdapter {
     private void readPathwaysFromDatabase(){
         paths = pathwaysDAO.getAllPathways();
 
-        {// Filter
+        {// Filter, TODO; This is only a temporary solution. Apply user selected filers
             ArrayList<Pathway> filtered = new ArrayList<Pathway>();
             for(Pathway p : paths){
-                if(p.getId() == 51 || p.getId() == 115 || p.getId() == 134)
-                    filtered.add(p);
+                int[] allowed = {9, 10, 29, 35, 125, 30, 51, 63, 115, 134, 62, 31, 132, 14, 24, 58, 9, 28, 27, 12, 43, 59, 130};
+                for(int i = 0; i < allowed.length; i++){
+                    if(allowed[i] == p.getId()) {
+                        filtered.add(p);
+                        break;
+                    }
+                }
             }
             paths = filtered;
         }
@@ -66,7 +71,14 @@ public class SelectionAdapter extends BaseAdapter {
         Collections.sort(paths, new Comparator<Pathway>() {
             @Override
             public int compare(Pathway pathway, Pathway t1) {
-                return (pathway.getId() == 30) ? -1 : 1;
+                // TODO: Better priority. By matching search or something
+                int[] priority = {115, 134, 58, 24, 51};
+                for(int i = 0; i < priority.length; i++){
+                    if(priority[i] == pathway.getId()) {
+                        return -1;
+                    }
+                }
+                return 1;
             }
         });
     }

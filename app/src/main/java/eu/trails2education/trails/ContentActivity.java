@@ -149,10 +149,10 @@ public class ContentActivity extends AppCompatActivity {
             // Get first subject to populate views
             Content first = interestPoint.getContents().get(0);
 
-            //((TextView)findViewById(R.id.subject_title)).setText(first.gettitEN());
-            //((TextView)findViewById(R.id.subject_content)).setText(Html.fromHtml(first.getdesEN()));
-            ((TextView)findViewById(R.id.subject_title)).setText(first.gettitSL());
-            ((TextView)findViewById(R.id.subject_content)).setText(Html.fromHtml(first.getdesSL()));
+            ((TextView)findViewById(R.id.subject_title)).setText(first.gettitEN());
+            ((TextView)findViewById(R.id.subject_content)).setText(Html.fromHtml(first.getdesEN()));
+            //((TextView)findViewById(R.id.subject_title)).setText(first.gettitSL());
+            //((TextView)findViewById(R.id.subject_content)).setText(Html.fromHtml(first.getdesSL()));
 
             // Load multimedia
             LayoutInflater inflater = getLayoutInflater();

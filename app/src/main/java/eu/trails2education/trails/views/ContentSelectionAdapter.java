@@ -46,10 +46,10 @@ public class ContentSelectionAdapter extends RecyclerView.Adapter<ContentSelecti
                     Content content = contentList.get(id);
                     Activity activity = (Activity) view.getContext();
 
-                    //((TextView) activity.findViewById(R.id.subject_title)).setText(content.gettitEN());
-                    //((TextView) activity.findViewById(R.id.subject_content)).setText(content.getdesEN());
-                    ((TextView) activity.findViewById(R.id.subject_title)).setText(content.gettitSL());
-                    ((TextView) activity.findViewById(R.id.subject_content)).setText(Html.fromHtml(content.getdesSL()));
+                    ((TextView) activity.findViewById(R.id.subject_title)).setText(content.gettitEN());
+                    ((TextView) activity.findViewById(R.id.subject_content)).setText(Html.fromHtml(content.getdesEN()));
+                    //((TextView) activity.findViewById(R.id.subject_title)).setText(content.gettitSL());
+                    //((TextView) activity.findViewById(R.id.subject_content)).setText(Html.fromHtml(content.getdesSL()));
 
                     LayoutInflater inflater = activity.getLayoutInflater();
                     LinearLayout linearLayout = ((LinearLayout)activity.findViewById(R.id.content_container));
