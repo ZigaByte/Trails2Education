@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:text="Title"
+                    android:text="@string/content_title_placeholder"
                     android:textSize="30dp" />
 
                 <eu.trails2education.trails.views.MyTextView
@@ -51,7 +51,7 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/lorem_ipsum" />
+                    android:text="@string/content_content_placeholder" />
 
                 <LinearLayout
                     android:layout_margin="10dp"

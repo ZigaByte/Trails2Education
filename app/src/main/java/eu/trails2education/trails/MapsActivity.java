@@ -110,8 +110,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 };
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Finish?").setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
+                builder.setMessage(R.string.back_title).setPositiveButton(R.string.back_option_positive, dialogClickListener)
+                        .setNegativeButton(R.string.back_option_negative, dialogClickListener).show();
             }
         });
     }

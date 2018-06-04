@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Trails2Education</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_launch">Trails2Education</string>
+
+    <string name="launch_subtitle_fr">Education au patrimoine via les parcours de santé</string>
+    <string name="launch_subtitle_en">Heritage education through fitness trails</string>
+    <string name="launch_partners">Partners</string>
+    <string name="title_activity_selection">SelectionActivity</string>
+
+    <string name="selection_title">Rezultati iskanja</string>
+    <string name="selection_sort">Uredi po</string>
+    <string name="selection_count">Poti</string>
+    <string name="selection_count_singular">Pot</string>
+
+    <string name="path_name_placeholder">Ime poti</string>
+    <string name="path_country_placeholder">Država</string>
+    <string name="path_vehicle_placeholder">Vozilo</string>
+    <string name="path_rating_placeholder">\?/5</string>
+
+    <string name="path_distance_placeholder">1000 m</string>
+    <string name="path_length_placeholder">90 min</string>
+    <string name="path_calories_placeholder">300 cal</string>
+    <string name="path_area_placeholder">Urbano</string>
+
+
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+    </string>
+    <string name="action_settings">Nastavitve</string>
+    <string name="title_activity_content">ContentActivity</string>
+
+    <string name="content_title_placeholder">Se nalaga ..</string>
+    <string name="content_content_placeholder">Ni na voljo.</string>
+
+    <string name="back_title">Končaj s potjo?</string>
+    <string name="back_option_positive">Da</string>
+    <string name="back_option_negative">Ne</string>
+
+
+</resources>

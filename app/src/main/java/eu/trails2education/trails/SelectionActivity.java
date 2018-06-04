@@ -37,7 +37,6 @@ public class SelectionActivity extends AppCompatActivity {
 
         // Click event for single list row
         list.setOnItemClickListener(new OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Start the map activity
