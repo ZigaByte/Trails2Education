@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
 
 import eu.trails2education.trails.R;
 import eu.trails2education.trails.database.Pathway;
@@ -141,10 +142,12 @@ public class SelectionAdapter extends BaseAdapter {
         TextView caloriesText = (TextView)vi.findViewById(R.id.path_calories);// vehicle
 
         Pathway p = paths.get(position);
-        titleText.setText(p.getNameEN());
-        countryText.setText(p.getcouEN());
+        Pathway.DisplayValues dv = p.getDisplayValues(Locale.getDefault());
+
+        titleText.setText(dv.pathwayName);
+        countryText.setText(dv.country);
         areaText.setText(p.getar());
-        vehicleText.setText(p.getvehEN());
+        vehicleText.setText(dv.vehicle);
 
         ratingText.setText("3.5");
         distanceText.setText(p.gettotM() + " m");

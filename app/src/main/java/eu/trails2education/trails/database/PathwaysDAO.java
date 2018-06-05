@@ -160,7 +160,6 @@ public class PathwaysDAO {
             }
 
         // deleting pathway
-        System.out.println("the deleted pathway has the id: " + id);
         mDatabase.delete(DatabaseHelper.TABLE_1_NAME, DatabaseHelper.COL_1_1
                 + " = " + id, null);
     }

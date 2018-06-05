@@ -11,6 +11,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    // Ce bi prej mislil :D
+    // https://stackoverflow.com/questions/36120107/how-to-create-android-sqlite-database-for-many-languages-like-string-values
+
     public static final String DATABASE_NAME = "trails2education.db";
     public static final String TABLE_1_NAME = "pathways";
     public static final String COL_1_1 = "idPathway";

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by svetl on 6. 12. 2017.
@@ -13,6 +14,12 @@ public class Content implements Serializable {
 
     public static final String TAG = "Content";
     private static final long serialVersionUID = -7406082437623008161L;
+
+    public class DisplayValues{
+        public String subject;
+        public String title;
+        public String description;
+    }
 
     private long interestpointid;
     private long cIdC;
@@ -39,9 +46,7 @@ public class Content implements Serializable {
 
     private ArrayList<Multimedia> multimedia = new ArrayList<Multimedia>();
 
-    public Content() {
-
-    }
+    public Content() {}
 
     public Content(long ipid, long ctype, long stype){
         this.pointtype = ctype;
@@ -248,5 +253,46 @@ public class Content implements Serializable {
 
     public void setMultimedia(ArrayList<Multimedia> multimedia) {
         this.multimedia = multimedia;
+    }
+
+
+    public Content.DisplayValues getDisplayValues(Locale locale){
+        Content.DisplayValues values = new Content.DisplayValues();
+
+        switch (locale.getLanguage()){
+            case "fr":
+                values.subject = getsubFR();
+                values.title = gettitFR();
+                values.description = getdesFR();
+                break;
+            case "pt":
+                values.subject = getsubPT();
+                values.title = gettitPT();
+                values.description = getdesPT();
+                break;
+            case "sl":
+                values.subject = getsubSL();
+                values.title = gettitSL();
+                values.description = getdesSL();
+                break;
+            case "et":
+                values.subject = getsubEE();
+                values.title = gettitEE();
+                values.description = getdesEE();
+                break;
+            case "it":
+                values.subject = getsubIT();
+                values.title = gettitIT();
+                values.description = getdesIT();
+                break;
+
+            default:
+                values.subject = getsubEN();
+                values.title = gettitEN();
+                values.description = getdesEN();
+                break;
+        }
+
+        return values;
     }
 }

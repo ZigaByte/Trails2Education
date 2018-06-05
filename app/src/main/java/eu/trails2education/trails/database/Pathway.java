@@ -2,6 +2,7 @@ package eu.trails2education.trails.database;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by svetl on 4. 12. 2017.
@@ -11,6 +12,13 @@ public class Pathway implements Serializable{
 
     public static final String TAG = "Pathway";
     private static final long serialVersionUID = -7406082437623008161L;
+
+    public class DisplayValues{
+        public String pathwayName;
+        public String vehicle;
+        public String country;
+        public String difficulty;
+    }
 
     public long idPathway;
     private String pathwayNameEN;
@@ -50,9 +58,7 @@ public class Pathway implements Serializable{
     private ArrayList<Coordinates> coordinates = new ArrayList<Coordinates>();
     private ArrayList<InterestPoint> interestPoints = new ArrayList<InterestPoint>();
 
-
     public Pathway() {}
-
 
     public Pathway(String nameEN, String nameFR, String namePT, String nameSL, String nameEE, String nameIT, String regDate, String updatedDate,
                    long totM, long estCal, long estTime, long estStep, String avgHB,
@@ -353,4 +359,49 @@ public class Pathway implements Serializable{
         return interestPoints;
     }
 
+    public DisplayValues getDisplayValues(Locale locale){
+        DisplayValues values = new DisplayValues();
+
+        switch (locale.getLanguage()){
+            case "fr":
+                values.pathwayName = getNameFR();
+                values.vehicle = getvehFR();
+                values.country = getcouFR();
+                values.difficulty = getdifFR();
+                break;
+            case "pt":
+                values.pathwayName = getNamePT();
+                values.vehicle = getvehPT();
+                values.country = getcouPT();
+                values.difficulty = getdifPT();
+                break;
+            case "sl":
+                values.pathwayName = getNameSL();
+                values.vehicle = getvehSL();
+                values.country = getcouSL();
+                values.difficulty = getdifSL();
+                break;
+            case "et":
+                values.pathwayName = getNameEE();
+                values.vehicle = getvehEE();
+                values.country = getcouEE();
+                values.difficulty = getdifEE();
+                break;
+            case "it":
+                values.pathwayName = getNameIT();
+                values.vehicle = getvehIT();
+                values.country = getcouIT();
+                values.difficulty = getdifIT();
+                break;
+
+            default:
+                values.pathwayName = getNameEN();
+                values.vehicle = getvehEN();
+                values.country = getcouEN();
+                values.difficulty = getdifEN();
+                break;
+        }
+
+        return values;
+    }
 }

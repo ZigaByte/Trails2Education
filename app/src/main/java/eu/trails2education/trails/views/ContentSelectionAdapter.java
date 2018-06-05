@@ -15,6 +15,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.List;
+import java.util.Locale;
 
 import eu.trails2education.trails.R;
 
@@ -46,10 +47,9 @@ public class ContentSelectionAdapter extends RecyclerView.Adapter<ContentSelecti
                     Content content = contentList.get(id);
                     Activity activity = (Activity) view.getContext();
 
-                    ((TextView) activity.findViewById(R.id.subject_title)).setText(content.gettitEN());
-                    ((TextView) activity.findViewById(R.id.subject_content)).setText(Html.fromHtml(content.getdesEN()));
-                    //((TextView) activity.findViewById(R.id.subject_title)).setText(content.gettitSL());
-                    //((TextView) activity.findViewById(R.id.subject_content)).setText(Html.fromHtml(content.getdesSL()));
+                    Content.DisplayValues dv = content.getDisplayValues(Locale.getDefault());
+                    ((TextView) activity.findViewById(R.id.subject_title)).setText(dv.title);
+                    ((TextView) activity.findViewById(R.id.subject_content)).setText(Html.fromHtml(dv.description));
 
                     LayoutInflater inflater = activity.getLayoutInflater();
                     LinearLayout linearLayout = ((LinearLayout)activity.findViewById(R.id.content_container));

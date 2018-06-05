@@ -19,11 +19,7 @@ public class Coordinates implements Serializable {
 
     private long pathwayID;
 
-    //private Pathway mPathway;
-
-    public Coordinates() {
-
-    }
+    public Coordinates() {}
 
     public Coordinates(double clat, double clon, double calt, long csort) {
         this.lat = clat;

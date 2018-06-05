@@ -20,6 +20,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import eu.trails2education.trails.database.Content;
 import eu.trails2education.trails.database.ContentDAO;
@@ -149,10 +150,9 @@ public class ContentActivity extends AppCompatActivity {
             // Get first subject to populate views
             Content first = interestPoint.getContents().get(0);
 
-            ((TextView)findViewById(R.id.subject_title)).setText(first.gettitEN());
-            ((TextView)findViewById(R.id.subject_content)).setText(Html.fromHtml(first.getdesEN()));
-            //((TextView)findViewById(R.id.subject_title)).setText(first.gettitSL());
-            //((TextView)findViewById(R.id.subject_content)).setText(Html.fromHtml(first.getdesSL()));
+            Content.DisplayValues dv = first.getDisplayValues(Locale.getDefault());
+            ((TextView) findViewById(R.id.subject_title)).setText(dv.title);
+            ((TextView) findViewById(R.id.subject_content)).setText(Html.fromHtml(dv.description));
 
             // Load multimedia
             LayoutInflater inflater = getLayoutInflater();

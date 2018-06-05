@@ -2,6 +2,7 @@ package eu.trails2education.trails.database;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by svetl on 6. 12. 2017.
@@ -11,6 +12,10 @@ public class InterestPoint implements Serializable {
 
     public static final String TAG = "InterestPoint";
     private static final long serialVersionUID = -7406082437623008161L;
+
+    public class DisplayValues{
+        public String ipname;
+    }
 
     private long cIdIP;
 
@@ -154,6 +159,34 @@ public class InterestPoint implements Serializable {
     }
     public ArrayList<Integer> getSubjectIds() {
         return subjectIds;
+    }
+
+    public InterestPoint.DisplayValues getDisplayValues(Locale locale){
+        InterestPoint.DisplayValues values = new InterestPoint.DisplayValues();
+
+        switch (locale.getLanguage()){
+            case "fr":
+                values.ipname = getNameEN();
+                break;
+            case "pt":
+                values.ipname = getNamePT();
+                break;
+            case "sl":
+                values.ipname = getNameSL();
+                break;
+            case "et":
+                values.ipname = getNameEN();
+                break;
+            case "it":
+                values.ipname = getNameIT();
+                break;
+
+            default:
+                values.ipname = getNameEN();
+                break;
+        }
+
+        return values;
     }
 
 }

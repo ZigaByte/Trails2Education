@@ -1,6 +1,7 @@
 package eu.trails2education.trails.database;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 /**
  * Created by svetl on 6. 12. 2017.
@@ -10,6 +11,10 @@ public class Multimedia implements Serializable {
 
     public static final String TAG = "Multimedia";
     private static final long serialVersionUID = -7406082437623008161L;
+
+    public class DisplayValues{
+        public String multimediaType;
+    }
 
     private long cId;
     private long id;
@@ -21,11 +26,8 @@ public class Multimedia implements Serializable {
     private String multimediaTypeEE;
     private String multimediaTypeIT;
     private String elementURL;
-    //private Content mContent;
 
-    public Multimedia() {
-
-    }
+    public Multimedia() {}
 
     public Multimedia(long ctype, String mulEN, String mulFR, String mulPT, String mulSL, String mulEE, String mulIT,
                    String eURL) {
@@ -109,12 +111,33 @@ public class Multimedia implements Serializable {
     public void seteURL(String eURL) {
         this.elementURL = eURL;
     }
-/*
-    public Content getContent() {
-        return mContent;
+
+    public Multimedia.DisplayValues getDisplayValues(Locale locale){
+        Multimedia.DisplayValues values = new Multimedia.DisplayValues();
+
+        switch (locale.getLanguage()){
+            case "fr":
+                values.multimediaType = getmulFR();
+                break;
+            case "pt":
+                values.multimediaType = getmulPT();
+                break;
+            case "sl":
+                values.multimediaType = getmulSL();
+                break;
+            case "et":
+                values.multimediaType = getmulEE();
+                break;
+            case "it":
+                values.multimediaType = getmulIT();
+                break;
+
+            default:
+                values.multimediaType = getmulEN();
+                break;
+        }
+
+        return values;
     }
-    public void setContent(Content mC) {
-        this.mContent = mC;
-    }
-*/
+
 }
