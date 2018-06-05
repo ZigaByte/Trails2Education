@@ -46,6 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_1_31 = "difficultySL";
     public static final String COL_1_32 = "difficultyEE";
     public static final String COL_1_33 = "difficultyIT";
+    public static final String COL_1_34 = "updatedDate";
     public static final String TABLE_2_NAME = "coordinates";
     public static final String COL_2_1 = "id";
     public static final String COL_2_2 = "idPathway";
@@ -105,6 +106,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COL_1_1 + " INTEGER PRIMARY KEY, "
             + COL_1_2 + " TEXT NOT NULL, " + COL_1_3 + " TEXT, " + COL_1_4 + " TEXT, " + COL_1_5 + " TEXT, " + COL_1_6 + " TEXT, " + COL_1_7 + " TEXT, "
             + COL_1_8 + " TEXT, "
+            + COL_1_34 + " TEXT, " // last updated field
             + COL_1_9 + " INTEGER, "
             + COL_1_10 + " INTEGER, "
             + COL_1_11 + " INTEGER, "

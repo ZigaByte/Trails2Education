@@ -31,7 +31,8 @@ public class PathwaysDAO {
             DatabaseHelper.COL_1_22, DatabaseHelper.COL_1_23, DatabaseHelper.COL_1_24,
             DatabaseHelper.COL_1_25, DatabaseHelper.COL_1_26, DatabaseHelper.COL_1_27,
             DatabaseHelper.COL_1_28, DatabaseHelper.COL_1_29, DatabaseHelper.COL_1_30,
-            DatabaseHelper.COL_1_31, DatabaseHelper.COL_1_32, DatabaseHelper.COL_1_33
+            DatabaseHelper.COL_1_31, DatabaseHelper.COL_1_32, DatabaseHelper.COL_1_33,
+            DatabaseHelper.COL_1_34
     };
 
     public PathwaysDAO(Context context) {
@@ -58,7 +59,7 @@ public class PathwaysDAO {
      * Accepts a Pathway object and adds it to the database
      * */
     public void createPathway(Pathway p){
-        createPathway(p.getNameEN(), p.getNameFR(), p.getNamePT(), p.getNameSL(), p.getNameEE(), p.getNameIT(), p.getregDate(),
+        createPathway(p.getNameEN(), p.getNameFR(), p.getNamePT(), p.getNameSL(), p.getNameEE(), p.getNameIT(), p.getregDate(),p.getupdDate(),
                 p.gettotM(), p.getestCal(), p.getestTime(), p.getestStep(), p.getavgHB(),
                 p.getvehEN(), p.getvehFR(), p.getvehPT(), p.getvehSL(), p.getvehEE(), p.getvehIT(),
                 p.getcouEN(), p.getcouFR(), p.getcouPT(), p.getcouSL(), p.getcouEE(), p.getcouIT(),
@@ -69,7 +70,7 @@ public class PathwaysDAO {
     /**
      * Accepts all the data about a pathway and adds it to the database
      * */
-    public void createPathway(String nameEN, String nameFR, String namePT, String nameSL, String nameEE, String nameIT, String regDate,
+    public void createPathway(String nameEN, String nameFR, String namePT, String nameSL, String nameEE, String nameIT, String regDate, String updDate,
                                  long totM, long estCal, long estTime, long estStep, String avgHB,
                                  String vehEN, String vehFR, String vehPT, String vehSL, String vehEE, String vehIT,
                                  String couEN, String couFR, String couPT, String couSL, String couEE, String couIT,
@@ -108,6 +109,7 @@ public class PathwaysDAO {
         values.put(DatabaseHelper.COL_1_31, difSL);
         values.put(DatabaseHelper.COL_1_32, difEE);
         values.put(DatabaseHelper.COL_1_33, difIT);
+        //values.put(DatabaseHelper.COL_1_34, updDate); Update the date separately.
 
         // preveri, ali pathway obstaja
         Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_1_NAME, mAllColumns,DatabaseHelper.COL_1_1 + " = " + id, null, null,null, null);
@@ -120,6 +122,17 @@ public class PathwaysDAO {
             // Create new db entry. Makes sure to also include the id provided from the network.
             values.put(DatabaseHelper.COL_1_1, id);
             mDatabase.insert(DatabaseHelper.TABLE_1_NAME, null, values);
+        }
+    }
+
+    public void updateLastUpdated(long pathwayId, String lastUpdated){
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COL_1_34, lastUpdated);
+
+        Cursor cursor = mDatabase.query(DatabaseHelper.TABLE_1_NAME, mAllColumns,DatabaseHelper.COL_1_1 + " = " + pathwayId, null, null,null, null);
+        if(cursor.getCount() > 0){
+            // Update the existing db entry.
+            mDatabase.update(DatabaseHelper.TABLE_1_NAME, values, DatabaseHelper.COL_1_1 +"=?", new String[]{Long.toString(pathwayId)});
         }
     }
 
@@ -226,6 +239,7 @@ public class PathwaysDAO {
         pathway.setdifSL(cursor.getString(30));
         pathway.setdifEE(cursor.getString(31));
         pathway.setdifIT(cursor.getString(32));
+        pathway.setupdDate(cursor.getString(33));
 
         return pathway;
     }

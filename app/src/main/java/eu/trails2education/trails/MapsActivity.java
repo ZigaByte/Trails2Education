@@ -114,12 +114,9 @@ public class MapsActivity extends FragmentActivity  {
         Pathway pathway = pathwaysDAO.getPathwayById(pathwayId);
         pathway.setCoorinates(coordinatesDAO.getCoordinatesOfPathway(pathwayId));
         pathway.setInterestPoints(interestPointDAO.getInterestPointsOfPathway(pathwayId));
-        myMap.pathway = pathway;
+
         fillViews(pathway);
-        myMap.pathReady = true;
-        if(myMap.mapReady){
-            myMap.populateMap();
-        }
+        myMap.createPath(pathway);
     }
 
     private void readPathwayFromNetwork(final int pathwayId){
@@ -133,8 +130,17 @@ public class MapsActivity extends FragmentActivity  {
                 }catch(Exception e){
                     Log.e("PATH LOADING ERROR", "Failed loading the path");
                 }
+
+                //Log.e("PATHWAY UPDATE COMPARE", newPathway.getupdDate() + ", old: " + myMap.getPathway().getupdDate());
+
+                // Only update path if there is a new version. Return otherwise
+                if(newPathway.getupdDate().equals(myMap.getPathway().getupdDate())){
+                    return;
+                }
+
                 // Insert Pathway into the database
                 pathwaysDAO.createPathway(newPathway);
+                pathwaysDAO.updateLastUpdated(newPathway.getId(), newPathway.getupdDate());
 
                 // Insert the cooridnates into the database
                 coordinatesDAO.deleteCoordinatesOfPathway((int)newPathway.getId());
@@ -162,9 +168,6 @@ public class MapsActivity extends FragmentActivity  {
         ((TextView)findViewById(R.id.countryText)).setText(String.valueOf(path.getcouEN()));
     }
 
-
-
-
     private void requestLocation(){
         if(checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -172,10 +175,8 @@ public class MapsActivity extends FragmentActivity  {
                 @Override
                 public void onSuccess(Location location) {
                     if (location != null) {
-                        myMap.lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                        myMap.locationReady = true;
-                        if (myMap.mapReady)
-                            myMap.addLastLocation();
+                        LatLng lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        myMap.updateLastLocation(lastLocation);
                     }
                 }
             });
@@ -187,9 +188,8 @@ public class MapsActivity extends FragmentActivity  {
                         return;
                     }
                     for (Location location : locationResult.getLocations()) {
-                        myMap.lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                        myMap.locationReady = true;
-                        myMap.addLastLocation();
+                        LatLng lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        myMap.updateLastLocation(lastLocation);
                     }
                 }
             };

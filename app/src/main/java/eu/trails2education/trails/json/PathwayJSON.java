@@ -23,6 +23,7 @@ public class PathwayJSON {
     private static String pathwayNameEEKey = "pathwayNameEE";
     private static String pathwayNameITKey = "pathwayNameIT";
     private static String registerDateKey = "registerDate";
+    private static String updatedDateKey = "lastUpdated";
     private static String totalMetersKey = "totalMeters";
     private static String estimatedCaloriesKey = "estimatedCalories";
     private static String estimatedTimeKey = "estimatedTime";
@@ -62,6 +63,7 @@ public class PathwayJSON {
         p.setNameEE(SafeReader.readString(jsonObject, pathwayNameEEKey));
         p.setNameIT(SafeReader.readString(jsonObject, pathwayNameITKey));
         p.setregDate(SafeReader.readString(jsonObject, registerDateKey));
+        p.setupdDate(SafeReader.readString(jsonObject, updatedDateKey));
         p.settotM(SafeReader.readInt(jsonObject, totalMetersKey));
         p.setestCal(SafeReader.readInt(jsonObject, estimatedCaloriesKey));
         p.setestTime(SafeReader.readInt(jsonObject, estimatedTimeKey));

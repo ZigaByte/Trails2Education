@@ -20,6 +20,7 @@ public class Pathway implements Serializable{
     private String pathwayNameEE;
     private String pathwayNameIT;
     private String registerDate;
+    private String updatedDate;
     private long totalMeters;
     private long estimatedCalories;
     private long estimatedTime;
@@ -53,7 +54,7 @@ public class Pathway implements Serializable{
     public Pathway() {}
 
 
-    public Pathway(String nameEN, String nameFR, String namePT, String nameSL, String nameEE, String nameIT, String regDate,
+    public Pathway(String nameEN, String nameFR, String namePT, String nameSL, String nameEE, String nameIT, String regDate, String updatedDate,
                    long totM, long estCal, long estTime, long estStep, String avgHB,
                    String vehEN, String vehFR, String vehPT, String vehSL, String vehEE, String vehIT,
                    String couEN, String couFR, String couPT, String couSL, String couEE, String couIT,
@@ -66,6 +67,7 @@ public class Pathway implements Serializable{
         this.pathwayNameEE = nameEE;
         this.pathwayNameIT = nameIT;
         this.registerDate = regDate;
+        this.updatedDate = updatedDate;
         this.totalMeters = totM;
         this.estimatedCalories = estCal;
         this.estimatedTime = estTime;
@@ -153,6 +155,13 @@ public class Pathway implements Serializable{
     }
     public void setregDate(String regDate) {
         this.registerDate = regDate;
+    }
+
+    public String getupdDate() {
+        return updatedDate;
+    }
+    public void setupdDate(String updDate) {
+        this.updatedDate = updDate;
     }
 
     public long gettotM() {

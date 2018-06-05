@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 import eu.trails2education.trails.R;
@@ -30,9 +31,10 @@ public class MyMap implements OnMapReadyCallback {
     private GoogleMap mMap;
     private Context context;
 
-    public Pathway pathway;
-    public LatLng lastLocation;
-    public Marker locationMarker;
+    private Pathway pathway;
+    private Marker locationMarker;
+
+    private boolean mapReady = false;
 
     public MyMap(Context context){
         this.context = context;
@@ -41,13 +43,6 @@ public class MyMap implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) ((FragmentActivity)context).getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
-
-
-    // Make sure both are ready before populating to avoid Null Pointers
-    public boolean pathReady = false;
-    public boolean mapReady = false;
-    public boolean locationReady = false;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -58,15 +53,20 @@ public class MyMap implements OnMapReadyCallback {
 
         mapReady = true;
 
-        if(pathReady)
-            populateMap();
+        createPath(pathway);
     }
 
-    /**
-     * Populate the map with the loaded path
-     */
-    public void populateMap(){
-        boolean first = true;
+    public void createPath(Pathway pathway){
+        if(pathway == null)
+            return;
+
+        this.pathway = pathway;
+        if(!mapReady){
+            return;
+        }
+
+        mMap.clear();
+
         // Move to the first point of the path
         if(pathway.getCoordinates().size() == 0)
             return;
@@ -91,7 +91,6 @@ public class MyMap implements OnMapReadyCallback {
 
             marker.setTag(myMarker);
         }
-
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -112,12 +111,13 @@ public class MyMap implements OnMapReadyCallback {
             mMap.addMarker(finish.markerOptions);
         }
 
-        // Add last location if ready
-        if(locationReady)
-            addLastLocation();
     }
 
-    public void addLastLocation(){
+    public void updateLastLocation(LatLng lastLocation){
+        if(!mapReady || lastLocation == null){
+            return;
+        }
+
         if(locationMarker == null){
             MarkerOptions markerOptions = new MarkerOptions().position(lastLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
             locationMarker = mMap.addMarker(markerOptions);
@@ -125,6 +125,11 @@ public class MyMap implements OnMapReadyCallback {
         }else{
             locationMarker.setPosition(lastLocation);
         }
+    }
+
+
+    public Pathway getPathway(){
+        return pathway;
     }
 
 

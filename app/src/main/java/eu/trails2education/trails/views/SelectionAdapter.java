@@ -98,11 +98,12 @@ public class SelectionAdapter extends BaseAdapter {
                 } catch (Exception e) {
                     Log.e("PATH LIST ERROR", "Loading the paths list failed");
                 }
-                    for(Pathway p : networkPaths){
-                        pathwaysDAO.createPathway(p);
-                    }
-                    // Load paths from database again.
-                    readPathwaysFromDatabase();
+
+                for(Pathway p : networkPaths){
+                    pathwaysDAO.createPathway(p);
+                }
+                // Load paths from database again.
+                readPathwaysFromDatabase();
 
                 notifyDataSetChanged();
             }
