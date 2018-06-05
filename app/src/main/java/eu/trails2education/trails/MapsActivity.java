@@ -20,21 +20,10 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import eu.trails2education.trails.database.Coordinates;
 import eu.trails2education.trails.database.CoordinatesDAO;
@@ -45,7 +34,6 @@ import eu.trails2education.trails.database.PathwaysDAO;
 import eu.trails2education.trails.json.PathwayJSON;
 import eu.trails2education.trails.network.PathUtils;
 import eu.trails2education.trails.views.MyMap;
-import eu.trails2education.trails.views.MyMarker;
 
 public class MapsActivity extends FragmentActivity  {
 

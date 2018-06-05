@@ -4,20 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONObject;
-
-import eu.trails2education.trails.network.RequestManager;
 
 /**
  * Activity with launch screen.
@@ -39,7 +25,14 @@ public class LaunchActivity extends FragmentActivity {
         h.postDelayed(new Runnable() {
             @Override
             public void run() {
+
+                // TOLE ZAKOMENTIRAJTE
                 Intent i = new Intent(LaunchActivity.this, SelectionActivity.class);
+
+                // TOLE ODKOMENTIRAJTE, da vam pozene SearchActivity
+                //Intent i = new Intent(LaunchActivity.this, SearchActivity.class);
+
+
                 startActivity(i);
                 finish();
             }
