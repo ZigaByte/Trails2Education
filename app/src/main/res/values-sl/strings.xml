@@ -37,5 +37,44 @@
     <string name="back_option_positive">Da</string>
     <string name="back_option_negative">Ne</string>
 
+    <!-- Svetlana -->
+    <string name="sample" />
+    <string name="todo" />
+    <string name="_0_00_00" />
+    <string name="_00" />
+    <string name="estimated_calories" />
+    <string name="heart_rate" />
+    <string name="_000" />
+    <string name="distance" />
+    <string name="meters" />
+    <string name="todo1" />
+    <string name="search">Search</string>
+    <string name="pathway">Pathway</string>
+    <string name="country">Country</string>
+    <string name="todo2">todo</string>
+    <string name="todo3">todo</string>
+    <string name="todo4">todo</string>
+    <string name="todo5">todo</string>
+    <string name="todo6">todo</string>
+    <string name="todo7">todo</string>
+    <string name="title">Title</string>
+    <string name="Vehicle">Vehicle</string>
+    <string name="All">All</string>
+
+    <string-array name="vehicle_arrays">
+        <item>All</item>
+        <item>Bicycle</item>
+        <item>On Foot</item>
+        <item>Reduced Mobility</item>
+        <item>Mixed</item>
+    </string-array>
+
+    <string-array name="terrain_arrays">
+        <item>All</item>
+        <item>Urban</item>
+        <item>Country Side</item>
+        <item>Both</item>
+    </string-array>
+
 
 </resources>

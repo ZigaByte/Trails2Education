@@ -53,7 +53,7 @@ public class SelectionAdapter extends BaseAdapter {
 
     private void readPathwaysFromDatabase(){
         paths = pathwaysDAO.getAllPathways();
-
+/*
         {// Filter, TODO; This is only a temporary solution. Apply user selected filers
             ArrayList<Pathway> filtered = new ArrayList<Pathway>();
             for(Pathway p : paths){
@@ -67,19 +67,22 @@ public class SelectionAdapter extends BaseAdapter {
             }
             paths = filtered;
         }
-
-        // Sort and push Krsko first :D
+*/
         Collections.sort(paths, new Comparator<Pathway>() {
             @Override
             public int compare(Pathway pathway, Pathway t1) {
                 // TODO: Better priority. By matching search or something
-                int[] priority = {115, 134, 58, 24, 51};
+                int[] priority = {9, 10, 29, 35, 125, 30, 51, 63, 115, 134, 62, 31, 132, 14, 24, 58, 9, 28, 27, 12, 43, 59, 130};
+                int sum = 0;
                 for(int i = 0; i < priority.length; i++){
                     if(priority[i] == pathway.getId()) {
-                        return -1;
+                        sum += -1;
+                    }
+                    if(priority[i] == t1.getId()) {
+                        sum += +1;
                     }
                 }
-                return 1;
+                return sum;
             }
         });
     }
