@@ -40,7 +40,8 @@ public class SelectionActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Start the map activity
-                Intent i = new Intent(SelectionActivity.this, MapsActivity.class);
+                //Intent i = new Intent(SelectionActivity.this, MapsActivity.class);
+                Intent i = new Intent(SelectionActivity.this, PathPreviewActivity.class);
                 i.putExtra("PathID", adapter.getPath(position).getId());
                 startActivity(i);
             }

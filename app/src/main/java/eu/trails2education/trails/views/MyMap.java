@@ -2,6 +2,7 @@ package eu.trails2education.trails.views;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -9,6 +10,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -36,12 +38,13 @@ public class MyMap implements OnMapReadyCallback {
 
     private boolean mapReady = false;
 
-    public MyMap(Context context){
+    public MyMap(Context context, int map){
         this.context = context;
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) ((FragmentActivity)context).getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) ((FragmentActivity)context).getSupportFragmentManager().findFragmentById(map);
         mapFragment.getMapAsync(this);
+
     }
 
     @Override
@@ -50,6 +53,8 @@ public class MyMap implements OnMapReadyCallback {
 
         // Disable map things we don't need.
         mMap.getUiSettings().setMapToolbarEnabled(false);
+        //mMap.getUiSettings().setAllGesturesEnabled(false);
+        //mMap.getUiSettings().setCompassEnabled(false);
 
         mapReady = true;
 
@@ -76,13 +81,36 @@ public class MyMap implements OnMapReadyCallback {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
         }
 
+        LatLng maxLat = null, maxLon= null, minLat= null, minLon= null;
         // Create the path line
         PolylineOptions options = new PolylineOptions().clickable(false);
         for(Coordinates coordinate : pathway.getCoordinates()){
             LatLng latLng = new LatLng(coordinate.getclat(), coordinate.getclon());
             options.add(latLng);
+
+            if(maxLat == null){
+                maxLat = maxLon = minLon = minLat = latLng;
+            } else{
+                if(latLng.latitude > maxLat.latitude) maxLat = latLng;
+                if(latLng.latitude < minLat.latitude) minLat = latLng;
+                if(latLng.longitude > maxLon.longitude) maxLon = latLng;
+                if(latLng.longitude < minLon.longitude) minLon = latLng;
+            }
         }
         Polyline line = mMap.addPolyline(options);
+
+        Log.e("Bounds", maxLat + " " +  minLat+ " " + maxLon + " " + minLon);
+        final LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(maxLat);
+        builder.include(minLat);
+        builder.include(maxLon);
+        builder.include(minLon);
+        mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 40));
+            }
+        });
 
         // Add the markers for the individual interest points
         for(InterestPoint interestPoint : pathway.getInterestPoints()){

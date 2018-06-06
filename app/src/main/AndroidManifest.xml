@@ -46,6 +46,10 @@
             android:label="@string/title_activity_selection"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
+            android:name=".PathPreviewActivity"
+            android:label="@string/title_activity_selection"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"></activity>
         <activity

@@ -40,7 +40,6 @@ public class MapsActivity extends FragmentActivity  {
     private MyMap myMap;
 
     private FusedLocationProviderClient mFusedLocationClient;
-
     private PathwaysDAO pathwaysDAO;
     private CoordinatesDAO coordinatesDAO;
     private InterestPointDAO interestPointDAO;
@@ -50,7 +49,7 @@ public class MapsActivity extends FragmentActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        myMap = new MyMap(this);
+        myMap = new MyMap(this, R.id.map);
 
         // Start setting up the location listener
         // Here, thisActivity is the current activity
@@ -69,7 +68,6 @@ public class MapsActivity extends FragmentActivity  {
 
         int pathID = (int)getIntent().getExtras().getLong("PathID"); // Get the selected path ID
         readPathwayFromDatabase(pathID);
-        readPathwayFromNetwork(pathID);
 
         final Context context = this;
         // Set up the back button. TODO: Change to finish path thing.
@@ -105,46 +103,6 @@ public class MapsActivity extends FragmentActivity  {
 
         fillViews(pathway);
         myMap.createPath(pathway);
-    }
-
-    private void readPathwayFromNetwork(final int pathwayId){
-        // Read the path from the network
-        PathUtils.readPathFromNetwork(this, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Pathway newPathway = null;
-                try {
-                    newPathway = PathwayJSON.createFullPathFromJSON(MapsActivity.this, response);
-                }catch(Exception e){
-                    Log.e("PATH LOADING ERROR", "Failed loading the path");
-                }
-
-                //Log.e("PATHWAY UPDATE COMPARE", newPathway.getupdDate() + ", old: " + myMap.getPathway().getupdDate());
-
-                // Only update path if there is a new version. Return otherwise
-                if(newPathway.getupdDate().equals(myMap.getPathway().getupdDate())){
-                    return;
-                }
-
-                // Insert Pathway into the database
-                pathwaysDAO.createPathway(newPathway);
-                pathwaysDAO.updateLastUpdated(newPathway.getId(), newPathway.getupdDate());
-
-                // Insert the cooridnates into the database
-                coordinatesDAO.deleteCoordinatesOfPathway((int)newPathway.getId());
-                for(Coordinates c : newPathway.getCoordinates()){
-                    coordinatesDAO.createCoordinates(c);
-                }
-                // Insert the interest points into the database
-                interestPointDAO.deleteInterestPointsOfPathway((int)newPathway.getId());
-                for(InterestPoint ip : newPathway.getInterestPoints()){
-                    ip.setPathwayID(newPathway.getId()); // Set the pathway ID as it is not present in the JSON TODO: Tell Duarte to include it
-                    interestPointDAO.createInterestPoint(ip, InterestPointDAO.INSERT_TYPE_COORDINATES);
-                }
-
-                readPathwayFromDatabase(pathwayId);
-            }
-        }, pathwayId);
     }
 
     private void fillViews(Pathway path){
