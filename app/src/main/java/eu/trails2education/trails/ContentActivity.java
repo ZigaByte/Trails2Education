@@ -70,11 +70,9 @@ public class ContentActivity extends AppCompatActivity {
 
         final int interestPointID = (int)getIntent().getExtras().getLong("InterestPointID");
         readInterestPointFromDatabase(interestPointID);
-        readInterestPointFromNetwork(interestPointID);
 
         String time = getIntent().getExtras().getString("time");//((TextView)findViewById(R.id.timeText)).getText().toString();
         ((MyTimer)findViewById(R.id.timeText)).setTime(time);
-
     }
 
     private void readInterestPointFromDatabase(int interestPointID){
@@ -84,58 +82,6 @@ public class ContentActivity extends AppCompatActivity {
             c.setMultimedia(multimediaDAO.getMultimediaOfContent(c.getcIdC()));
         }
         fillViews();
-    }
-
-    private void readInterestPointFromNetwork(final int interestPointID){
-        InterestPointUtils.readInterestPointFromNetwork(this, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                InterestPoint newInterestPoint = null;
-                try {
-                    newInterestPoint = InterestPointJSON.createInterestPointFromJSON(ContentActivity.this, response.getJSONArray("posts").getJSONObject(0), 0);
-                }catch(Exception e){
-                    Log.e("INTEREST POINT LOADING ", "ERROR at id: " + interestPointID);
-                    return;
-                }
-
-                readContentFromNetwork((int)newInterestPoint.getcIdIP(), newInterestPoint.getSubjectIds());
-
-                interestPointDAO.createInterestPoint(newInterestPoint, InterestPointDAO.INSERT_TYPE_DATA);
-                readInterestPointFromDatabase(interestPointID);
-            }
-        }, interestPointID);
-    }
-
-    private void readContentFromNetwork(final int interestPointID, ArrayList<Integer> subjectIds){
-        final ArrayList<Content> contents = new ArrayList<Content>();
-        final Context context = this;
-        for(Integer i : subjectIds){
-            final int ii = i; // ok.
-            ContentUtils.readContentFromNetwork(this, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Content newContent = null;
-                    try {
-                        newContent = ContentJSON.createContentFromJSON(context, response.getJSONArray("posts").getJSONObject(0), 0);
-                    }catch (Exception e){
-                        Log.e("CONTENT LOADING ERROR", "ERROR WITH CONTENT");
-                    }
-                    newContent.setIpId(interestPointID);
-                    //newContent.setstype(ii);
-
-                    contentDAO.createContent(newContent, ContentDAO.INSERT_TYPE_DATA);
-
-                    // Do new multimedia
-                    multimediaDAO.deleteMultimediaOfContent((int)newContent.getcIdC());
-                    for(Multimedia m : newContent.getMultimedia()){
-                        m.setCId(newContent.getcIdC());
-                        multimediaDAO.createMultimedia(m);
-                    }
-
-                    readInterestPointFromDatabase(interestPointID);
-                }
-            }, interestPointID, i);
-        }
     }
 
     /**
