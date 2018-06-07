@@ -1,6 +1,5 @@
 package eu.trails2education.trails;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +18,6 @@ import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 import eu.trails2education.trails.database.Content;
@@ -29,11 +27,7 @@ import eu.trails2education.trails.database.InterestPointDAO;
 import eu.trails2education.trails.database.Multimedia;
 import eu.trails2education.trails.database.MultimediaDAO;
 import eu.trails2education.trails.database.Pathway;
-import eu.trails2education.trails.json.ContentJSON;
-import eu.trails2education.trails.json.InterestPointJSON;
 import eu.trails2education.trails.json.PathwayJSON;
-import eu.trails2education.trails.network.ContentUtils;
-import eu.trails2education.trails.network.InterestPointUtils;
 import eu.trails2education.trails.network.PathUtils;
 import eu.trails2education.trails.network.RequestManager;
 import eu.trails2education.trails.views.ContentSelectionAdapter;

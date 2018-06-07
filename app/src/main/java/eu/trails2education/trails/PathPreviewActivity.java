@@ -2,20 +2,18 @@ package eu.trails2education.trails;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 
 import org.json.JSONObject;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import eu.trails2education.trails.database.Content;
 import eu.trails2education.trails.database.ContentDAO;
@@ -33,8 +31,8 @@ import eu.trails2education.trails.json.PathwayJSON;
 import eu.trails2education.trails.network.ContentUtils;
 import eu.trails2education.trails.network.InterestPointUtils;
 import eu.trails2education.trails.network.PathUtils;
-import eu.trails2education.trails.views.MyMap;
-import eu.trails2education.trails.views.SelectionAdapter;
+import eu.trails2education.trails.views.map.MyMap;
+import eu.trails2education.trails.views.map.PreviewMap;
 
 /**
  * Created by Ziga on 06-Jun-18.
@@ -42,7 +40,7 @@ import eu.trails2education.trails.views.SelectionAdapter;
 
 public class PathPreviewActivity extends FragmentActivity {
 
-    private MyMap myMap;
+    private PreviewMap myMap;
 
     private PathwaysDAO pathwaysDAO;
     private CoordinatesDAO coordinatesDAO;
@@ -55,7 +53,7 @@ public class PathPreviewActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_path_preview);
 
-        myMap = new MyMap(this, R.id.preview_map);
+        myMap = new PreviewMap(this, R.id.preview_map);
 
         // Database connections
         pathwaysDAO = new PathwaysDAO(this);
@@ -114,6 +112,7 @@ public class PathPreviewActivity extends FragmentActivity {
                     readInterestPointFromNetwork((int)ip.getcIdIP());
                 }
 
+                // Read the database again and update the views if there was a change
                 readPathwayFromDatabase(pathwayId);
             }
         }, pathwayId);
@@ -173,11 +172,21 @@ public class PathPreviewActivity extends FragmentActivity {
         pathway.setInterestPoints(interestPointDAO.getInterestPointsOfPathway(pathwayId));
 
         fillViews(pathway);
-        myMap.createPath(pathway);
+        myMap.createPathProtected(pathway);
     }
 
     private void fillViews(Pathway path){
         // Fill all the views
+        Pathway.DisplayValues dv = path.getDisplayValues(Locale.getDefault());
+
+        ((TextView)findViewById(R.id.pathway_title)).setText(dv.pathwayName);
+        ((TextView)findViewById(R.id.pathway_subtitle)).setText(path.getreg() + ", "  + dv.country);
+
+        ((TextView)findViewById(R.id.distance_text)).setText(path.gettotM() + "");
+        ((TextView)findViewById(R.id.time_text)).setText(path.getestTime() + "");
+        ((TextView)findViewById(R.id.heart_rate_text)).setText(path.getavgHB());
+        ((TextView)findViewById(R.id.calories_text)).setText(path.getestCal()+"");
+        ((TextView)findViewById(R.id.vehicle_text)).setText(dv.vehicle);
     }
 
 }

@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.android.volley.Response;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -23,21 +22,16 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import org.json.JSONObject;
-
-import eu.trails2education.trails.database.Coordinates;
 import eu.trails2education.trails.database.CoordinatesDAO;
-import eu.trails2education.trails.database.InterestPoint;
 import eu.trails2education.trails.database.InterestPointDAO;
 import eu.trails2education.trails.database.Pathway;
 import eu.trails2education.trails.database.PathwaysDAO;
-import eu.trails2education.trails.json.PathwayJSON;
-import eu.trails2education.trails.network.PathUtils;
-import eu.trails2education.trails.views.MyMap;
+import eu.trails2education.trails.views.map.DisplayMap;
+import eu.trails2education.trails.views.map.MyMap;
 
 public class MapsActivity extends FragmentActivity  {
 
-    private MyMap myMap;
+    private DisplayMap myMap;
 
     private FusedLocationProviderClient mFusedLocationClient;
     private PathwaysDAO pathwaysDAO;
@@ -49,7 +43,7 @@ public class MapsActivity extends FragmentActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        myMap = new MyMap(this, R.id.map);
+        myMap = new DisplayMap(this, R.id.map);
 
         // Start setting up the location listener
         // Here, thisActivity is the current activity
@@ -102,7 +96,7 @@ public class MapsActivity extends FragmentActivity  {
         pathway.setInterestPoints(interestPointDAO.getInterestPointsOfPathway(pathwayId));
 
         fillViews(pathway);
-        myMap.createPath(pathway);
+        myMap.createPathProtected(pathway);
     }
 
     private void fillViews(Pathway path){

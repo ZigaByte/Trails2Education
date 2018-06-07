@@ -15,11 +15,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
-            android:paddingBottom="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
             <eu.trails2education.trails.views.MyTextViewBold
-                android:id="@+id/subject_title"
+                android:id="@+id/pathway_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -28,10 +29,10 @@
                 android:textSize="30dp" />
 
             <eu.trails2education.trails.views.MyTextView
-                android:id="@+id/subject_content"
-
+                android:id="@+id/pathway_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/preview_text_size"
                 android:text="@string/content_content_placeholder" />
         </LinearLayout>
 
@@ -47,9 +48,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="20dp"
             android:gravity="bottom"
             android:orientation="horizontal"
             android:visibility="visible">
@@ -79,6 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="@dimen/preview_text_size"
                         android:text="Distance" />
 
                     <eu.trails2education.trails.views.MyTextView
@@ -86,14 +87,15 @@
                         style="@style/statText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="0dp"
-                        android:text="000" />
+                        android:textSize="@dimen/preview_text_size"
+                        android:layout_marginRight="0dp" />
 
                     <eu.trails2education.trails.views.MyTextView
                         android:id="@+id/distance_unit"
                         style="@style/statText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/preview_text_size"
                         android:layout_weight="1"
                         android:text=" meters" />
                 </LinearLayout>
@@ -102,7 +104,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="visible">
 
                     <ImageView
                         android:id="@+id/image_time"
@@ -110,7 +113,7 @@
                         android:layout_height="20dp"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:src="@drawable/clock" />
+                        android:src="@drawable/clock_black" />
 
                     <eu.trails2education.trails.views.MyTextViewBold
                         android:id="@+id/time_title"
@@ -118,6 +121,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="@dimen/preview_text_size"
                         android:text="Time" />
 
                     <eu.trails2education.trails.views.MyTextView
@@ -125,14 +129,19 @@
                         style="@style/statText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="00" />
+                        android:textSize="@dimen/preview_text_size"
+                        android:layout_marginRight="0dp"
+                        />
+
                     <eu.trails2education.trails.views.MyTextView
                         android:id="@+id/time_unit"
                         style="@style/statText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text=" minutes" />
+                        android:text=" minutes"
+                        android:textSize="@dimen/preview_text_size"
+                        />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -147,7 +156,7 @@
                         android:layout_height="20dp"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:src="@drawable/heart_rate" />
+                        android:src="@drawable/vehicle" />
 
                     <eu.trails2education.trails.views.MyTextViewBold
                         android:id="@+id/vehicle_title"
@@ -155,14 +164,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/Vehicle" />
+                        android:text="@string/Vehicle"
+                        android:textSize="@dimen/preview_text_size"
+                        />
 
                     <eu.trails2education.trails.views.MyTextView
                         android:id="@+id/vehicle_text"
                         style="@style/statText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="00" />
+                        android:textSize="@dimen/preview_text_size"
+                        />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -185,17 +197,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Heart Rate" />
+                        android:text="Heart Rate"
+                        android:textSize="@dimen/preview_text_size"
+                        />
 
                     <eu.trails2education.trails.views.MyTextView
                         android:id="@+id/heart_rate_text"
                         style="@style/statText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="00" />
+                        android:textSize="@dimen/preview_text_size"
+                        />
                 </LinearLayout>
-
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -217,31 +230,35 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Est. Calories" />
+                        android:text="Est. Calories"
+                        android:textSize="@dimen/preview_text_size"
+                        />
 
                     <eu.trails2education.trails.views.MyTextView
                         android:id="@+id/calories_text"
                         style="@style/statText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="00" />
+                        android:textSize="@dimen/preview_text_size"
+                        />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageButton
+            <eu.trails2education.trails.views.MyTextButton
                 android:id="@+id/button_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/button_start"
-                />
-
+                android:background="@color/textRed"
+                android:layout_weight="1"
+                android:shadowColor="@color/textGray"
+                android:text="@string/path_preview_start" />
         </LinearLayout>
 
     </LinearLayout>

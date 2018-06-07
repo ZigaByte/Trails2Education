@@ -1,4 +1,4 @@
-package eu.trails2education.trails.views;
+package eu.trails2education.trails.views.map;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
@@ -16,13 +16,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 
-import eu.trails2education.trails.R;
 import eu.trails2education.trails.database.Coordinates;
 import eu.trails2education.trails.database.InterestPoint;
 import eu.trails2education.trails.database.Pathway;
+import eu.trails2education.trails.views.MyMarker;
 
 /**
  * Created by Ziga on 04-Jun-18.
@@ -30,13 +29,14 @@ import eu.trails2education.trails.database.Pathway;
 
 public class MyMap implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
-    private Context context;
+    protected GoogleMap mMap;
+    protected Context context;
 
-    private Pathway pathway;
-    private Marker locationMarker;
+    protected Pathway pathway;
+    protected Marker locationMarker;
 
-    private boolean mapReady = false;
+    protected boolean mapReady = false;
+    protected boolean hasMarkers = true;
 
     public MyMap(Context context, int map){
         this.context = context;
@@ -53,15 +53,12 @@ public class MyMap implements OnMapReadyCallback {
 
         // Disable map things we don't need.
         mMap.getUiSettings().setMapToolbarEnabled(false);
-        //mMap.getUiSettings().setAllGesturesEnabled(false);
-        //mMap.getUiSettings().setCompassEnabled(false);
 
         mapReady = true;
-
-        createPath(pathway);
+        createPathProtected(pathway);
     }
 
-    public void createPath(Pathway pathway){
+    public void createPathProtected(Pathway pathway){
         if(pathway == null)
             return;
 
@@ -70,6 +67,10 @@ public class MyMap implements OnMapReadyCallback {
             return;
         }
 
+        createPath(pathway);
+    }
+
+    protected void createPath(Pathway pathway){
         mMap.clear();
 
         // Move to the first point of the path
@@ -108,10 +109,23 @@ public class MyMap implements OnMapReadyCallback {
         mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 40));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 60));
             }
         });
 
+        // Add the start and finish markers.
+        if(pathway.getCoordinates().size() > 0){
+            Coordinates startCoordinate = pathway.getCoordinates().get(0);
+            Coordinates finishCoordinate = pathway.getCoordinates().get(pathway.getCoordinates().size() - 1);
+            MyMarker start = new MyMarker(context, new LatLng(startCoordinate.getclat(), startCoordinate.getclon()), true);
+            MyMarker finish = new MyMarker(context, new LatLng(finishCoordinate.getclat(), finishCoordinate.getclon()), false);
+            mMap.addMarker(start.markerOptions);
+            mMap.addMarker(finish.markerOptions);
+        }
+
+    }
+
+    public void createMarkers(){
         // Add the markers for the individual interest points
         for(InterestPoint interestPoint : pathway.getInterestPoints()){
             MyMarker myMarker = new MyMarker(context, interestPoint, pathway);
@@ -128,17 +142,6 @@ public class MyMap implements OnMapReadyCallback {
                 return true;
             }
         });
-
-        // Add the start and finish markers.
-        if(pathway.getCoordinates().size() > 0){
-            Coordinates startCoordinate = pathway.getCoordinates().get(0);
-            Coordinates finishCoordinate = pathway.getCoordinates().get(pathway.getCoordinates().size() - 1);
-            MyMarker start = new MyMarker(context, new LatLng(startCoordinate.getclat(), startCoordinate.getclon()), true);
-            MyMarker finish = new MyMarker(context, new LatLng(finishCoordinate.getclat(), finishCoordinate.getclon()), false);
-            mMap.addMarker(start.markerOptions);
-            mMap.addMarker(finish.markerOptions);
-        }
-
     }
 
     public void updateLastLocation(LatLng lastLocation){
