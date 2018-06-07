@@ -20,6 +20,8 @@
     <string name="path_vehicle_placeholder">Spaceshuttle</string>
     <string name="path_rating_placeholder">3,14</string>
 
+    <string name="path_preview_start">Start</string>
+
     <string name="path_distance_placeholder">1000 m</string>
     <string name="path_length_placeholder">90 min</string>
     <string name="path_calories_placeholder">300 cal</string>
