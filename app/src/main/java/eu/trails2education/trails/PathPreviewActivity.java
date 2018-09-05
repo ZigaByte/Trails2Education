@@ -1,9 +1,14 @@
 package eu.trails2education.trails;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -74,6 +79,33 @@ public class PathPreviewActivity extends FragmentActivity {
                 startActivity(i);
             }
         });
+
+        createNotificationChannel();
+        // Notification test
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "A")
+                .setSmallIcon(R.drawable.interest_point_museum)
+                .setContentTitle("Trails2Education")
+                .setContentText("This is a notification with some long text that will hopefully be in 2 layers")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(123456, mBuilder.build());
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Notifications";
+            String description = "Basic notifications for the application";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("A", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     private void readPathwayFromNetwork(final int pathwayId){
