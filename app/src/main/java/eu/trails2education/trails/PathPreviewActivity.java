@@ -80,8 +80,9 @@ public class PathPreviewActivity extends FragmentActivity {
             }
         });
 
-        createNotificationChannel();
+
         // Notification test
+        createNotificationChannel();
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "A")
                 .setSmallIcon(R.drawable.interest_point_museum)
                 .setContentTitle("Trails2Education")

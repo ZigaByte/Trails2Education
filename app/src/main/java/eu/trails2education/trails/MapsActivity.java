@@ -2,10 +2,14 @@ package eu.trails2education.trails;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.provider.SyncStateContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -15,12 +19,18 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.util.ArrayList;
 
 import eu.trails2education.trails.database.CoordinatesDAO;
 import eu.trails2education.trails.database.InterestPointDAO;
@@ -37,6 +47,11 @@ public class MapsActivity extends FragmentActivity  {
     private PathwaysDAO pathwaysDAO;
     private CoordinatesDAO coordinatesDAO;
     private InterestPointDAO interestPointDAO;
+
+    // Test
+    private GeofencingClient mGeofencingClient;
+    private ArrayList<Geofence> mGeofenceList = new ArrayList<Geofence>();
+    private PendingIntent mGeofencePendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +103,61 @@ public class MapsActivity extends FragmentActivity  {
                         .setNegativeButton(R.string.back_option_negative, dialogClickListener).show();
             }
         });
+
+        // Geofencing test
+        mGeofencingClient = LocationServices.getGeofencingClient(this);
+        mGeofenceList.add(new Geofence.Builder()
+                .setRequestId("Test")
+                .setCircularRegion(
+                        45.9442795,15.5094873,
+                        15
+                )
+                .setExpirationDuration(100000000)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                        Geofence.GEOFENCE_TRANSITION_EXIT)
+                .build());
+        getGeofencingRequest();
+
+        mGeofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Geofences added
+                        // ...
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Failed to add geofences
+                        // ...
+                    }
+                });
+
+        getSystemService(Context.LOCATION_SERVICE);
     }
+
+    private PendingIntent getGeofencePendingIntent() {
+        // Reuse the PendingIntent if we already have it.
+        if (mGeofencePendingIntent != null) {
+            return mGeofencePendingIntent;
+        }
+        Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
+        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
+        // calling addGeofences() and removeGeofences().
+        mGeofencePendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.
+                FLAG_UPDATE_CURRENT);
+        return mGeofencePendingIntent;
+    }
+
+    private GeofencingRequest getGeofencingRequest() {
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+        builder.addGeofences(mGeofenceList);
+        return builder.build();
+    }
+
+
 
     private void readPathwayFromDatabase(int pathwayId) {
         Pathway pathway = pathwaysDAO.getPathwayById(pathwayId);
