@@ -1,9 +1,15 @@
 package eu.trails2education.trails.views.map;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -15,9 +21,12 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 
+import eu.trails2education.trails.MapsActivity;
 import eu.trails2education.trails.database.Coordinates;
 import eu.trails2education.trails.database.InterestPoint;
 import eu.trails2education.trails.database.Pathway;
@@ -27,7 +36,7 @@ import eu.trails2education.trails.views.MyMarker;
  * Created by Ziga on 04-Jun-18.
  */
 
-public class MyMap implements OnMapReadyCallback {
+public class MyMap implements OnMapReadyCallback, Geofences {
 
     protected GoogleMap mMap;
     protected Context context;
@@ -126,12 +135,25 @@ public class MyMap implements OnMapReadyCallback {
     }
 
     public void createMarkers(){
+        int i = 0;
+
         // Add the markers for the individual interest points
         for(InterestPoint interestPoint : pathway.getInterestPoints()){
             MyMarker myMarker = new MyMarker(context, interestPoint, pathway);
             Marker marker = mMap.addMarker(myMarker.markerOptions);
 
             marker.setTag(myMarker);
+
+            mGeofenceList.add(new Geofence.Builder()
+                    .setRequestId(interestPoint.getNameEN() + (i++))
+                    .setCircularRegion(
+                            interestPoint.getclon(),interestPoint.getclat(),
+                            300
+                    )
+                    .setExpirationDuration(1000000000)
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                            Geofence.GEOFENCE_TRANSITION_EXIT)
+                    .build());
         }
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -142,6 +164,27 @@ public class MyMap implements OnMapReadyCallback {
                 return true;
             }
         });
+
+        if (ContextCompat.checkSelfPermission(((MapsActivity)context), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(((MapsActivity) context), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+            ((MapsActivity) context).mGeofencingClient.addGeofences(((MapsActivity) context).getGeofencingRequest(), ((MapsActivity) context).getGeofencePendingIntent())
+                    .addOnSuccessListener(((MapsActivity) context), new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // Geofences added
+                            // ...
+                        }
+                    })
+                    .addOnFailureListener(((MapsActivity) context), new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Failed to add geofences
+                            // ...
+                        }
+                    });
+        }
+        
     }
 
     public void updateLastLocation(LatLng lastLocation){

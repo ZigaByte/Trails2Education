@@ -37,9 +37,10 @@ import eu.trails2education.trails.database.InterestPointDAO;
 import eu.trails2education.trails.database.Pathway;
 import eu.trails2education.trails.database.PathwaysDAO;
 import eu.trails2education.trails.views.map.DisplayMap;
+import eu.trails2education.trails.views.map.Geofences;
 import eu.trails2education.trails.views.map.MyMap;
 
-public class MapsActivity extends FragmentActivity  {
+public class MapsActivity extends FragmentActivity implements Geofences {
 
     private DisplayMap myMap;
 
@@ -48,10 +49,8 @@ public class MapsActivity extends FragmentActivity  {
     private CoordinatesDAO coordinatesDAO;
     private InterestPointDAO interestPointDAO;
 
-    // Test
-    private GeofencingClient mGeofencingClient;
-    private ArrayList<Geofence> mGeofenceList = new ArrayList<Geofence>();
-    private PendingIntent mGeofencePendingIntent;
+    public GeofencingClient mGeofencingClient;
+    public PendingIntent mGeofencePendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,38 +105,11 @@ public class MapsActivity extends FragmentActivity  {
 
         // Geofencing test
         mGeofencingClient = LocationServices.getGeofencingClient(this);
-        mGeofenceList.add(new Geofence.Builder()
-                .setRequestId("Test")
-                .setCircularRegion(
-                        45.9442795,15.5094873,
-                        15
-                )
-                .setExpirationDuration(100000000)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build());
-        getGeofencingRequest();
-
-        mGeofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
-                .addOnSuccessListener(this, new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Geofences added
-                        // ...
-                    }
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Failed to add geofences
-                        // ...
-                    }
-                });
 
         getSystemService(Context.LOCATION_SERVICE);
     }
 
-    private PendingIntent getGeofencePendingIntent() {
+    public PendingIntent getGeofencePendingIntent() {
         // Reuse the PendingIntent if we already have it.
         if (mGeofencePendingIntent != null) {
             return mGeofencePendingIntent;
@@ -150,14 +122,12 @@ public class MapsActivity extends FragmentActivity  {
         return mGeofencePendingIntent;
     }
 
-    private GeofencingRequest getGeofencingRequest() {
+    public GeofencingRequest getGeofencingRequest() {
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
         builder.addGeofences(mGeofenceList);
         return builder.build();
     }
-
-
 
     private void readPathwayFromDatabase(int pathwayId) {
         Pathway pathway = pathwaysDAO.getPathwayById(pathwayId);

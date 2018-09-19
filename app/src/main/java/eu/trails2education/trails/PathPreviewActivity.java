@@ -82,7 +82,7 @@ public class PathPreviewActivity extends FragmentActivity {
 
 
         // Notification test
-        createNotificationChannel();
+        /*createNotificationChannel();
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "A")
                 .setSmallIcon(R.drawable.interest_point_museum)
                 .setContentTitle("Trails2Education")
@@ -90,7 +90,7 @@ public class PathPreviewActivity extends FragmentActivity {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(123456, mBuilder.build());
+        notificationManager.notify(123456, mBuilder.build());*/
     }
 
     private void createNotificationChannel() {
